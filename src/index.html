@@ -10,108 +10,110 @@
 </head>
 <body>
   <nav>
-    <div>
+    <div class="search-title flex-row">
       <h1>What's Cookin'</h1>
-      <input type="text" placeholder="Search recipes...">
+      <input class="input" type="text" placeholder="Search recipes...">
       <button>Search</button>
     </div>
-    <div>
+    <div class="nav-div">
       <button class="hidden">Home</button>
       <button>Recipes to Cook</button>
       <button>Favorite Recipes</button>
     </div>
   </nav>
   <main>
-    <section class="filter">
-      <h2>Filter</h2>
-      <div>
+    <div class="flex-row main-view-container">
+      <section class="filter-section flex-row">
+        <h2>Filter</h2>
         <div>
-          <input type="checkbox" name="antipasti">
-          <label for="antipasti">Antipasti</label>
+          <div class="flex-row">
+            <input type="checkbox" name="antipasti">
+            <label for="antipasti">Antipasti</label>
+          </div>
+          <div>
+            <input type="checkbox" name="antipasto">
+            <label for="antipasto">Antipasto</label>
+          </div>
+          <div>
+            <input type="checkbox" name="appetizer">
+            <label for="appetizer">Appetizer</label>
+          </div>
+          <div>
+            <input type="checkbox" name="breakfast">
+            <label for="breakfast">Breakfast</label>
+          </div>
+          <div>
+            <input type="checkbox" name="brunch">
+            <label for="brunch">Brunch</label>
+          </div>
+          <div>
+            <input type="checkbox" name="condiment">
+            <label for="condiment">Condiment</label>
+          </div>
+          <div>
+            <input type="checkbox" name="dinner">
+            <label for="dinner">Dinner</label>
+          </div>
+          <div>
+            <input type="checkbox" name="dip">
+            <label for="dip">Dip</label>
+          </div>
+          <div>
+            <input type="checkbox" name="hor d'oeuvre">
+            <label for="hor d'oeuvre">Hor D'oeuvre</label>
+          </div>
+          <div>
+            <input type="checkbox" name="lunch">
+            <label for="lunch">Lunch</label>
+          </div>
+          <div>
+            <input type="checkbox" name="main course">
+            <label for="main course">Main Course</label>
+          </div>
+          <div>
+            <input type="checkbox" name="main dish">
+            <label for="main dish">Main Dish</label>
+          </div>
+          <div>
+            <input type="checkbox" name="morning meal">
+            <label for="morning meal">Morning Meal</label>
+          </div>
+          <div>
+            <input type="checkbox" name="salad">
+            <label for="salad">Salad</label>
+          <div>
+          <div>
+            <input type="checkbox" name="sauce">
+            <label for="sauce">Sauce</label>
+          </div>
+          <div>
+            <input type="checkbox" name="side dish">
+            <label for="side dish">Side Dish</label>
+          </div>
+          <div>
+            <input type="checkbox" name="snack">
+            <label for="snack">Snack</label>
+          </div>
+          <div>
+            <input type="checkbox" name="spread">
+            <label for="spread">Spread</label>
+          </div>
+          <div>
+            <input type="checkbox" name="starter">
+            <label for="starter">Starter</label>
+          </div>
+          <button>Apply Filter</button>
         </div>
-        <div>
-          <input type="checkbox" name="antipasto">
-          <label for="antipasto">Antipasto</label>
-        </div>
-        <div>
-          <input type="checkbox" name="appetizer">
-          <label for="appetizer">Appetizer</label>
-        </div>
-        <div>
-          <input type="checkbox" name="breakfast">
-          <label for="breakfast">Breakfast</label>
-        </div>
-        <div>
-          <input type="checkbox" name="brunch">
-          <label for="brunch">Brunch</label>
-        </div>
-        <div>
-          <input type="checkbox" name="condiment">
-          <label for="condiment">Condiment</label>
-        </div>
-        <div>
-          <input type="checkbox" name="dinner">
-          <label for="dinner">Dinner</label>
-        </div>
-        <div>
-          <input type="checkbox" name="dip">
-          <label for="dip">Dip</label>
-        </div>
-        <div>
-          <input type="checkbox" name="hor d'oeuvre">
-          <label for="hor d'oeuvre">Hor D'oeuvre</label>
-        </div>
-        <div>
-          <input type="checkbox" name="lunch">
-          <label for="lunch">Lunch</label>
-        </div>
-        <div>
-          <input type="checkbox" name="main course">
-          <label for="main course">Main Course</label>
-        </div>
-        <div>
-          <input type="checkbox" name="main dish">
-          <label for="main dish">Main Dish</label>
-        </div>
-        <div>
-          <input type="checkbox" name="morning meal">
-          <label for="morning meal">Morning Meal</label>
-        </div>
-        <div>
-          <input type="checkbox" name="salad">
-          <label for="salad">Salad</label>
-        <div>
-        <div>
-          <input type="checkbox" name="sauce">
-          <label for="sauce">Sauce</label>
-        </div>
-        <div>
-          <input type="checkbox" name="side dish">
-          <label for="side dish">Side Dish</label>
-        </div>
-        <div>
-          <input type="checkbox" name="snack">
-          <label for="snack">Snack</label>
-        </div>
-        <div>
-          <input type="checkbox" name="spread">
-          <label for="spread">Spread</label>
-        </div>
-        <div>
-          <input type="checkbox" name="starter">
-          <label for="starter">Starter</label>
-        </div>
-        <button>Apply Filter</button>
-      </div>
-    </section>
-    <section class="recipes">
-      <!-- HTML for each recipe card, this will be moved to JS  -->
-      <div class='recipe-card'>
-        <img src="" alt="" class="recipe-photo">
-        <img src="" alt="favorite-button" class="favorite-button">
-        <p>Recipe Name</p>
-      </div>
-    </section>
+      </section>
+      <section class="recipes-section">
+        <!-- HTML for each recipe card, this will be moved to JS  -->
+        <!-- <div class='recipe-card'>
+          <img src="" alt="" class="recipe-photo">
+          <img src="" alt="favorite-button" class="favorite-button">
+          <p>Recipe Name</p>
+        </div> -->
+      </section>
+    </div> 
     <section class="individual-recipe hidden">
       <img src="" alt="selected-recipe" class="selected-recipe-photo selected-recipe-photo-js" />
       <div>
