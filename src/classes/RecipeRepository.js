@@ -1,3 +1,5 @@
+
+
 class RecipeRepository {
   constructor(data) {
     this.recipeData = data;
@@ -5,7 +7,7 @@ class RecipeRepository {
 
   filterByNameOrIng(nameOrIng, ingArray) {
   // check for ingredient:
-
+  console.log(ingArray)
   //function that searches ing array and returns array of ids
   let getIDfromName = ingArray.filter((element) => {
       return element.name.includes(nameOrIng)

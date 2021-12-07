@@ -1,10 +1,12 @@
 import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
-import ingredients from '../src/data/ingredients'
+import ingredientsData from '../src/data/ingredients'
+
 
 describe('Recipe', () => {
   let sampleData;
   let repository;
+  // let ingData = ingredients.ingredientsData
 
   beforeEach(() => {
     sampleData = [
@@ -358,7 +360,7 @@ describe('Recipe', () => {
   });
 
   it.only('should return a list of recipes based on its ingredient', () => {
-    const recipesByName = repository.filterByNameOrIng('vanilla', ingredients.ingredientsData);
+    const recipesByName = repository.filterByNameOrIng('vanilla', ingredientsData);
     expect(recipesByName).to.equal(sampleData[0]);
   });
 });
