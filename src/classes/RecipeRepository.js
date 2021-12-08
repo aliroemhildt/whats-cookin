@@ -61,8 +61,8 @@ class RecipeRepository {
     addRecipesByName();
 
 
-    console.log(recipesToShow.length)
-  
+    // console.log(recipesToShow)
+    return recipesToShow
 
     // console.log(matchingNames)
 
