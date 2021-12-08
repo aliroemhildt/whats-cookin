@@ -6,7 +6,6 @@ import ingredientsData from '../src/data/ingredients'
 describe('Recipe', () => {
   let sampleData;
   let repository;
-  // let ingData = ingredients.ingredientsData
 
   beforeEach(() => {
     sampleData = [
@@ -339,7 +338,7 @@ describe('Recipe', () => {
         ]
       }
     ]
-    repository = new RecipeRepository(sampleData);
+    repository = new RecipeRepository(sampleData, ingredientsData);
   });
 
   it('should be a function', () => {
