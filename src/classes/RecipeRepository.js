@@ -59,18 +59,27 @@ class RecipeRepository {
 
     return ingredientID;
   };
+
+  filterByTags(selectedTags) {
+    return this.recipeData.reduce((acc, recipe) => {
+      recipe.tags.forEach(tag => {
+        selectedTags.forEach(selectedTag => {
+          if(tag === selectedTag) {
+          acc.push(recipe)
+          }
+        })
+      })
+      return acc;
+    }, [])
+  };
+
 };
+  
+
+
+ 
+
+
 
 export default RecipeRepository;
 
-
-// filterByNameOrIng():
-// 1. create empty array that will hold recipes we want to display (from search)
-// 2. get the ids of the ingredients that match the search term
-// 3. check recipe data, push any recipe to recipesToShow if it's ing list
-//    includes an ing from ingredientsToShow
-// 4. check recipe name, push any recipe to recipesToShow if it's
-//    name includes the search term
-//        * only if it has not already been added to recipesToShow
-// 5. return recipesToShow
-// console.log(this.recipeData)

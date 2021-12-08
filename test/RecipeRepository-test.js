@@ -355,10 +355,9 @@ describe('RecipeRepository', () => {
     expect(repository.recipeData).to.equal(sampleData);
   });
 
-  it.skip('should return a list of recipes based on one or more tags', () => {
-    const recipesByTag = repository.filterByTag('sauce');
-
-    expect(recipesByTag).to.equal(recipeData[2]);
+  it('should return a list of recipes based on one or more tags', () => {
+    const recipesByTag = repository.filterByTags(['sauce']);
+    expect(recipesByTag).to.deep.equal([sampleData[2]]);
   });
 
   it('should return a list of recipes based on its ingredient', () => {
