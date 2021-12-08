@@ -7,7 +7,6 @@ import ingredientsData from '../src/data/ingredients';
 describe('Recipe', () => {
   let sampleData;
   let repository;
-  // let recipeData;
 
   beforeEach(() => {
     sampleData = [
@@ -353,21 +352,21 @@ describe('Recipe', () => {
   });
 
   it('should take in a parameter of recipe data', () => {
-    expect(repository.recipeData).to.equal(recipeData);
+    expect(repository.recipeData).to.equal(sampleData);
   });
 
-  it('should return a list of recipes based on one or more tags', () => {
+  it.skip('should return a list of recipes based on one or more tags', () => {
     const recipesByTag = repository.filterByTag('sauce');
+
     expect(recipesByTag).to.equal(recipeData[2]);
   });
 
-  it.only('should return a list of recipes based on its ingredient', () => {
+  it('should return a list of recipes based on its ingredient', () => {
     const recipesByName = repository.filterByNameOrIng('brown sugar');
     let recipe1 = sampleData[0];
     let recipe2 = sampleData[2];
     let recipesTest = [recipe1, recipe2];
-    // console.log('test:',recipesTest)
-    // console.log('recipesByName:', recipesByName)
+
     expect(recipesByName).to.deep.equal(recipesTest);
   });
 });
