@@ -5,7 +5,7 @@ class RecipeRepository {
     this.recipeData = recipeData;
     this.ingredientData = ingData;
   };
-
+  
   filterByNameOrIng(nameOrIng) {
     // 1. create empty array that will hold recipes we want to display (from search)
     // 2. get the ids of the ingredients that match the search term
@@ -15,7 +15,7 @@ class RecipeRepository {
     //    name includes the search term
     //        * only if it has not already been added to recipesToShow
     // 5. return recipesToShow
-
+    // console.log(this.recipeData)
     const recipesToShow = [];
     const ingredientID = this.getIngredientID(nameOrIng); //array of numbers (ids)
     const recipesWithIngID = this.recipeData.filter((recipe) => {
@@ -40,8 +40,40 @@ class RecipeRepository {
     };
     addRecipes();
 
+    let matchingNames = this.recipeData.filter((recipe) => {
+      console.log(recipe.name)
+      return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
+    })
+    
+    let recipesToShowNamez = recipesToShow.map((recipe) => {
+      return recipe.name.toLowerCase();
+    })
+
+    let recipesToAdd2 = matchingNames.filter(recipe => {
+      return !recipesToShowNamez.includes(recipe.name);
+    })
+
+    let addRecipesByName = () => {
+      recipesToAdd2.forEach(recipe => {
+        recipesToShow.push(recipe)
+      })
+    };
+    addRecipesByName();
+
+
+    console.log(recipesToShow.length)
+  
+
+    // console.log(matchingNames)
+
+    // 4. check recipe name, push any recipe to recipesToShow if it's
+    //    name includes the search term
+    //        * only if it has not already been added to recipesToShow
+    // 5. return recipesToShow
     // console.log(recipesWithIngID)
-    console.log(recipesToShow);
+
+
+    // console.log(recipesToShow);
   //filter recipes and only return if it includes any of the ids from ingList
   // const checkRecipesByIng = this.recipeData.filter((element) => {
   //   return idList.includes(element.id)
