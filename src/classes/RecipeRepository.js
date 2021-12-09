@@ -1,7 +1,7 @@
 class RecipeRepository {
-  constructor(recipeData, ingredientsData) {
+  constructor(recipeData) {
     this.recipeData = recipeData;
-    this.ingredientsData = ingredientsData;
+    this.recipesToShow = [];
   };
 
   filterByTags(selectedTags) {
@@ -17,23 +17,20 @@ class RecipeRepository {
     }, [])
   };
 
-  getIngredientID(ingName) {
+  getIngredientID(ingName, ingredientsData) {
     const ingNameLC = ingName.toLowerCase();
-    const ingredientsFromSearch = this.ingredientsData.filter((ingredient) => {
+    const ingredientIDFromSearch = ingredientsData.filter((ingredient) => {
       return ingredient.name === ingNameLC;
-    });
-
-    const ingredientID = ingredientsFromSearch.map((ingredient) => {
+    }).map((ingredient) => {
       return ingredient.id;
     });
 
-    return ingredientID;
-    //we can chain the .map and return ingredientsFromSearch
+    return ingredientIDFromSearch
   };
 
-  filterByNameOrIng(nameOrIng) {
-    const recipesToShow = [];
-    const ingredientID = this.getIngredientID(nameOrIng);
+  filterByNameOrIng(nameOrIng, ingredientsData) {
+    this.recipesToShow = [];
+    const ingredientID = this.getIngredientID(nameOrIng, ingredientsData);
     const recipesByIngID = this.recipeData.filter((recipe) => {
       let ingIDs = recipe.ingredients.map((ingredient) => {
         return ingredient.id;
@@ -43,7 +40,7 @@ class RecipeRepository {
 
     const addRecipesByIng = () => {
       recipesByIngID.forEach(recipe => {
-        recipesToShow.push(recipe);
+        this.recipesToShow.push(recipe);
       });
     };
 
@@ -53,7 +50,7 @@ class RecipeRepository {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
     });
 
-    const recipesToShowLC = recipesToShow.map((recipe) => {
+    const recipesToShowLC = this.recipesToShow.map((recipe) => {
       return recipe.name.toLowerCase();
     });
 
@@ -63,20 +60,14 @@ class RecipeRepository {
 
     const addRecipesByName = () => {
       recipesByNameNoDuplicates.forEach(recipe => {
-        recipesToShow.push(recipe);
+        this.recipesToShow.push(recipe);
       });
     };
 
     addRecipesByName();
 
-    return recipesToShow;
+    return this.recipesToShow;
   };
 };
-
-
-
-
-
-
 
 export default RecipeRepository;
