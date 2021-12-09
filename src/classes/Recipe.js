@@ -8,20 +8,44 @@ class Recipe {
     this.name = recipe.name;
     this.tags = recipe.tags;
   }
-
-  determineIng() {
+  getIngredientIDs() {
     let ingredientIDs = this.ingredients.reduce((acc, ingredient) => {
-      return acc.push(ingredient.name)
-    }, [])
-    console.log(ingredientIDs)
-    console.log(acc)
-    //matching the id no. to the ingredient name in the igredientsData
-    // iterate through the ingredients object and return an array of id numbers.
-    // map the array of id numbers and find the matching id number in the ingredients list and return the associated name of the ingredients in an array
-  }
+      if(!acc.includes(ingredient.id)) {
+        acc.push(ingredient.id)
+      };
+      return acc;
+    }, []);  
+    return ingredientIDs;
+  };
+  
+  determineRecipeIngredients(ingredientsData) {
+    const ingredientIDs = this.getIngredientIDs();
+    const matchNamesWithID = ingredientIDs.reduce((acc, currentID) => {
+      const ingredientMatch = ingredientsData.find((ingredient) => {
+        return ingredient.id === currentID
+      });
+      acc.push(ingredientMatch.name);
+      return acc;
+    }, []);
 
+    return matchNamesWithID;
+  };
+
+  calculateRecipeCostInDollars(ingredientsData) {
+    const totalIngredientsCost = this.ingredients.reduce((acc, currIngredient) => {
+      
+      const ingredientDataMatch = ingredientsData.find((ingredient) => {
+        return ingredient.id === currIngredient.id
+      });
+      
+      const currentIngredientCost = currIngredient.quantity.amount * ingredientDataMatch.estimatedCostInCents;
+      
+      acc += currentIngredientCost;
+      return acc;
+    }, 0);
+    return (totalIngredientsCost / 100); 
+  };
 }
-
 // A Recipe represents one recipe object (name, id, ingredients, instructions).
 // pass in recipe data
 
