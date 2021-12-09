@@ -1,9 +1,9 @@
 
 
 class RecipeRepository {
-  constructor(recipeData, ingData) {
+  constructor(recipeData, ingredientsData) {
     this.recipeData = recipeData;
-    this.ingredientData = ingData;
+    this.ingredientsData = ingredientsData;
   };
 
   filterByNameOrIng(nameOrIng) {
@@ -49,7 +49,7 @@ class RecipeRepository {
 
   getIngredientID(ingName) {
     const ingNameLC = ingName.toLowerCase();
-    const ingredientsFromSearch = this.ingredientData.filter((ingredient) => {
+    const ingredientsFromSearch = this.ingredientsData.filter((ingredient) => {
       return ingredient.name === ingNameLC;
     });
 
