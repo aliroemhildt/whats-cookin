@@ -1,13 +1,12 @@
 import ingredientsData from "../data/ingredients";
 
 class Recipe {
-  constructor(recipe, ingredientsData) {
+  constructor(recipe) {
     this.id = recipe.id;
     this.ingredients = recipe.ingredients;
     this.instructions = recipe.instructions;
     this.name = recipe.name;
     this.tags = recipe.tags;
-    this.ingredientsData = ingredientsData;
   }
 
   determineIng() {
@@ -16,7 +15,7 @@ class Recipe {
     }, [])
     console.log(ingredientIDs)
     console.log(acc)
-    //matching the id no. to the ingredient name in the igredientsData 
+    //matching the id no. to the ingredient name in the igredientsData
     // iterate through the ingredients object and return an array of id numbers.
     // map the array of id numbers and find the matching id number in the ingredients list and return the associated name of the ingredients in an array
   }
@@ -24,7 +23,7 @@ class Recipe {
 }
 
 // A Recipe represents one recipe object (name, id, ingredients, instructions).
-// pass in recipe data 
+// pass in recipe data
 
 // It should hold on to all its information (provided in the data file).
 // It should have methods to:
@@ -33,4 +32,3 @@ class Recipe {
 // Return its directions / instructions
 
 export default Recipe;
-
