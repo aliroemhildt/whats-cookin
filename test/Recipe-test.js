@@ -8,7 +8,7 @@ describe('Recipe', () => {
   let recipe;
 
   beforeEach(() => {
-    recipe = new Recipe(recipeData[0], ingredientsData);
+    recipe = new Recipe(recipeData[0]);
    
   })
   
@@ -45,9 +45,9 @@ describe('Recipe', () => {
     expect(recipe.id).to.deep.equal(recipeData[0].id)
   })
 
-  it('should have a method to determine the names of ingredients', () => {
-     recipe.determineIng()
-    expect(recipe.determineIng).to.deep.equal([])
+  it.only('should have a method to determine the names of ingredients', () => {
+    let ingredients = recipe.determineIng(ingredientsData)
+    expect(ingredients).to.deep.equal(['wheat flour', 'bicarbonate of soda', 'eggs', 'sucrose', 'instant vanilla pudding', 'brown sugar', 'salt', 'fine sea salt', 'semi sweet chips', 'unsalted butter', 'vanilla'])
   }) 
 
   it.skip('should get the cost of its ingredients', () => {
