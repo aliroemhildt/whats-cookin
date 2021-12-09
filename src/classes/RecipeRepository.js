@@ -1,5 +1,3 @@
-
-
 class RecipeRepository {
   constructor(recipeData, ingredientsData) {
     this.recipeData = recipeData;
@@ -72,14 +70,12 @@ class RecipeRepository {
       return acc;
     }, [])
   };
-
 };
-  
 
 
- 
+
+
 
 
 
 export default RecipeRepository;
-

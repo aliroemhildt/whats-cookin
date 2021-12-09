@@ -354,18 +354,38 @@ describe('RecipeRepository', () => {
   it('should take in a parameter of recipe data', () => {
     expect(repository.recipeData).to.equal(sampleData);
   });
+  //ideally we will build out another file with sample data for recipes and another for ingredients (see the following test below)
 
-  it('should return a list of recipes based on one or more tags', () => {
-    const recipesByTag = repository.filterByTags(['sauce']);
-    expect(recipesByTag).to.deep.equal([sampleData[2]]);
+  it('should take in a parameter of ingredients data', () => {
+    expect(repository.ingredientsData).to.equal(ingredientsData)
+  });
+  //this is bad practice; we will need to change this once we have sample data
+
+  it('should return a list of recipes based on its name', () => {
+    const recipesByName = repository.filterByNameOrIng('Loaded Chocolate Chip Pudding Cookie Cups');
+    let recipe1 = sampleData[0];
+    let recipesTest = [recipe1];
+
+    expect(recipesByName).to.deep.equal(recipesTest);
   });
 
   it('should return a list of recipes based on its ingredient', () => {
-    const recipesByName = repository.filterByNameOrIng('brown sugar');
+    const recipesByIngredient = repository.filterByNameOrIng('brown sugar');
     let recipe1 = sampleData[0];
     let recipe2 = sampleData[2];
     let recipesTest = [recipe1, recipe2];
 
-    expect(recipesByName).to.deep.equal(recipesTest);
+    expect(recipesByIngredient).to.deep.equal(recipesTest);
   });
+
+  it('should return a list of recipes based on a tag', () => {
+    let recipesByTag = repository.filterByTags(['sauce']);
+    expect(recipesByTag).to.deep.equal([sampleData[2]]);
+  });
+
+  it('should return a list of recipes based on mutliple tags', () => {
+    let recipesByTag = repository.filterByTags(['sauce', 'snack']);
+    expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2]]);
+  });
+  //what the...this passes the test but the indecies are backwards?
 });
