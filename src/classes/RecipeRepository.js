@@ -4,6 +4,33 @@ class RecipeRepository {
     this.ingredientsData = ingredientsData;
   };
 
+  filterByTags(selectedTags) {
+    return this.recipeData.reduce((acc, recipe) => {
+      recipe.tags.forEach(tag => {
+        selectedTags.forEach(selectedTag => {
+          if(tag === selectedTag) {
+          acc.push(recipe)
+          }
+        })
+      })
+      return acc;
+    }, [])
+  };
+
+  getIngredientID(ingName) {
+    const ingNameLC = ingName.toLowerCase();
+    const ingredientsFromSearch = this.ingredientsData.filter((ingredient) => {
+      return ingredient.name === ingNameLC;
+    });
+
+    const ingredientID = ingredientsFromSearch.map((ingredient) => {
+      return ingredient.id;
+    });
+
+    return ingredientID;
+    //we can chain the .map and return ingredientsFromSearch
+  };
+
   filterByNameOrIng(nameOrIng) {
     const recipesToShow = [];
     const ingredientID = this.getIngredientID(nameOrIng);
@@ -43,32 +70,6 @@ class RecipeRepository {
     addRecipesByName();
 
     return recipesToShow;
-  };
-
-  getIngredientID(ingName) {
-    const ingNameLC = ingName.toLowerCase();
-    const ingredientsFromSearch = this.ingredientsData.filter((ingredient) => {
-      return ingredient.name === ingNameLC;
-    });
-
-    const ingredientID = ingredientsFromSearch.map((ingredient) => {
-      return ingredient.id;
-    });
-
-    return ingredientID;
-  };
-
-  filterByTags(selectedTags) {
-    return this.recipeData.reduce((acc, recipe) => {
-      recipe.tags.forEach(tag => {
-        selectedTags.forEach(selectedTag => {
-          if(tag === selectedTag) {
-          acc.push(recipe)
-          }
-        })
-      })
-      return acc;
-    }, [])
   };
 };
 
