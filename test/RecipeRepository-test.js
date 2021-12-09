@@ -341,7 +341,7 @@ describe('RecipeRepository', () => {
         ]
       }
     ]
-    repository = new RecipeRepository(sampleData, ingredientsData);
+    repository = new RecipeRepository(sampleData);
   });
 
   it('should be a function', () => {
@@ -357,12 +357,15 @@ describe('RecipeRepository', () => {
   });
   //we are building out another file with sample data for recipes and another for ingredients (see the following test below)
 
-  it('should take in a parameter of ingredients data', () => {
-    expect(repository.ingredientsData).to.equal(ingredientsData)
-  });
-  //this is bad practice; we will need to change this once we have sample data
+  it('should have a property that lists which recipes to show on the page, ', () => {
+    expect(repository).to.have.property('recipesToShow');
+  })
 
-  it('should return a list of recipes based on a tag', () => {
+  it('should have a default value of an empty array for its recipesToShow property', () => {
+    expect(repository.recipesToShow).to.deep.equal([]);
+  })
+
+  it('should return a list of recipes based on a single tag', () => {
     let recipesByTag = repository.filterByTags(['sauce']);
     expect(recipesByTag).to.deep.equal([sampleData[2]]);
   });
@@ -371,14 +374,16 @@ describe('RecipeRepository', () => {
     let recipesByTag = repository.filterByTags(['sauce', 'snack']);
     expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2]]);
   });
-
+  //what the...this passes the test but the indecies are backwards?
+  // testing
+  
   it('should be able to take in an ingredient name and return an array containing that ingredient\s ID', () => {
-    const getIngID = repository.getIngredientID('wheat flour');
+    const getIngID = repository.getIngredientID('wheat flour', ingredientsData);
     expect(getIngID).to.deep.equal([20081])
   });
 
   it('should return a list of recipes based on its name', () => {
-    const recipesByName = repository.filterByNameOrIng('Loaded Chocolate Chip Pudding Cookie Cups');
+    const recipesByName = repository.filterByNameOrIng('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData);
     let recipe1 = sampleData[0];
     let recipesTest = [recipe1];
 
@@ -386,7 +391,7 @@ describe('RecipeRepository', () => {
   });
 
   it('should return a list of recipes based on its ingredient', () => {
-    const recipesByIngredient = repository.filterByNameOrIng('brown sugar');
+    const recipesByIngredient = repository.filterByNameOrIng('brown sugar', ingredientsData);
     let recipe1 = sampleData[0];
     let recipe2 = sampleData[2];
     //let recipe 3 = sampleData[6];
@@ -398,5 +403,5 @@ describe('RecipeRepository', () => {
   });
 
 
-  //what the...this passes the test but the indecies are backwards?
+
 });
