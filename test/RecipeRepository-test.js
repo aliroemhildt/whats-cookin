@@ -2,10 +2,11 @@ import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import recipeData from '../src/data/recipes';
 import ingredientsData from '../src/data/ingredients';
-
+//import sampleData from '..src/data/sampleData';
 
 describe('RecipeRepository', () => {
   let sampleData;
+  //let recipeData
   let repository;
 
   beforeEach(() => {
@@ -354,18 +355,48 @@ describe('RecipeRepository', () => {
   it('should take in a parameter of recipe data', () => {
     expect(repository.recipeData).to.equal(sampleData);
   });
+  //we are building out another file with sample data for recipes and another for ingredients (see the following test below)
 
-  it('should return a list of recipes based on one or more tags', () => {
-    const recipesByTag = repository.filterByTags(['sauce']);
+  it('should take in a parameter of ingredients data', () => {
+    expect(repository.ingredientsData).to.equal(ingredientsData)
+  });
+  //this is bad practice; we will need to change this once we have sample data
+
+  it('should return a list of recipes based on a tag', () => {
+    let recipesByTag = repository.filterByTags(['sauce']);
     expect(recipesByTag).to.deep.equal([sampleData[2]]);
   });
 
-  it('should return a list of recipes based on its ingredient', () => {
-    const recipesByName = repository.filterByNameOrIng('brown sugar');
+  it('should return a list of recipes based on mutliple tags', () => {
+    let recipesByTag = repository.filterByTags(['sauce', 'snack']);
+    expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2]]);
+  });
+
+  it('should be able to take in an ingredient name and return an array containing that ingredient\s ID', () => {
+    const getIngID = repository.getIngredientID('wheat flour');
+    expect(getIngID).to.deep.equal([20081])
+  });
+
+  it('should return a list of recipes based on its name', () => {
+    const recipesByName = repository.filterByNameOrIng('Loaded Chocolate Chip Pudding Cookie Cups');
     let recipe1 = sampleData[0];
-    let recipe2 = sampleData[2];
-    let recipesTest = [recipe1, recipe2];
+    let recipesTest = [recipe1];
 
     expect(recipesByName).to.deep.equal(recipesTest);
   });
+
+  it('should return a list of recipes based on its ingredient', () => {
+    const recipesByIngredient = repository.filterByNameOrIng('brown sugar');
+    let recipe1 = sampleData[0];
+    let recipe2 = sampleData[2];
+    //let recipe 3 = sampleData[6];
+    //let recipe4 = sampleData[8];
+    let recipesTest = [recipe1, recipe2];
+    // let recipesTest = [recipe1, recipe2, recipe3, recipe4];
+
+    expect(recipesByIngredient).to.deep.equal(recipesTest);
+  });
+
+
+  //what the...this passes the test but the indecies are backwards?
 });
