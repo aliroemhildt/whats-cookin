@@ -36,6 +36,7 @@ button {
   border: 2px solid #1b3231;
   color: #1b3231;
   background-color: transparent;
+  padding: 8px;
 }
 
 h1 {
@@ -80,7 +81,6 @@ h2 {
 }
 
 .input {
-
   margin: 13px;
   border: none;
   height: 30px;
@@ -115,10 +115,6 @@ h2 {
   justify-content: space-between;
 }
 
-.border {
-  border: 1px solid blue;
-}
-
 .ingredients-cost {
   display: flex;
   flex-direction: column;
@@ -149,10 +145,16 @@ h2 {
   width: 275px;
 }
 
+.favorite-button {
+  margin-top: 10px, ;
+  margin-bottom: 0px;
+}
+
 .recipe-card-name {
   text-align: center;
   padding: 0, 8px, 8px, 8px;
 }
+
 
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
 .hidden {
