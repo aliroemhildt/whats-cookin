@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
-import recipeData from '../src/data/recipes';
 import ingredientsData from '../src/data/ingredients';
 import sampleData from '../src/data/sampleData';
 
@@ -40,8 +39,8 @@ describe('RecipeRepository', () => {
     let recipesByTag = repository.filterByTags(['sauce', 'snack']);
     expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2], sampleData[7]]);
   });
-  
-  it('should be able to take in an ingredient name and return an array containing that ingredient\s ID', () => {
+
+  it('should be able to take in an ingredient name and return an array containing that ingredients ID', () => {
     const getIngID = repository.getIngredientID('wheat flour', ingredientsData);
     expect(getIngID).to.deep.equal([20081])
   });
