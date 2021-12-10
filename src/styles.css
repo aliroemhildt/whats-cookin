@@ -136,14 +136,22 @@ h2 {
 
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
 .recipe-card {
-  border: 2px solid green;
+  border: 2px solid #1B3231;
   height: 300px;
   width: 275px;
   margin: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.recipe-card-image{
+.recipe-card-image {
   width: 275px;
+}
+
+.recipe-card-name {
+  text-align: center;
+  padding: 0, 8px, 8px, 8px;
 }
 
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */

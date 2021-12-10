@@ -12,6 +12,7 @@ console.log(recipeRepository)
 
 // QUERY SELECTORS
 var recipeSection = document.querySelector('.recipes-section');
+
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
 console.log(recipeSection);
@@ -24,12 +25,15 @@ function displayAllRecipes() {
     recipeSection.innerHTML += `
       <section class='recipe-card'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <img class='favorite-button' src='../assets/heart.png' alt='favorite-button' class='favorite-button'>
-         <p>${recipe.name}</p>
+         <button>FAVORITE</button>
+         <p class='recipe-card-name'>${recipe.name}</p>
        </section>
      `;
   });
 }
+
+
+
 
 // <section class='recipe-card'>
 //   <img src='' alt='' class='recipe-photo'>
