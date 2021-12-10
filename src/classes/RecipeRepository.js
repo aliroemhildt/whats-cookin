@@ -24,17 +24,6 @@ class RecipeRepository {
   };
 
   getIngredientID(ingName, ingredientsData) {
-    // old version:
-    // const ingNameLC = ingName.toLowerCase();
-    // const ingredientIDFromSearch = ingredientsData.filter((ingredient) => {
-    //   return ingredient.name === ingNameLC;
-    // }).map((ingredient) => {
-    //   return ingredient.id;
-    // });
-    //
-    // return ingredientIDFromSearch
-
-    // refacorted version: returns just the ID number, insted of [ID number]
     const ingNameLC = ingName.toLowerCase();
     const ingredientIDFromSearch = ingredientsData.reduce((acc, ingredient) => {
       if (ingredient.name === ingNameLC) {
@@ -42,7 +31,7 @@ class RecipeRepository {
       };
       return acc;
     }, 0);
-    return ingredientIDFromSearch
+    return ingredientIDFromSearch;
   };
 
   filterByIng(nameOrIng, ingredientsData) {
@@ -52,14 +41,13 @@ class RecipeRepository {
         return ingredient.id;
       });
       return ingIDs.includes(ingredientID);
-    })
-
+    });
   };
 
   filterByName(nameOrIng, ingredientsData) {
     return this.recipeData.filter((recipe) => {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
-    })
+    });
   };
 
   filterByNameOrIng(nameOrIng, ingredientsData) {
