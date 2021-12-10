@@ -34,8 +34,7 @@ class RecipeRepository {
     return ingredientIDFromSearch
   };
 
-  filterByNameOrIng(nameOrIng, ingredientsData) {
-    this.recipesToShow = [];
+  filterByIng(nameOrIng, ingredientsData) {
     const ingredientID = this.getIngredientID(nameOrIng, ingredientsData);
     const recipesByIngID = this.recipeData.filter((recipe) => {
       let ingIDs = recipe.ingredients.map((ingredient) => {
@@ -44,14 +43,12 @@ class RecipeRepository {
       return ingIDs.includes(ingredientID[0]);
     });
 
-    const addRecipesByIng = () => {
-      recipesByIngID.forEach(recipe => {
-        this.recipesToShow.push(recipe);
-      });
-    };
+    return recipesByIngID.forEach(recipe => {
+      this.recipesToShow.push(recipe);
+    });
+  };
 
-    addRecipesByIng();
-
+  filterByName(nameOrIng, ingredientsData) {
     const recipesByName = this.recipeData.filter((recipe) => {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
     });
@@ -62,16 +59,13 @@ class RecipeRepository {
 
     const recipesByNameNoDuplicates = recipesByName.filter(recipe => {
       return !recipesToShowLC.includes(recipe.name);
-    });
+    }).forEach(recipe => {this.recipesToShow.push(recipe)});
+  };
 
-    const addRecipesByName = () => {
-      recipesByNameNoDuplicates.forEach(recipe => {
-        this.recipesToShow.push(recipe);
-      });
-    };
-
-    addRecipesByName();
-
+  filterByNameOrIng(nameOrIng, ingredientsData) {
+    this.recipesToShow = [];
+    this.filterByIng(nameOrIng, ingredientsData);
+    this.filterByName(nameOrIng, ingredientsData);
     return this.recipesToShow;
   };
 };
