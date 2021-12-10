@@ -51,6 +51,10 @@ h2 {
   margin: 12px;
 }
 
+/* .filter-button {
+  height: 300px;
+} */
+
 .nav-div {
  align-items: center;
 }
@@ -58,10 +62,10 @@ h2 {
 .filter-section {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   width: 10%;
   margin: 12px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   border: 1px solid #1B3231;
   /* min-height: 100%; */
 }
@@ -69,9 +73,14 @@ h2 {
 .recipes-section {
   width: 90%;
   min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  overflow: auto;
 }
 
 .input {
+
   margin: 13px;
   border: none;
   height: 30px;
@@ -87,7 +96,7 @@ h2 {
 }
 
 .single-filter {
-  margin: 10px 0 10px 0;
+  margin: 5px 0 5px 0;
 }
 
 /* ~~~~~~~~~~ INDIVIDUAL RECIPE VIEW ~~~~~~~~~~ */
@@ -123,6 +132,14 @@ h2 {
 
 .recipe-details {
   min-width: 100%;
+}
+
+/* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
+.recipe-card {
+  border: 2px solid green;
+  height: 300px;
+  width: 275px;
+  margin: 18px;
 }
 
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
