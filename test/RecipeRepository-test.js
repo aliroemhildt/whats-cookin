@@ -72,5 +72,4 @@ describe('RecipeRepository', () => {
 
     expect(recipesByIngredient).to.deep.equal(recipesTest);
   });
-
 });
