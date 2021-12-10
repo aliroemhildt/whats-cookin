@@ -142,6 +142,10 @@ h2 {
   margin: 18px;
 }
 
+.recipe-card-image{
+  width: 275px;
+}
+
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
 .hidden {
   display: none;

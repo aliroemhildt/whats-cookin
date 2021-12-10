@@ -2940,7 +2940,7 @@ const recipeData = [
     },
     {
       "id": 698701,
-      "image": "https://spoonacular.com/recipeImages/698701-556x370.jpg",
+      "image": "https://images.squarespace-cdn.com/content/v1/57e0f188f7e0abb314751626/1589468329684-H6NMPVR862SXNMK2D99L/Stretch+6+-+Raspberry+Souffle.jpg?format=1500w",
       "ingredients": [
         {
           "id": 10014623,

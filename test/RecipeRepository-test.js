@@ -24,24 +24,33 @@ describe('RecipeRepository', () => {
 
   it('should have a property that lists which recipes to show on the page, ', () => {
     expect(repository).to.have.property('recipesToShow');
-  })
+  });
 
   it('should have a default value of an empty array for its recipesToShow property', () => {
     expect(repository.recipesToShow).to.deep.equal([]);
-  })
+  });
+
+  it('should be able to add all recipes from recipeData to the recipesToShow property', () => {
+    repository.addAllRecipesToRecipesToShow();
+
+    expect(repository.recipesToShow).to.deep.equal(repository.recipeData);
+  });
 
   it('should return a list of recipes based on a single tag', () => {
     let recipesByTag = repository.filterByTags(['sauce']);
+
     expect(recipesByTag).to.deep.equal([sampleData[2]]);
   });
 
   it('should return a list of recipes based on mutliple tags', () => {
     let recipesByTag = repository.filterByTags(['sauce', 'snack']);
+
     expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2], sampleData[7]]);
   });
 
   it('should be able to take in an ingredient name and return an array containing that ingredients ID', () => {
     const getIngID = repository.getIngredientID('wheat flour', ingredientsData);
+
     expect(getIngID).to.deep.equal([20081])
   });
 
