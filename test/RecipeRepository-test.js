@@ -1,13 +1,18 @@
 import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
+import Recipe from '../src/classes/Recipe';
 import ingredientsData from '../src/data/ingredients';
 import sampleData from '../src/data/sampleData';
 
 describe('RecipeRepository', () => {
   let repository;
+  let recipeList;
 
   beforeEach(() => {
-    repository = new RecipeRepository(sampleData);
+    recipeList = sampleData.map(recipe => {
+      return new Recipe(recipe);
+    });
+    repository = new RecipeRepository(recipeList);
   });
 
   it('should be a function', () => {
@@ -19,7 +24,7 @@ describe('RecipeRepository', () => {
   });
 
   it('should take in a parameter of recipe data', () => {
-    expect(repository.recipeData).to.equal(sampleData);
+    expect(repository.recipeData).to.equal(recipeList);
   });
 
   it('should have a property that lists which recipes to show on the page, ', () => {
@@ -39,25 +44,24 @@ describe('RecipeRepository', () => {
   it('should return a list of recipes based on a single tag', () => {
     let recipesByTag = repository.filterByTags(['sauce']);
 
-    expect(recipesByTag).to.deep.equal([sampleData[2]]);
+    expect(recipesByTag).to.deep.equal([recipeList[2]]);
   });
 
   it('should return a list of recipes based on mutliple tags', () => {
     let recipesByTag = repository.filterByTags(['sauce', 'snack']);
 
-    expect(recipesByTag).to.deep.equal([sampleData[0], sampleData[2], sampleData[7]]);
+    expect(recipesByTag).to.deep.equal([recipeList[0], recipeList[2], recipeList[7]]);
   });
 
   it('should be able to take in an ingredient name and return the corresponding ID for that ingredient', () => {
     const ingID = repository.getIngredientID('wheat flour', ingredientsData);
 
-    expect(ingID).to.deep.equal(20081)
+    expect(ingID).to.deep.equal(20081);
   });
 
   it('should return a list of recipes based on its name', () => {
     let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData);
-
-    let recipesTest = [sampleData[0]];
+    let recipesTest = [recipeList[0]];
 
     expect(recipesByName).to.deep.equal(recipesTest);
   });
@@ -65,25 +69,24 @@ describe('RecipeRepository', () => {
   it('should return a list of recipes based on its ingredient', () => {
     let recipesByIng = repository.filterByIng('brown sugar', ingredientsData);
 
-    let recipe1 = sampleData[0];
-    let recipe2 = sampleData[2];
-    let recipe3 = sampleData[6];
-    let recipe4 = sampleData[8];
+    let recipe1 = recipeList[0];
+    let recipe2 = recipeList[2];
+    let recipe3 = recipeList[6];
+    let recipe4 = recipeList[8];
 
     let recipesTest = [recipe1, recipe2, recipe3, recipe4];
 
     expect(recipesByIng).to.deep.equal(recipesTest);
   });
 
-  // these test to make sure we are not adding duplicates, we can choose one I just wanted to try multiple cases
   it('should be able to filter by name or ingredient and store result', () => {
     repository.filterByNameOrIng('coconut', ingredientsData);
-    expect(repository.recipesToShow).to.deep.equal([sampleData[6]]);
+    expect(repository.recipesToShow).to.deep.equal([recipeList[6]]);
 
     repository.filterByNameOrIng('pineapple', ingredientsData);
-    expect(repository.recipesToShow).to.deep.equal([sampleData[8]]);
+    expect(repository.recipesToShow).to.deep.equal([recipeList[8]]);
 
     repository.filterByNameOrIng('rapini', ingredientsData);
-    expect(repository.recipesToShow).to.deep.equal([sampleData[9]]);
-  })
+    expect(repository.recipesToShow).to.deep.equal([recipeList[9]]);
+  });
 });
