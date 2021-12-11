@@ -22,6 +22,10 @@ describe('Recipe', () => {
     expect(recipe.id).to.deep.equal(recipeData[0].id);
   });
 
+  it('should have an image', () => {
+    expect(recipe.image).to.equal(recipeData[0].image);
+  });
+
   it('should have an ingredients property', () => {
     expect(recipe.ingredients).to.deep.equal(recipeData[0].ingredients);
   });

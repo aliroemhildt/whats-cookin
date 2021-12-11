@@ -1,22 +1,24 @@
-// GLOBAL
+// IMPORTS
 import './styles.css';
 import apiCalls from './apiCalls';
 import ingredientsData from '../src/data/ingredients';
 import recipeData from '../src/data/recipes';
-
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 
-const recipeRepository = new RecipeRepository(recipeData);
+// GLOBAL VARIABLES
+const recipeList = recipeData.map(recipe => {
+  return new Recipe(recipe);
+});
+
+const recipeRepository = new RecipeRepository(recipeList)
+let recipeCards = []
 
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section');
-const selectedRecipeSection = document.querySelector('.individual-recipe-container');
+const selectedRecipeView = document.querySelector('.individual-recipe-container');
 const filterBar = document.querySelector('.filter-section');
-
-
-let recipeCards
-
+const mainView = document.querySelector('.main-view-container');
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
@@ -26,7 +28,6 @@ recipeCards.forEach((card) => {
     displaySelectedRecipe(e)
   });
 });
-
 
 // FUNCTIONS
 function displayRecipes() {
@@ -60,22 +61,37 @@ function displaySelectedRecipe(e) {
     const instructions = document.querySelector('.selected-recipe-instructions-js');
 
     const recipeID = Number(e.target.parentNode.id.slice(2));
-    show([selectedRecipeSection]);
-    hide([recipeSection, filterBar]);
+    show([selectedRecipeView]);
+    hide([mainView]);
 
     let selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
-      return currentRecipe.id === recipeID
+      return currentRecipe.id === recipeID;
     })
 
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
-    ingredientList.innerText = selectedRecipe.
+
+    const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData)
+
+    selectedRecipe.ingredients.forEach((ingredient, index) => {
+      ingredientList.innerText += `${ingredientNames[index]} ${ingredient.quanity.amount}${ingredient.quantity.unit}`
+    })
+    //take selectedRecipe
+
+    //we have ingredientNames in an array
+    //we have ingredient objects in an array (the quanity and unit)
+    //for each ingredient, we want to add a line to the innerText that says "ingredient name: quantity unit "
+
+    // ingredientList.forEach(())
+    // cost.innerText =
+    // instructions.innerText =
   }
 }
 
 function show(elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.remove('hidden');
+    console.log('show')
   }
 }
 
