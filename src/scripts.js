@@ -62,7 +62,6 @@ function displaySelectedRecipe(e) {
     show([selectedRecipeView]);
     hide([mainView]);
 
-
     const recipeID = Number(e.target.parentNode.id.slice(2));
     const selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
@@ -75,33 +74,12 @@ function displaySelectedRecipe(e) {
     instructionsSection.innerHTML += instructionsElement
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
-
-    // const ingredientElement = document.createElement('P');
-    // const ingredientText = document.createTextNode(ingredientList);
-    // ingredientElement.appendChild(ingredientText);
-    // ingredientListSection.appendChild(ingredientElement);
-
-
-    //we have ingredientNames in an array
-    //we have ingredient objects in an array (the quanity and unit)
-    //for each ingredient, we want to add a line to the innerText that says "ingredient name: quantity unit "
-
-    // ingredientList.forEach(())
-    // cost.innerText =
-    // instructions.innerText =
-
-    // const ingredientList = document.querySelector('.selected-recipe-ingredient-list-js');
-
-    // selectedRecipe.ingredients.forEach((ingredient, index) => {
-    //   ingredientListSection.innerText += `${ingredientNames[index]} ${ingredient.quanity.amount}${ingredient.quantity.unit}`
-    // })
-  }
-}
+  };
+};
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
 
-  //reset ingredient list to empty
   ingredientListSection.innerHTML = '<h3>Ingredients</h3>';
 
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
@@ -140,21 +118,6 @@ function hide(elements) {
     elements[i].classList.add('hidden');
   };
 };
-
-
-//need a funtion that will display ONLY the recipe that's clicked on
-//1. click a recipe CARD
-//2. hide the filter section (class="filter-section") and hide main recipe section (class="recipes-section")
-//3. remove hidden from class="individual-recipe-container hidden"
-//4. change the inner text of all the properties:
-// - the src of the recipe image
-// - the recipe title
-// - the ingredients List
-// - the total Cost
-// - the instructions (<p></p>)
-// call our method we wrote
-
-
 
 // boilerplate html for each recipe card:
 // <section class='recipe-card'>
