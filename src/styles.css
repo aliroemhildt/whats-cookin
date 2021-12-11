@@ -108,7 +108,7 @@ h2 {
 .selected-recipe-photo {
   width: 100%;
   height: 40%;
-  border: 1px solid pink;
+  object-fit: cover;
 }
 
 .recipe-header {
@@ -141,6 +141,10 @@ h2 {
   align-items: center;
 }
 
+.recipe-card:hover {
+  cursor: pointer;
+}
+
 .recipe-card-image {
   width: 275px;
 }
@@ -148,6 +152,11 @@ h2 {
 .favorite-button {
   margin-top: 10px, ;
   margin-bottom: 0px;
+}
+
+.favorite-button:hover {
+  cursor: pointer;
+  background: pink;
 }
 
 .recipe-card-name {
