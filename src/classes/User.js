@@ -1,10 +1,11 @@
 class User {
-  constructor(user) {
+  constructor(user, ingredientsData) {
     this.name = user.name;
     this.id = user.id;
     this.pantry = user.pantry;
     this.favorites = [];
     this.recipesToCook = [];
+    this.ingredients = ingredientsData;
   }
 
   addToFavorites(recipe) {
@@ -39,6 +40,27 @@ class User {
     })
   }
 
+  filterFavoritesByName(name) { // recipe name or ingredient name
+    name = name.toLowerCase();
+
+    return this.favorites.reduce((acc, favoriteRecipe) => {
+      if (favoriteRecipe.name.toLowerCase().includes(name)) {
+        acc.push(favoriteRecipe);
+        return acc;
+      }
+
+      this.ingredients.filter((ingredient) => {
+        favoriteRecipe.ingredients.filter((recipeIngredient) => {
+          if (ingredient.id === recipeIngredient.id && 
+              ingredient.name.toLowerCase() === name) {
+            acc.push(favoriteRecipe);
+          }
+        });
+      });
+
+      return acc;              
+    }, [])
+  }
 }
 
 export default User;

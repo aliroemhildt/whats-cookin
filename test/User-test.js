@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import User from '../src/classes/User';
 import userData from '../src/data/users';
 import sampleData from '../src/data/sampleData';
+import ingredientsData from '../src/data/ingredients';
 
 describe('User', () => { 
   let userData, firstUser;
@@ -155,7 +156,7 @@ describe('User', () => {
         ]
       }
     ]
-    firstUser = new User(userData[0])
+    firstUser = new User(userData[0], ingredientsData)
     // console.log(firstUser)
     // console.log(userData[0])
   })
@@ -207,13 +208,20 @@ describe('User', () => {
     expect(firstUser.filterFavoritesByTag('dinner')).to.deep.equal([sampleData[8]]);
   })
 
-//   it('should be able to filter favorite recipes by name', () => {
-//     firstUser.addToFavorites(sampleData[0]);
-//     firstUser.addToFavorites(sampleData[5]);
-//     firstUser.addToFavorites(sampleData[8]);
+  it('should be able to filter favorite recipes by recipe name', () => {
+    firstUser.addToFavorites(sampleData[0]);
+    firstUser.addToFavorites(sampleData[5]);
+    firstUser.addToFavorites(sampleData[8]);
+    expect(firstUser.filterFavoritesByName('chocolate')).to.deep.equal([sampleData[0]])
+  })
 
-//     expect(firstUser.filterFavoritesByName)
-//   }))
+  it('should be able to filter favorite recipes by ingredient name', () => {
+    firstUser.addToFavorites(sampleData[0]);
+    firstUser.addToFavorites(sampleData[5]);
+    firstUser.addToFavorites(sampleData[8]);
+    console.log(firstUser.favorites)
+    expect(firstUser.filterFavoritesByName('vanilla')).to.deep.equal([sampleData[0], sampleData[5]])
+  })
 
 })
 //user access list of recipes 
