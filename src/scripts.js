@@ -55,14 +55,21 @@ function displaySelectedRecipe(e) {
   if(e.target.classList.value !== 'favorite-button') {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
-    const cost = document.querySelector('.selected-recipe-cost-js');
-    const instructions = document.querySelector('.selected-recipe-instructions-js');
+    const costSection = document.querySelector('.cost-section-js');
+    const instructionsSection = document.querySelector('.instructions-section-js');
     const ingredientListSection = document.querySelector('.ingredient-list-section-js')
 
     show([selectedRecipeView]);
     hide([mainView]);
 
-    let ingredientListElement = getIngredientListElement(e);
+
+    const recipeID = Number(e.target.parentNode.id.slice(2));
+    const selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
+      return currentRecipe.id === recipeID;
+    });
+    const ingredientListElement = getIngredientListElement(e, selectedRecipe);
+
+    getInstructionsElement(e, selectedRecipe);
 
     ingredientListSection.innerHTML += ingredientListElement;
     image.src = selectedRecipe.image;
@@ -90,26 +97,29 @@ function displaySelectedRecipe(e) {
   }
 }
 
-function getIngredientListElement(e) {
+function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
 
-  ingredientListSection.innerHTML = '<h3>Ingredients</h3>'; // i think we will need this line to reset the ingredient list to be empty each time we click into a new recipe
-
-  const recipeID = Number(e.target.parentNode.id.slice(2));
-
-  let selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
-    return currentRecipe.id === recipeID;
-  });
+  //reset ingredient list to empty
+  ingredientListSection.innerHTML = '<h3>Ingredients</h3>';
 
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
 
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
-    acc += `${ingredientNames[index]} ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`
+    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`
     return acc;
   }, '');
 
   return '<p class="selected-recipe-ingredient-list">' + ingredientListText + '</p>';
 };
+
+function getInstructionsElement(e, selectedRecipe) {
+  const instructionsSection = document.querySelector('.instructions-section-js');
+
+  const instructions = selectedRecipe.returnInstructions();
+
+  
+}
 
 function show(elements) {
   for (var i = 0; i < elements.length; i++) {
