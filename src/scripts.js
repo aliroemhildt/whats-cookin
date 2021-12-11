@@ -53,30 +53,26 @@ function displayAllRecipes() {
 
 function displaySelectedRecipe(e) {
   if(e.target.classList.value !== 'favorite-button') {
-
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
-    const ingredientList = document.querySelector('.selected-recipe-ingredient-list-js');
     const cost = document.querySelector('.selected-recipe-cost-js');
     const instructions = document.querySelector('.selected-recipe-instructions-js');
+    const ingredientListSection = document.querySelector('.ingredient-list-section-js')
 
-    const recipeID = Number(e.target.parentNode.id.slice(2));
     show([selectedRecipeView]);
     hide([mainView]);
 
-    let selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
-      return currentRecipe.id === recipeID;
-    })
+    let ingredientListElement = getIngredientListElement(e);
 
+    ingredientListSection.innerHTML += ingredientListElement;
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
 
-    const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData)
+    // const ingredientElement = document.createElement('P');
+    // const ingredientText = document.createTextNode(ingredientList);
+    // ingredientElement.appendChild(ingredientText);
+    // ingredientListSection.appendChild(ingredientElement);
 
-    selectedRecipe.ingredients.forEach((ingredient, index) => {
-      ingredientList.innerText += `${ingredientNames[index]} ${ingredient.quanity.amount}${ingredient.quantity.unit}`
-    })
-    //take selectedRecipe
 
     //we have ingredientNames in an array
     //we have ingredient objects in an array (the quanity and unit)
@@ -85,21 +81,47 @@ function displaySelectedRecipe(e) {
     // ingredientList.forEach(())
     // cost.innerText =
     // instructions.innerText =
+
+    // const ingredientList = document.querySelector('.selected-recipe-ingredient-list-js');
+
+    // selectedRecipe.ingredients.forEach((ingredient, index) => {
+    //   ingredientListSection.innerText += `${ingredientNames[index]} ${ingredient.quanity.amount}${ingredient.quantity.unit}`
+    // })
   }
 }
+
+function getIngredientListElement(e) {
+  const ingredientListSection = document.querySelector('.ingredient-list-section-js')
+
+  ingredientListSection.innerHTML = '<h3>Ingredients</h3>'; // i think we will need this line to reset the ingredient list to be empty each time we click into a new recipe
+
+  const recipeID = Number(e.target.parentNode.id.slice(2));
+
+  let selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
+    return currentRecipe.id === recipeID;
+  });
+
+  const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
+
+  const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
+    acc += `${ingredientNames[index]} ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`
+    return acc;
+  }, '');
+
+  return '<p class="selected-recipe-ingredient-list">' + ingredientListText + '</p>';
+};
 
 function show(elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.remove('hidden');
-    console.log('show')
-  }
-}
+  };
+};
 
 function hide(elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.add('hidden');
-  }
-}
+  };
+};
 
 
 //need a funtion that will display ONLY the recipe that's clicked on
@@ -116,7 +138,7 @@ function hide(elements) {
 
 
 
-
+// boilerplate html for each recipe card:
 // <section class='recipe-card'>
 //   <img src='' alt='' class='recipe-photo'>
 //   <img src='' alt='favorite-button' class='favorite-button'>
