@@ -7,6 +7,7 @@ import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 
 // GLOBAL VARIABLES
+console.log('hello world');
 const recipeList = recipeData.map(recipe => {
   return new Recipe(recipe);
 });
@@ -19,9 +20,11 @@ const recipeSection = document.querySelector('.recipes-section-js');
 const selectedRecipeView = document.querySelector('.individual-recipe-container-js');
 const filterBar = document.querySelector('.filter-section-js');
 const mainView = document.querySelector('.main-view-container-js');
+const searchRecipesButton = document.getElementById('searchRecipes');
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
+searchRecipesButton.addEventListener('click', searchAllRecipes)
 
 recipeCards.forEach((card) => {
   card.addEventListener('click', function(e) {
@@ -52,7 +55,7 @@ function displayAllRecipes() {
 }
 
 function displaySelectedRecipe(e) {
-  if(e.target.classList.value !== 'favorite-button-js') {
+  if (e.target.classList.value !== 'favorite-button-js') {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const costSection = document.querySelector('.cost-section-js');
@@ -74,8 +77,14 @@ function displaySelectedRecipe(e) {
     instructionsSection.innerHTML += instructionsElement
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
-  };
-};
+  }
+}
+
+function searchAllRecipes() {
+  const searchName = document.getElementById('searchInput').value;
+  recipeRepository.filterByNameOrIng(searchName, ingredientsData);
+  displayRecipes();
+}
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
@@ -90,7 +99,7 @@ function getIngredientListElement(e, selectedRecipe) {
   }, '');
 
   return '<p class="selected-recipe-ingredients-list">' + ingredientListText + '</p>';
-};
+}
 
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
@@ -105,19 +114,19 @@ function getInstructionsElement(e, selectedRecipe) {
   }, '');
 
   return '<p class="selected-recipe-instructions">' + instructionsText + '</p>'
-};
+}
 
 function show(elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.remove('hidden');
-  };
-};
+  }
+}
 
 function hide(elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.add('hidden');
-  };
-};
+  }
+}
 
 // boilerplate html for each recipe card:
 // <section class='recipe-card'>
