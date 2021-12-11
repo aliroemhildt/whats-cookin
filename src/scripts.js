@@ -15,10 +15,10 @@ const recipeRepository = new RecipeRepository(recipeList)
 let recipeCards = []
 
 // QUERY SELECTORS
-const recipeSection = document.querySelector('.recipes-section');
-const selectedRecipeView = document.querySelector('.individual-recipe-container');
-const filterBar = document.querySelector('.filter-section');
-const mainView = document.querySelector('.main-view-container');
+const recipeSection = document.querySelector('.recipes-section-js');
+const selectedRecipeView = document.querySelector('.individual-recipe-container-js');
+const filterBar = document.querySelector('.filter-section-js');
+const mainView = document.querySelector('.main-view-container-js');
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
@@ -33,14 +33,14 @@ recipeCards.forEach((card) => {
 function displayRecipes() {
   recipeSection.innerHTML = '';  recipeRepository.recipesToShow.forEach(recipe => {
     recipeSection.innerHTML += `
-      <section class='recipe-card' id='id${recipe.id}'>
+      <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <button class='favorite-button'>FAVORITE</button>
+         <button class='favorite-button favorite-button-js'>FAVORITE</button>
          <p class='recipe-card-name'>${recipe.name}</p>
        </section>
      `;
   });
-  recipeCards = document.querySelectorAll('.recipe-card');
+  recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach((card) => {
     card.addEventListener('click', displaySelectedRecipe)
   });
@@ -52,7 +52,7 @@ function displayAllRecipes() {
 }
 
 function displaySelectedRecipe(e) {
-  if(e.target.classList.value !== 'favorite-button') {
+  if(e.target.classList.value !== 'favorite-button-js') {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const costSection = document.querySelector('.cost-section-js');
@@ -69,9 +69,10 @@ function displaySelectedRecipe(e) {
     });
     const ingredientListElement = getIngredientListElement(e, selectedRecipe);
 
-    getInstructionsElement(e, selectedRecipe);
+    const instructionsElement = getInstructionsElement(e, selectedRecipe);
 
     ingredientListSection.innerHTML += ingredientListElement;
+    instructionsSection.innerHTML += instructionsElement
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
 
@@ -106,20 +107,27 @@ function getIngredientListElement(e, selectedRecipe) {
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
 
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
-    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`
+    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`;
     return acc;
   }, '');
 
-  return '<p class="selected-recipe-ingredient-list">' + ingredientListText + '</p>';
+  return '<p class="selected-recipe-ingredients-list">' + ingredientListText + '</p>';
 };
 
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
 
-  const instructions = selectedRecipe.returnInstructions();
+  instructionsSection.innerHTML = '<h3>Instructions</h3>'
 
-  
-}
+  const instructionsStrings = selectedRecipe.returnInstructions();
+
+  const instructionsText = instructionsStrings.reduce((acc, instruction) => {
+    acc += `${instruction}<br><br>`;
+    return acc;
+  }, '');
+
+  return '<p class="selected-recipe-instructions">' + instructionsText + '</p>'
+};
 
 function show(elements) {
   for (var i = 0; i < elements.length; i++) {
