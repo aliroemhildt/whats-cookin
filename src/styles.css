@@ -172,6 +172,11 @@ h2 {
   padding: 0, 8px, 8px, 8px;
 }
 
+.favorited-state {
+  background: #B03F2C;
+  color: #F2F5F2;
+}
+
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
 .hidden {
   display: none;

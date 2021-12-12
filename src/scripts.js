@@ -3,16 +3,20 @@ import './styles.css';
 import apiCalls from './apiCalls';
 import ingredientsData from '../src/data/ingredients';
 import recipeData from '../src/data/recipes';
+import userData from '../src/data/users';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
+import User from '../src/classes/User';
 
 // GLOBAL VARIABLES
 const recipeList = recipeData.map(recipe => {
   return new Recipe(recipe);
 });
-
-const recipeRepository = new RecipeRepository(recipeList)
-let recipeCards = []
+const userIndex = getRandomIndex(userData);
+const currentUser = new User(userData[userIndex], ingredientsData);
+const recipeRepository = new RecipeRepository(recipeList);
+let recipeCards = [];
+let favoriteButtons = [];
 
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
@@ -26,20 +30,21 @@ const searchBar = document.getElementById('searchInput');
 const favoritePageButton = document.getElementById('favoriteRecipePageButton');
 const filterTags = document.querySelectorAll('.tag');
 
+
+
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
-searchRecipesButton.addEventListener('click', searchAllRecipes)
 
-recipeCards.forEach((card) => {
-  card.addEventListener('click', function(e) {
-    displaySelectedRecipe(e)
-  });
-});
+searchRecipesButton.addEventListener('click', searchAllRecipes)
 
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
 
+
 // FUNCTIONS
+function getRandomIndex(array) {
+  return Math.floor(Math.random() * array.length);
+}
 
 function displayHomePage() {
   displayAllRecipes();
@@ -47,50 +52,76 @@ function displayHomePage() {
   // filterTags.value = '';
   hide([selectedRecipeView, homeButton]);
   show([mainView, recipeSection, searchBar, searchRecipesButton]);
-};
+}
 
 function displayFavorites() {
   hide([favoritePageButton, mainView, recipeSection]);
   show([homeButton]);
   //need other functions to be built out in order to finish this
-};
+}
 
 function filterAllRecipesByTag() {
   const selectedTags = [];
   filterTags.forEach((tag) => {
     if (tag.checked) {
       selectedTags.push(tag.id)
-    };
+    }
   })
   if (selectedTags.length === 0) {
     return;
-  };
-
+  }
   recipeRepository.recipesToShow = recipeRepository.filterByTags(selectedTags);
   displayRecipes();
 }
 
 function displayRecipes() {
-  recipeSection.innerHTML = '';  recipeRepository.recipesToShow.forEach(recipe => {
+  recipeSection.innerHTML = '';
+  recipeRepository.recipesToShow.forEach(recipe => {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <button class='favorite-button favorite-button-js'>favorite</button>
+         <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
          <p class='recipe-card-name'>${recipe.name}</p>
        </section>
      `;
   });
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach((card) => {
-    card.addEventListener('click', displaySelectedRecipe)
+    card.addEventListener('click', function(e) {
+      displaySelectedRecipe(e)
+    });
   });
+  favoriteButtons = document.querySelectorAll('.favorite-button-js');
+  favoriteButtons.forEach((button) => {
+    button.addEventListener('click', function(e) {
+      toggleFavoriteButton(e)
+    })
+  });
+}
+
+function toggleFavoriteButton(e) {
+  if (e.target.classList.contains('favorite-button-js')) {
+    const recipeID = Number(e.target.parentNode.id.slice(2));
+    const recipe = recipeRepository.recipeData.find((element) => {
+      return element.id === recipeID;
+    });
+    if (e.target.value === 'unfavorited') {
+      e.target.value = 'favorited';
+      e.target.classList.add('favorited-state');
+      currentUser.addToFavorites(recipe);
+    } else if (e.target.value === 'favorited') {
+      e.target.value = 'unfavorited';
+      e.target.classList.remove('favorited-state');
+      currentUser.removeFromFavorites(recipe);
+    }
+  }
 }
 
 function searchAllRecipes() {
   const searchName = document.getElementById('searchInput').value;
   recipeRepository.filterByNameOrIng(searchName, ingredientsData);
   displayRecipes();
-};
+}
 
 function displayAllRecipes() {
   recipeRepository.addAllRecipesToRecipesToShow();
@@ -98,8 +129,7 @@ function displayAllRecipes() {
 }
 
 function displaySelectedRecipe(e) {
-  console.log(e.target.classList.value);
-  if (e.target.classList.value !== 'favorite-button favorite-button-js') {
+  if (!e.target.classList.contains('favorite-button-js')) {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const cost = document.querySelector('.cost-js');
@@ -126,7 +156,7 @@ function displaySelectedRecipe(e) {
     name.innerText = selectedRecipe.name;
     cost.innerText = `$${costNum}`;
   }
-};
+}
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
