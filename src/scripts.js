@@ -86,13 +86,20 @@ function displayRecipes() {
   });
 }
 
+function searchAllRecipes() {
+  const searchName = document.getElementById('searchInput').value;
+  recipeRepository.filterByNameOrIng(searchName, ingredientsData);
+  displayRecipes();
+};
+
 function displayAllRecipes() {
   recipeRepository.addAllRecipesToRecipesToShow();
   displayRecipes();
 }
 
 function displaySelectedRecipe(e) {
-  if (e.target.classList.value !== 'favorite-button-js') {
+  console.log(e.target.classList.value);
+  if (e.target.classList.value !== 'favorite-button favorite-button-js') {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const costSection = document.querySelector('.cost-section-js');
@@ -116,12 +123,6 @@ function displaySelectedRecipe(e) {
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
   }
-};
-
-function searchAllRecipes() {
-  const searchName = document.getElementById('searchInput').value;
-  recipeRepository.filterByNameOrIng(searchName, ingredientsData);
-  displayRecipes();
 };
 
 function getIngredientListElement(e, selectedRecipe) {
