@@ -44,7 +44,8 @@ class Recipe {
       acc += currentIngredientCost;
       return acc;
     }, 0);
-    return (totalIngredientsCost / 100);
+    
+    return Number((totalIngredientsCost / 100).toFixed(2));
   };
 
   returnInstructions() {

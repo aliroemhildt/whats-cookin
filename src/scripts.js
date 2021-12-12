@@ -102,7 +102,7 @@ function displaySelectedRecipe(e) {
   if (e.target.classList.value !== 'favorite-button favorite-button-js') {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
-    const costSection = document.querySelector('.cost-section-js');
+    const cost = document.querySelector('.cost-js');
     const instructionsSection = document.querySelector('.instructions-section-js');
     const ingredientListSection = document.querySelector('.ingredient-list-section-js');
     const searchButton = document.getElementById('searchRecipes');
@@ -118,22 +118,25 @@ function displaySelectedRecipe(e) {
 
     const instructionsElement = getInstructionsElement(e, selectedRecipe);
 
+    const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
+
     ingredientListSection.innerHTML += ingredientListElement;
     instructionsSection.innerHTML += instructionsElement
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
+    cost.innerText = `$${costNum}`;
   }
 };
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
 
-  ingredientListSection.innerHTML = '<h3>Ingredients</h3>';
+  ingredientListSection.innerHTML = '<h3>ingredients</h3>';
 
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
 
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
-    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount}${ingredient.quantity.unit}<br>`;
+    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount.toString()} ${ingredient.quantity.unit}<br><br>`;
     return acc;
   }, '');
 
@@ -143,7 +146,7 @@ function getIngredientListElement(e, selectedRecipe) {
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
 
-  instructionsSection.innerHTML = '<h3>Instructions</h3>'
+  instructionsSection.innerHTML = '<h3>instructions</h3>'
 
   const instructionsStrings = selectedRecipe.returnInstructions();
 
