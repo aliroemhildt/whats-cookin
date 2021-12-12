@@ -53,14 +53,6 @@ function filterAllRecipesByTag() {
   displayRecipes();
 }
 
-function disableSaveButton() {
-  if (titleInput.value === '' && bodyInput.value === '') {
-    saveButton.disabled = true;
-  } else if (titleInput.value && bodyInput.value) {
-    saveButton.disabled = false;
-  }
-}
-
 function displayRecipes() {
   recipeSection.innerHTML = '';  recipeRepository.recipesToShow.forEach(recipe => {
     recipeSection.innerHTML += `
@@ -106,19 +98,13 @@ function displaySelectedRecipe(e) {
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
   }
-}
+};
 
 function searchAllRecipes() {
   const searchName = document.getElementById('searchInput').value;
   recipeRepository.filterByNameOrIng(searchName, ingredientsData);
   displayRecipes();
-}
-
-function filterAllRecipes() {
-  const filterByType = document.querySelectorAll('.filter-checkbox');
-  recipeRepository.filterByNameOrIng(searchName, ingredientsData);
-  displayRecipes();
-}
+};
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js')
