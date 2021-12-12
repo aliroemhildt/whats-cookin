@@ -53,8 +53,8 @@ h1 {
 }
 
 h2 {
-  padding: 12px;
-  margin: 0;
+  padding: 12px 12px 12px 0px;
+  margin: 0px 0px 30px 30px;
 }
 
 .filters {
@@ -118,15 +118,18 @@ h2 {
   justify-content: space-between;
 }
 
-.ingredients-cost {
+.ingredients-cost-section {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  padding: 12px;
+  width: 20%;
+  margin: 0px 0px 30px 30px;
+  border: 1px solid #1B3231;
+  padding: 0px 15px 0px 15px;
 }
 
-.instructions {
-  width: 70%;
+.instructions-section {
+  width: 80%;
+  margin: 0px 30px 30px 30px;
 }
 
 .recipe-details {
@@ -138,7 +141,7 @@ h2 {
   /* border: 2px solid #1B3231; */
   border: 2px solid #F2F5F2;
   height: 300px;
-  width: 275px;
+  width: 273px;
   margin: 18px;
   display: flex;
   flex-direction: column;
