@@ -6,7 +6,7 @@ import recipeData from '../src/data/recipes';
 import userData from '../src/data/users';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
-import User from '../src/classes/Recipe';
+import User from '../src/classes/User';
 
 // GLOBAL VARIABLES
 const recipeList = recipeData.map(recipe => {
@@ -16,6 +16,7 @@ const userIndex = getRandomIndex(userData);
 const currentUser = new User(userData[userIndex], ingredientsData);
 const recipeRepository = new RecipeRepository(recipeList);
 let recipeCards = [];
+let favoriteButtons = [];
 
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
@@ -36,15 +37,9 @@ window.addEventListener('load', displayAllRecipes);
 
 searchRecipesButton.addEventListener('click', searchAllRecipes)
 
-recipeCards.forEach((card) => {
-  card.addEventListener('click', function(e) {
-    displaySelectedRecipe(e)
-  });
-});
-
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
-favoriteAButton.addEventListener('click', )
+
 
 // FUNCTIONS
 function getRandomIndex(array) {
@@ -75,47 +70,51 @@ function filterAllRecipesByTag() {
   if (selectedTags.length === 0) {
     return;
   }
-
   recipeRepository.recipesToShow = recipeRepository.filterByTags(selectedTags);
   displayRecipes();
 }
 
 function displayRecipes() {
-  recipeSection.innerHTML = '';  recipeRepository.recipesToShow.forEach(recipe => {
+  recipeSection.innerHTML = '';
+  recipeRepository.recipesToShow.forEach(recipe => {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <button class='favorite-button favorite-button-js'>favorite</button>
+         <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
          <p class='recipe-card-name'>${recipe.name}</p>
        </section>
      `;
   });
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach((card) => {
-    card.addEventListener('click', displaySelectedRecipe)
+    card.addEventListener('click', function(e) {
+      displaySelectedRecipe(e)
+    });
   });
-  favoriteButtons = document.querySelectorAll('.favorite-button-js')
+  favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
-    button.addEventListener('click', addToFavorites)
+    button.addEventListener('click', function(e) {
+      toggleFavoriteButton(e)
+    })
   });
 }
 
 function toggleFavoriteButton(e) {
-  //changes the look of the button
-  //check if we click on  a favorite button (true):
-    //(based on classList value) -> capture the ID of the parentNode in a variable (const recipeID = Number(e.target.parentNode.id.slice(2));)
-    //
-
-  const recipe =
-  if (e.target.classList.value === 'favorite-button favorite-button-js') {
+  if (e.target.classList.contains('favorite-button-js')) {
     const recipeID = Number(e.target.parentNode.id.slice(2));
-
-
+    const recipe = recipeRepository.recipeData.find((element) => {
+      return element.id === recipeID;
+    });
+    if (e.target.value === 'unfavorited') {
+      e.target.value = 'favorited';
+      e.target.classList.add('favorited-state');
+      currentUser.addToFavorites(recipe);
+    } else if (e.target.value === 'favorited') {
+      e.target.value = 'unfavorited';
+      e.target.classList.remove('favorited-state');
+      currentUser.removeFromFavorites(recipe);
+    }
   }
-  currentUser.addToFavorites(recipe);
-
-  // currentUser.removeFromFavorites(recipe)
-
 }
 
 function searchAllRecipes() {
@@ -130,7 +129,7 @@ function displayAllRecipes() {
 }
 
 function displaySelectedRecipe(e) {
-  if (e.target.classList.value !== 'favorite-button favorite-button-js') {
+  if (!e.target.classList.contains('favorite-button-js')) {
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const cost = document.querySelector('.cost-js');
