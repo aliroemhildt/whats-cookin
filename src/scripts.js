@@ -7,7 +7,6 @@ import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 
 // GLOBAL VARIABLES
-console.log('hello world');
 const recipeList = recipeData.map(recipe => {
   return new Recipe(recipe);
 });
@@ -22,7 +21,10 @@ const filterBar = document.querySelector('.filter-section-js');
 const mainView = document.querySelector('.main-view-container-js');
 const searchRecipesButton = document.getElementById('searchRecipes');
 const filterButton = document.getElementById('filterButton');
-// const antipasti = document.getElementById('antipasti')
+const homeButton = document.querySelector('.home-button');
+const searchBar = document.getElementById('searchInput');
+const favoritePageButton = document.getElementById('favoriteRecipePageButton');
+const filterTags = document.querySelectorAll('.tag');
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
@@ -34,11 +36,26 @@ recipeCards.forEach((card) => {
   });
 });
 
-filterButton.addEventListener('click', filterAllRecipesByTag)
+filterButton.addEventListener('click', filterAllRecipesByTag);
+homeButton.addEventListener('click', displayHomePage);
 
 // FUNCTIONS
+
+function displayHomePage() {
+  displayAllRecipes();
+  searchBar.value = '';
+  // filterTags.value = '';
+  hide([selectedRecipeView, homeButton]);
+  show([mainView, recipeSection, searchBar, searchRecipesButton]);
+};
+
+function displayFavorites() {
+  hide([favoritePageButton, mainView, recipeSection]);
+  show([homeButton]);
+  //need other functions to be built out in order to finish this
+};
+
 function filterAllRecipesByTag() {
-  const filterTags = document.querySelectorAll('.tag');
   const selectedTags = [];
   filterTags.forEach((tag) => {
     if (tag.checked) {
@@ -80,10 +97,11 @@ function displaySelectedRecipe(e) {
     const name = document.querySelector('.selected-recipe-name-js');
     const costSection = document.querySelector('.cost-section-js');
     const instructionsSection = document.querySelector('.instructions-section-js');
-    const ingredientListSection = document.querySelector('.ingredient-list-section-js')
+    const ingredientListSection = document.querySelector('.ingredient-list-section-js');
+    const searchButton = document.getElementById('searchRecipes');
 
-    show([selectedRecipeView]);
-    hide([mainView]);
+    show([selectedRecipeView, homeButton]);
+    hide([mainView, searchBar, searchButton]);
 
     const recipeID = Number(e.target.parentNode.id.slice(2));
     const selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
