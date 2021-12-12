@@ -8,9 +8,11 @@ html {
 }
 
 body {
+  color: #1B3231;
   background-color: #DCDFDA;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
+  font-size: 16px;
   height: 100%;
   width: 100vw;
   margin: 0;
@@ -25,18 +27,25 @@ nav {
   display: flex;
   justify-content: space-between;
   height: 10%;
-  border: 1px solid #1B3231;
+  background: #1B3231;
+  color: #DCDFDA;
 }
 
 button {
   margin: 13px;
   height: 31px;
-  width: 150px;
+  width: 120px;
   border-radius: 50px;
-  border: 2px solid #1b3231;
+  border: none;
+  background: #F2F5F2;
   color: #1b3231;
-  background-color: transparent;
   padding: 8px;
+}
+
+button:hover {
+  background: #FCE49E;
+  color: #1B3231;
+  cursor: pointer;
 }
 
 h1 {
@@ -52,10 +61,6 @@ h2 {
   margin: 12px;
 }
 
-/* .filter-button {
-  height: 300px;
-} */
-
 .nav-div {
  align-items: center;
 }
@@ -63,12 +68,10 @@ h2 {
 .filter-section {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
+  align-items: center;
   width: 10%;
-  margin: 12px;
-  /* padding-left: 10px; */
+  margin: 18px;
   border: 1px solid #1B3231;
-  /* min-height: 100%; */
 }
 
 .recipes-section {
@@ -81,8 +84,8 @@ h2 {
 }
 
 .input {
-  margin: 13px;
   border: none;
+  margin: 13px;
   height: 30px;
   width: 200px;
 }
@@ -132,7 +135,8 @@ h2 {
 
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
 .recipe-card {
-  border: 2px solid #1B3231;
+  /* border: 2px solid #1B3231; */
+  border: 2px solid #F2F5F2;
   height: 300px;
   width: 275px;
   margin: 18px;
@@ -150,20 +154,20 @@ h2 {
 }
 
 .favorite-button {
-  margin-top: 10px, ;
+  width: 100px;
+  margin-top: 10px;
   margin-bottom: 0px;
 }
 
 .favorite-button:hover {
   cursor: pointer;
-  background: pink;
+  background: #DDB199;
 }
 
 .recipe-card-name {
   text-align: center;
   padding: 0, 8px, 8px, 8px;
 }
-
 
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
 .hidden {
