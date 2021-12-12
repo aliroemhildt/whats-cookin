@@ -21,6 +21,8 @@ const selectedRecipeView = document.querySelector('.individual-recipe-container-
 const filterBar = document.querySelector('.filter-section-js');
 const mainView = document.querySelector('.main-view-container-js');
 const searchRecipesButton = document.getElementById('searchRecipes');
+const filterButton = document.getElementById('filterButton');
+// const antipasti = document.getElementById('antipasti')
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
@@ -32,7 +34,33 @@ recipeCards.forEach((card) => {
   });
 });
 
+filterButton.addEventListener('click', filterAllRecipesByTag)
+
 // FUNCTIONS
+function filterAllRecipesByTag() {
+  const filterTags = document.querySelectorAll('.tag');
+  const selectedTags = [];
+  filterTags.forEach((tag) => {
+    if (tag.checked) {
+      selectedTags.push(tag.id)
+    };
+  })
+  if (selectedTags.length === 0) {
+    return;
+  };
+
+  recipeRepository.recipesToShow = recipeRepository.filterByTags(selectedTags);
+  displayRecipes();
+}
+
+function disableSaveButton() {
+  if (titleInput.value === '' && bodyInput.value === '') {
+    saveButton.disabled = true;
+  } else if (titleInput.value && bodyInput.value) {
+    saveButton.disabled = false;
+  }
+}
+
 function displayRecipes() {
   recipeSection.innerHTML = '';  recipeRepository.recipesToShow.forEach(recipe => {
     recipeSection.innerHTML += `
@@ -82,6 +110,12 @@ function displaySelectedRecipe(e) {
 
 function searchAllRecipes() {
   const searchName = document.getElementById('searchInput').value;
+  recipeRepository.filterByNameOrIng(searchName, ingredientsData);
+  displayRecipes();
+}
+
+function filterAllRecipes() {
+  const filterByType = document.querySelectorAll('.filter-checkbox');
   recipeRepository.filterByNameOrIng(searchName, ingredientsData);
   displayRecipes();
 }
