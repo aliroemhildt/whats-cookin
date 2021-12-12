@@ -32,8 +32,11 @@ const favoritePageButton = document.getElementById('favoritesPage');
 
 
 
+
 // EVENT LISTENERS
-window.addEventListener('load', displayAllRecipes);
+window.addEventListener('load', () => {
+  displayRecipes(recipeRepository.recipeData)
+});
 searchRecipesButton.addEventListener('click', searchAllRecipes)
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
@@ -46,20 +49,24 @@ function getRandomIndex(array) {
 }
 
 function displayHomePage() {
-  displayAllRecipes();
+  displayRecipes(recipeRepository.recipeData)
   searchBar.value = '';
   // filterTags.value = '';
   hide([selectedRecipeView, homeButton]);
-  show([mainView, recipeSection, searchBar, searchRecipesButton]);
+  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton]);
 }
 
 function displayFavorites() {
-  
   hide([favoritePageButton]);
   show([homeButton, filterSection, recipeSection, mainView]);
-  recipeRepository.recipesToShow = currentUser.favorites;
-  console.log(recipeRepository.recipesToShow)
-  displayRecipes();
+  displayRecipes(currentUser.favorites);
+  recipeCards = document.querySelectorAll('.recipe-card-js');
+  recipeCards.forEach(card => {
+    const button = card.childNodes[3]
+    button.value = 'favorited';
+    button.classList.add('favorited-state');
+  });
+  console.log(currentUser.favorites)
 }
 
 function filterAllRecipesByTag() {
@@ -72,13 +79,13 @@ function filterAllRecipesByTag() {
   if (selectedTags.length === 0) {
     return;
   }
-  recipeRepository.recipesToShow = recipeRepository.filterByTags(selectedTags);
-  displayRecipes();
+  displayRecipes(recipeRepository.filterByTags(selectedTags));
 }
 
-function displayRecipes() {
+function displayRecipes(recipes) {
   recipeSection.innerHTML = '';
-  recipeRepository.recipesToShow.forEach(recipe => {
+  console.log(recipes)
+  recipes.forEach(recipe => {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
@@ -102,6 +109,7 @@ function displayRecipes() {
 }
 
 function toggleFavoriteButton(e) {
+  console.log('e.target', e.target)
   if (e.target.classList.contains('favorite-button-js')) {
     const recipeID = Number(e.target.parentNode.id.slice(2));
     const recipe = recipeRepository.recipeData.find((element) => {
