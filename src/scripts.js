@@ -58,7 +58,7 @@ function displayRecipes() {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <button class='favorite-button favorite-button-js'>FAVORITE</button>
+         <button class='favorite-button favorite-button-js'>favorite</button>
          <p class='recipe-card-name'>${recipe.name}</p>
        </section>
      `;
