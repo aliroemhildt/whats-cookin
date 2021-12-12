@@ -4,12 +4,16 @@ Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an 
 
 Deployed site here: [What's Cookin'?](https://aliroemhildt.github.io/whats-cookin/)
 
+---------------------------------------
+
 ### Installation Instructions
 - Fork this project to your own Github account.
 - Clone the repository to your local machine.
 - cd into `whats-cookin`
 - run `npm install` 
 - `open src/index.html` to open application in browser
+
+---------------------------------------
 
 ### Introduction
 On page load, a random user is generated, along with all of the current items in their pantry. Pre-loaded recipes are displayed on the home page, where a user can search, filter, favorite, and add recipes to their 'cookbook'. 
@@ -36,6 +40,8 @@ When a user selects the "favorite" button on a recipe card, the selected recipe 
 
 When a user selects the "Add to Cookbook" button on the single recipe page, the selected recipe will be added to the Cookbook Page which can be found on the nav bar. This page is used to store recipes a user plans to cook in the future.
 
+---------------------------------------
+
 ### Technologies Used
 
 - JavaScript
@@ -45,6 +51,8 @@ When a user selects the "Add to Cookbook" button on the single recipe page, the 
 - ESLint
 - webpack
 - Fetch API
+
+---------------------------------------
 
 ### Authors
 
