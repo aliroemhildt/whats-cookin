@@ -14,7 +14,7 @@ class RecipeRepository {
     return this.recipeData.reduce((acc, recipe) => {
       recipe.tags.forEach(tag => {
         selectedTags.forEach(selectedTag => {
-          if(tag === selectedTag) {
+          if(tag === selectedTag && !acc.includes(recipe)) {
             acc.push(recipe);
           };
         });
