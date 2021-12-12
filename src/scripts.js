@@ -21,24 +21,23 @@ let favoriteButtons = [];
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
 const selectedRecipeView = document.querySelector('.individual-recipe-container-js');
-const filterBar = document.querySelector('.filter-section-js');
+const filterSection = document.querySelector('.filter-section-js');
 const mainView = document.querySelector('.main-view-container-js');
 const searchRecipesButton = document.getElementById('searchRecipes');
 const filterButton = document.getElementById('filterButton');
 const homeButton = document.querySelector('.home-button');
 const searchBar = document.getElementById('searchInput');
-const favoritePageButton = document.getElementById('favoriteRecipePageButton');
 const filterTags = document.querySelectorAll('.tag');
+const favoritePageButton = document.getElementById('favoritesPage');
 
 
 
 // EVENT LISTENERS
 window.addEventListener('load', displayAllRecipes);
-
 searchRecipesButton.addEventListener('click', searchAllRecipes)
-
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
+favoritePageButton.addEventListener('click', displayFavorites);
 
 
 // FUNCTIONS
@@ -55,9 +54,12 @@ function displayHomePage() {
 }
 
 function displayFavorites() {
-  hide([favoritePageButton, mainView, recipeSection]);
-  show([homeButton]);
-  //need other functions to be built out in order to finish this
+  
+  hide([favoritePageButton]);
+  show([homeButton, filterSection, recipeSection, mainView]);
+  recipeRepository.recipesToShow = currentUser.favorites;
+  console.log(recipeRepository.recipesToShow)
+  displayRecipes();
 }
 
 function filterAllRecipesByTag() {
