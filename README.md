@@ -1,23 +1,30 @@
-# What's Cookin'? Starter Kit
+# What's Cookin'? 
 
-The details of this project are outlined in the <a href="https://frontend.turing.edu/projects/What%27sCookin-PartOne.html" target="\__blank">project spec</a>.
+Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an easy-to-use web app for organizing all your favorite recipes in one place.
 
-## Set Up
+Deployed site here: [What's Cookin'?](https://aliroemhildt.github.io/whats-cookin/)
 
-1. Within your group, decide on one person to have the project repository on their Github account. This person will *fork* this repository - on the top right corner of the page, click the fork button.
-2. All group members should then clone down the forked repository (make sure that everyone is added as a collaborator as well). Since you don't want your project to be named "whats-cookin-starter-kit", add an optional argument after the repo url when cloning. The command should look like this: `git clone [remote-address] [what you want to name the repo]`.
-3. Once you have cloned the repo, change into the directory and install the project dependencies. Run `npm install` or `npm i` to install project dependencies.
-4. Run `npm start` and visit `localhost:8080`
-5. Make sure both members of your team are collaborators on the forked repo.
+### Introduction
+On page load, a random user is generated, along with all of the current items in their pantry. Pre-loaded recipes are displayed on the home page, where a user can search, filter, favorite, and add recipes to their 'cookbook'. 
 
-## Testing
+#### Directions and Features
+On page load the user will see user all of the recipe cards available in our recipe data file. The site can be navigated by the dark green navigation bar at the top of the page and the filter recipes side bar.
 
-Mocha and chai are already set up, with a boilerplate test for you.
+#### Search
+By clicking the search button, a user will see the results of their search input; searches can include recipe names or ingredients.
 
-## Linting Your Code
+#### Filter
 
-Run the command in your terminal `npm run lint` to run the linter on your JavaScript code. There will be errors and warnings right from the start in this starter kit, but that's ok - the linter is still running successfully.
+By checking recipe catagories and then clicking the filter button, a user will see the results of recipes that match the catagories searched. 
 
-Your linter will look only at the JavaScript files you have within the src and the test directories.
+#### View Single Recipe
 
-:)
+When a user clicks the recipe box displayed on page, they are redirected to a single recipe page revealing the full recipe including recipe ingredients, recipe cost, and recipe instructions.
+
+#### Favorites Recipes
+
+When a user selects the "favorite" button on a recipe card, the selected recipe will be added to the Favorite Recipes page which can be found on the navigation bar. Upon clicking the "favorite" button again, the recipe will be removed from the Favorite Recipes page.
+
+#### Cookbook
+
+When a user selects the "Add to Cookbook" button on the single recipe page, the selected recipe will be added to the Cookbook Page which can be found on the nav bar. This page is used to store recipes a user plans to cook in the future.
