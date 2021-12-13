@@ -2,13 +2,13 @@ class RecipeRepository {
   constructor(recipeData) {
     this.recipeData = recipeData;
     this.recipesToShow = [];
-  };
+  }
 
   addAllRecipesToRecipesToShow() {
     this.recipeData.forEach(recipe => {
       this.recipesToShow.push(recipe);
     });
-  };
+  }
 
   filterByTags(selectedTags, recipes) {
     this.recipesToShow = [];
@@ -25,7 +25,7 @@ class RecipeRepository {
     recipesWithTags.forEach(recipe => {
       this.recipesToShow.push(recipe)
     })
-  };
+  }
 
   getIngredientID(ingName, ingredientsData) {
     const ingNameLC = ingName.toLowerCase();
@@ -36,7 +36,7 @@ class RecipeRepository {
       return acc;
     }, 0);
     return ingredientIDFromSearch;
-  };
+  }
 
   filterByIng(nameOrIng, ingredientsData, recipes) {
     const ingredientID = this.getIngredientID(nameOrIng, ingredientsData);
@@ -46,13 +46,13 @@ class RecipeRepository {
       });
       return ingIDs.includes(ingredientID);
     });
-  };
+  }
 
   filterByName(nameOrIng, ingredientsData, recipes) {
     return recipes.filter((recipe) => {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
     });
-  };
+  }
 
   filterByNameOrIng(nameOrIng, ingredientsData, recipes) {
     this.recipesToShow = [];
@@ -68,7 +68,7 @@ class RecipeRepository {
         this.recipesToShow.push(recipe)
       };
     });
-  };
+  }
 };
 
 export default RecipeRepository;

@@ -42,15 +42,15 @@ describe('RecipeRepository', () => {
   });
 
   it('should return a list of recipes based on a single tag', () => {
-    let recipesByTag = repository.filterByTags(['sauce']);
+    repository.filterByTags(['sauce'], recipeList);
 
-    expect(recipesByTag).to.deep.equal([recipeList[2]]);
+    expect(repository.recipesToShow).to.deep.equal([recipeList[2]]);
   });
 
   it('should return a list of recipes based on mutliple tags', () => {
-    let recipesByTag = repository.filterByTags(['sauce', 'snack']);
+    repository.filterByTags(['sauce', 'snack'], recipeList);
 
-    expect(recipesByTag).to.deep.equal([recipeList[0], recipeList[2], recipeList[7]]);
+    expect(repository.recipesToShow).to.deep.equal([recipeList[0], recipeList[2], recipeList[7]]);
   });
 
   it('should be able to take in an ingredient name and return the corresponding ID for that ingredient', () => {
@@ -60,14 +60,14 @@ describe('RecipeRepository', () => {
   });
 
   it('should return a list of recipes based on its name', () => {
-    let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData);
+    let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData, recipeList);
     let recipesTest = [recipeList[0]];
 
     expect(recipesByName).to.deep.equal(recipesTest);
   });
 
   it('should return a list of recipes based on its ingredient', () => {
-    let recipesByIng = repository.filterByIng('brown sugar', ingredientsData);
+    let recipesByIng = repository.filterByIng('brown sugar', ingredientsData, recipeList);
 
     let recipe1 = recipeList[0];
     let recipe2 = recipeList[2];
@@ -80,13 +80,14 @@ describe('RecipeRepository', () => {
   });
 
   it('should be able to filter by name or ingredient and store result', () => {
-    repository.filterByNameOrIng('coconut', ingredientsData);
+    repository.filterByNameOrIng('coconut', ingredientsData, recipeList);
     expect(repository.recipesToShow).to.deep.equal([recipeList[6]]);
 
-    repository.filterByNameOrIng('pineapple', ingredientsData);
+    repository.filterByNameOrIng('pineapple', ingredientsData, recipeList);
     expect(repository.recipesToShow).to.deep.equal([recipeList[8]]);
 
-    repository.filterByNameOrIng('rapini', ingredientsData);
+    repository.filterByNameOrIng('rapini', ingredientsData, recipeList);
     expect(repository.recipesToShow).to.deep.equal([recipeList[9]]);
   });
+
 });

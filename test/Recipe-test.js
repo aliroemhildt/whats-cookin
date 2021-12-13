@@ -8,7 +8,7 @@ describe('Recipe', () => {
 
   beforeEach(() => {
     recipe = new Recipe(recipeData[0]);
-  })
+  });
 
   it('should be a function', () => {
     expect(Recipe).to.be.a('function');
@@ -55,4 +55,5 @@ describe('Recipe', () => {
     let instructions = recipe.returnInstructions()
     expect(instructions[0]).to.equal('Step 1: In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.');
   });
+
 });
