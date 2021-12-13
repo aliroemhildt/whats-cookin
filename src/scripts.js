@@ -57,18 +57,42 @@ addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 
 // FUNCTIONS
-function toggleCookbookButton() {
-  if (addToCookbookButton.value === 'false') {
-    addToCookbookButton.value = 'true';
-    addToCookbookButton.classList.add('in-cookbook-state');
-    currentUser.addToFavorites(selectedRecipe);
-    addToCookbookButton.innerText = 'remove from cookbook';
-  } else if (addToCookbookButton.value === 'true') {
-    addToCookbookButton.value = 'false';
-    addToCookbookButton.classList.remove('in-cookbook-state');
-    currentUser.removeFromFavorites(selectedRecipe);
-    addToCookbookButton.innerText = 'add to cookbook';
+function displayFavorites() {
+  hide([favoritePageButton]);
+  show([homeButton, filterSection, recipeSection, mainView]);
+  displayRecipes(currentUser.favorites);
+  recipeCards = document.querySelectorAll('.recipe-card-js');
+  recipeCards.forEach(card => {
+    const button = card.childNodes[3].childNodes[1]
+    button.value = 'favorited';
+    button.classList.add('favorited-state');
+  });
+}
+
+function toggleFavoriteButton(e) {
+  if (e.target.classList.contains('favorite-button-js')) {
+    const recipeID = Number(e.target.closest('section').id.slice(2));
+    const recipe = recipeRepository.recipeData.find((element) => {
+      return element.id === recipeID;
+    });
+    if (e.target.value === 'unfavorited') {
+      selectFavoriteButton(e)
+      currentUser.addToFavorites(recipe);
+    } else if (e.target.value === 'favorited') {
+      deselectFavoriteButton(e)
+      currentUser.removeFromFavorites(recipe);
+    }
   }
+}
+
+function selectFavoriteButton(e) {
+  e.target.value = 'favorited';
+  e.target.classList.add('favorited-state');
+}
+
+function deselectFavoriteButton(e) {
+  e.target.value = 'unfavorited';
+  e.target.classList.remove('favorited-state');
 }
 
 function displayCookbook() {
@@ -83,6 +107,27 @@ function displayCookbook() {
   });
 }
 
+function toggleCookbookButton() {
+  if (addToCookbookButton.value === 'false') {
+    selectAddToCookbookButton();
+    currentUser.addToRecipesToCook(selectedRecipe);
+    addToCookbookButton.innerText = 'remove from cookbook';
+  } else if (addToCookbookButton.value === 'true') {
+    deselectAddToCookbookButton();
+    currentUser.removeFromRecipesToCook(selectedRecipe);
+    addToCookbookButton.innerText = 'add to cookbook';
+  }
+}
+
+function selectAddToCookbookButton() {
+  addToCookbookButton.value = 'true';
+  addToCookbookButton.classList.add('in-cookbook-state');
+}
+
+function deselectAddToCookbookButton() {
+  addToCookbookButton.value = 'false';
+  addToCookbookButton.classList.remove('in-cookbook-state');
+}
 
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
@@ -96,17 +141,7 @@ function displayHomePage() {
   show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton]);
 }
 
-function displayFavorites() {
-  hide([favoritePageButton]);
-  show([homeButton, filterSection, recipeSection, mainView]);
-  displayRecipes(currentUser.favorites);
-  recipeCards = document.querySelectorAll('.recipe-card-js');
-  recipeCards.forEach(card => {
-    const button = card.childNodes[3]
-    button.value = 'favorited';
-    button.classList.add('favorited-state');
-  });
-}
+
 
 function filterAllRecipesByTag() {
   const selectedTags = [];
@@ -127,41 +162,33 @@ function displayRecipes(recipes) {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
-         <p class='recipe-card-name'>${recipe.name}</p>
+         <div class='recipe-card-text'>
+           <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
+           <p class='recipe-card-name'>${recipe.name}</p>
+          </div>
        </section>
      `;
   });
+  createCardEventListeners()
+  creatButtonEventListeners()
+}
+
+function createCardEventListeners() {
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach((card) => {
     card.addEventListener('click', function(e) {
       displaySelectedRecipe(e)
     });
   });
+}
+
+function creatButtonEventListeners() {
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
       toggleFavoriteButton(e)
     })
   });
-}
-
-function toggleFavoriteButton(e) {
-  if (e.target.classList.contains('favorite-button-js')) {
-    const recipeID = Number(e.target.parentNode.id.slice(2));
-    const recipe = recipeRepository.recipeData.find((element) => {
-      return element.id === recipeID;
-    });
-    if (e.target.value === 'unfavorited') {
-      e.target.value = 'favorited';
-      e.target.classList.add('favorited-state');
-      currentUser.addToFavorites(recipe);
-    } else if (e.target.value === 'favorited') {
-      e.target.value = 'unfavorited';
-      e.target.classList.remove('favorited-state');
-      currentUser.removeFromFavorites(recipe);
-    }
-  }
 }
 
 function searchAllRecipes() {
@@ -187,7 +214,18 @@ function displaySelectedRecipe(e) {
     show([selectedRecipeView, homeButton, favoritePageButton]);
     hide([mainView, searchBar, searchButton]);
 
-    const recipeID = Number(e.target.parentNode.id.slice(2));
+    if (currentUser.recipesToCook.includes(selectedRecipe)) {
+      addToCookbookButton.value = 'true';
+      addToCookbookButton.classList.add('in-cookbook-state');
+      addToCookbookButton.innerText = 'remove from cookbook';
+    } else if (!currentUser.recipesToCook.includes(selectedRecipe)){
+      addToCookbookButton.value = 'false';
+      addToCookbookButton.classList.remove('in-cookbook-state');
+      addToCookbookButton.innerText = 'add to cookbook';
+
+    }
+
+    const recipeID = Number(e.target.closest('section').id.slice(2));
      selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
     });
