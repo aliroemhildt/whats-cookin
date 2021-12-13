@@ -60,7 +60,7 @@ singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView)
 // FUNCTIONS
 function displayFavorites() {
   hide([favoritePageButton]);
-  show([homeButton, filterSection, recipeSection, mainView]);
+  show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton]);
   displayRecipes(currentUser.favorites);
   recipeCards = document.querySelectorAll('.recipe-card-js');
   console.log(recipeCards);
@@ -70,10 +70,8 @@ function displayFavorites() {
 }
 
 function removeFromPage() {
-  // if (currentUser.favorites.includes(e.target.closest('section').id.slice(2))) {
   currentUser.removeFromFavorites();
   displayFavorites();
-  //}
 }
 
 function toggleFavoriteButton(e) {
@@ -115,7 +113,7 @@ function favoriteFromSingleRecipeView() {
 };
 
 function displayCookbook() {
-  hide([addToCookbookButton, selectedRecipeView]);
+  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
   show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
   displayRecipes(currentUser.recipesToCook);
   // recipeCards = document.querySelectorAll('.recipe-card-js');
@@ -193,9 +191,21 @@ function filterRecipesByTag() {
   if (selectedTags.length === 0) {
     return;
   }
-  displayRecipes(recipeRepository.filterByTags(selectedTags));
+  recipeRepository.filterByTags(selectedTags);
+  displayRecipes(recipeRepository.recipesToShow);
 }
-
+// function filterFavRecipesByTag() {
+//   const selectedTags = [];
+//   filterTags.forEach((tag) => {
+//     if (tag.checked) {
+//       selectedTags.push(tag.id)
+//     }
+//   })
+//   if (selectedTags.length === 0) {
+//     return;
+//   }
+//   displayRecipes(recipeRepository.filterByTags(selectedTags));
+// }
 function displayRecipes(recipes) {
   recipeSection.innerHTML = '';
   recipes.forEach(recipe => {
@@ -335,7 +345,18 @@ function getInstructionsElement(e, selectedRecipe) {
 function show(elements) {
   elements.forEach(element => {
     element.classList.remove('hidden')
-  });
+  });function filterRecipesByTag() {
+  const selectedTags = [];
+  filterTags.forEach((tag) => {
+    if (tag.checked) {
+      selectedTags.push(tag.id)
+    }
+  })
+  if (selectedTags.length === 0) {
+    return;
+  }
+  displayRecipes(recipeRepository.filterByTags(selectedTags));
+}
 }
 
 function hide(elements) {

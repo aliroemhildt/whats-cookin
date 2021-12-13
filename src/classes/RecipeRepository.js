@@ -11,7 +11,8 @@ class RecipeRepository {
   };
 
   filterByTags(selectedTags) {
-    return this.recipeData.reduce((acc, recipe) => {
+    this.recipesToShow = [];
+    const recipesWithTags = this.recipeData.reduce((acc, recipe) => {
       recipe.tags.forEach(tag => {
         selectedTags.forEach(selectedTag => {
           if(tag === selectedTag && !acc.includes(recipe)) {
@@ -21,6 +22,9 @@ class RecipeRepository {
       });
       return acc;
     }, []);
+    recipesWithTags.forEach(recipe => {
+      this.recipesToShow.push(recipe)
+    })
   };
 
   getIngredientID(ingName, ingredientsData) {
