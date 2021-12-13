@@ -40,7 +40,7 @@ class User {
     })
   }
 
-  filterFavoritesByName(name) { // recipe name or ingredient name
+  filterFavoritesByName(name) {
     name = name.toLowerCase();
 
     return this.favorites.reduce((acc, favoriteRecipe) => {
@@ -51,14 +51,14 @@ class User {
 
       this.ingredients.filter((ingredient) => {
         favoriteRecipe.ingredients.filter((recipeIngredient) => {
-          if (ingredient.id === recipeIngredient.id && 
+          if (ingredient.id === recipeIngredient.id &&
               ingredient.name.toLowerCase() === name) {
             acc.push(favoriteRecipe);
           }
         });
       });
 
-      return acc;              
+      return acc;
     }, [])
   }
 }

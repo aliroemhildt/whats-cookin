@@ -7,11 +7,11 @@ describe('Ingredient', () => {
 
   beforeEach(() => {
     sampleIngredient = new Ingredient(ingredientsData[0])
-  })
+  });
 
   it('should be a function', () => {
     expect(Ingredient).to.be.a('function');
-  })
+  });
 
   it('should be an instance of Ingredients', () => {
     expect(sampleIngredient).to.be.an.instanceof(Ingredient);
@@ -21,4 +21,4 @@ describe('Ingredient', () => {
     expect(sampleIngredient).to.deep.equal(ingredientsData[0]);
   });
 
-})
+});
