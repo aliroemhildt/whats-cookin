@@ -100,11 +100,23 @@ function displayCookbook() {
   show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
   displayRecipes(currentUser.recipesToCook);
   recipeCards = document.querySelectorAll('.recipe-card-js');
-  recipeCards.forEach(card => {
-    const button = card.childNodes[3]
-    button.value = 'favorited';
-    button.classList.add('favorited-state');
-  });
+  currentUser.recipesToCook.forEach(recipe => {
+    let id = recipe.id
+    //we have the id but we need to get the card for this recipe
+    if (currentUser.favorites.includes(recipe)) {
+      //we need to change value to 'favorited'
+      //classList.add('favorited-state')
+    } else {
+      //value = 'unfavorited'
+      //remove('favorited-state')
+    }
+  })
+  // recipeCards.forEach(card => {
+  //   currentUser.favorites.includes('recipe')
+  //   const button = card.childNodes[3].childNodes[1];
+  //   button.value = 'favorited';
+  //   button.classList.add('favorited-state');
+  //});
 }
 
 function toggleCookbookButton() {
@@ -141,8 +153,6 @@ function displayHomePage() {
   show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton]);
 }
 
-
-
 function filterAllRecipesByTag() {
   const selectedTags = [];
   filterTags.forEach((tag) => {
@@ -168,9 +178,16 @@ function displayRecipes(recipes) {
           </div>
        </section>
      `;
+      // if (currentUser.favorites.includes(recipe)) {
+      //   // selectFavoriteButton();
+      //   // e.target.value = 'favorited';
+      //   // e.target.classList.add('favorited-state');
+      // } else {
+      //   deselectFavoriteButton();
+      // }
   });
-  createCardEventListeners()
-  creatButtonEventListeners()
+  createCardEventListeners();
+  createButtonEventListeners();
 }
 
 function createCardEventListeners() {
@@ -182,7 +199,7 @@ function createCardEventListeners() {
   });
 }
 
-function creatButtonEventListeners() {
+function createButtonEventListeners() {
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
@@ -204,6 +221,7 @@ function displayAllRecipes() {
 
 function displaySelectedRecipe(e) {
   if (!e.target.classList.contains('favorite-button-js')) {
+
     const image = document.querySelector('.selected-recipe-photo-js');
     const name = document.querySelector('.selected-recipe-name-js');
     const cost = document.querySelector('.cost-js');
@@ -211,28 +229,33 @@ function displaySelectedRecipe(e) {
     const ingredientListSection = document.querySelector('.ingredient-list-section-js');
     const searchButton = document.getElementById('searchRecipes');
 
-    show([selectedRecipeView, homeButton, favoritePageButton]);
-    hide([mainView, searchBar, searchButton]);
-
-    if (currentUser.recipesToCook.includes(selectedRecipe)) {
-      addToCookbookButton.value = 'true';
-      addToCookbookButton.classList.add('in-cookbook-state');
-      addToCookbookButton.innerText = 'remove from cookbook';
-    } else if (!currentUser.recipesToCook.includes(selectedRecipe)){
-      addToCookbookButton.value = 'false';
-      addToCookbookButton.classList.remove('in-cookbook-state');
-      addToCookbookButton.innerText = 'add to cookbook';
-
-    }
-
     const recipeID = Number(e.target.closest('section').id.slice(2));
-     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
+    selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
     });
+
+    show([selectedRecipeView, homeButton, favoritePageButton]);
+    hide([mainView, searchBar, searchButton]);
+    // if (currentUser.recipesToCook.includes(selectedRecipe)) {
+    //   addToCookbookButton.value = 'true';
+    //   addToCookbookButton.classList.add('in-cookbook-state');
+    //   addToCookbookButton.innerText = 'remove from cookbook';
+    // } else {
+    //   addToCookbookButton.value = 'false';
+    //   addToCookbookButton.classList.remove('in-cookbook-state');
+    //   addToCookbookButton.innerText = 'add to cookbook';
+    // }
+
+    if (currentUser.recipesToCook.includes(selectedRecipe)) {
+      selectAddToCookbookButton();
+      addToCookbookButton.innerText = 'remove from cookbook';
+    } else {
+      deselectAddToCookbookButton()
+      addToCookbookButton.innerText = 'add to cookbook';
+    }
+
     const ingredientListElement = getIngredientListElement(e, selectedRecipe);
-
     const instructionsElement = getInstructionsElement(e, selectedRecipe);
-
     const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
 
     ingredientListSection.innerHTML += ingredientListElement;
