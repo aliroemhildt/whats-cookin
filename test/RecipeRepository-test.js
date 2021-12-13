@@ -54,9 +54,9 @@ describe('RecipeRepository', () => {
   });
 
   it('should be able to take in an ingredient name and return the corresponding ID for that ingredient', () => {
-    const ingID = repository.getIngredientID('wheat flour', ingredientsData);
+    const ingID = repository.getIngredientIDs('flour', ingredientsData);
 
-    expect(ingID).to.deep.equal(20081);
+    expect(ingID).to.deep.equal([20081, 20011, 20090, 11413, 93760, 93740, 10120129, 10020080, 10218364]);
   });
 
   it('should return a list of recipes based on its name', () => {

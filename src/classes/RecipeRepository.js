@@ -27,26 +27,33 @@ class RecipeRepository {
     })
   }
 
-  getIngredientID(ingName, ingredientsData) {
+  getIngredientIDs(ingName, ingredientsData) {
     const ingNameLC = ingName.toLowerCase();
-    const ingredientIDFromSearch = ingredientsData.reduce((acc, ingredient) => {
-      if (ingredient.name === ingNameLC) {
-        acc = ingredient.id;
-      };
+    const ingredientIDsFromSearch = ingredientsData.reduce((acc, ingredient) => {
+      const ingredientName = ingredient.name.toLowerCase()
+      if (ingredientName.includes(ingNameLC)) {
+        acc.push(ingredient.id)
+      }
       return acc;
-    }, 0);
-    return ingredientIDFromSearch;
+    }, []);
+    console.log(ingredientIDsFromSearch)
+    return ingredientIDsFromSearch;
   }
 
   filterByIng(nameOrIng, ingredientsData, recipes) {
-    const ingredientID = this.getIngredientID(nameOrIng, ingredientsData);
-    return recipes.filter((recipe) => {
-      let ingIDs = recipe.ingredients.map((ingredient) => {
-        return ingredient.id;
-      });
-      return ingIDs.includes(ingredientID);
-    });
-  }
+    const ingredientIDs = this.getIngredientIDs(nameOrIng, ingredientsData);
+    const recipesWithIngs = recipes.reduce((acc, recipe) => {
+      ingredientIDs.forEach(ingredientID => {
+        recipe.ingredients.forEach(ingredient => {
+          if (ingredientID === ingredient.id && !acc.includes(recipe)) {
+            acc.push(recipe);
+          }
+        })
+      })
+      return acc;
+    }, []);
+    return recipesWithIngs
+  };
 
   filterByName(nameOrIng, ingredientsData, recipes) {
     return recipes.filter((recipe) => {
