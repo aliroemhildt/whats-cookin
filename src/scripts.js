@@ -26,7 +26,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
     })
     recipeRepository = new RecipeRepository(recipeList)
     displayRecipes(recipeRepository.recipeData)
-  }).catch(console.log('NO SOUP FOR YOU!'))
+  }).catch(error => console.log(error))
 
 // GLOBAL VARIABLES
 let recipeCards = [];
