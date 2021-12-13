@@ -46,7 +46,7 @@ const filterTags = document.querySelectorAll('.tag');
 const favoritePageButton = document.getElementById('favoritesPage');
 const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
-
+const singleViewFavoriteButton = document.querySelector('.single-view-favorite-button-js');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', searchAllRecipes);
@@ -55,6 +55,7 @@ homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
+singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 
 // FUNCTIONS
 function displayFavorites() {
@@ -62,11 +63,17 @@ function displayFavorites() {
   show([homeButton, filterSection, recipeSection, mainView]);
   displayRecipes(currentUser.favorites);
   recipeCards = document.querySelectorAll('.recipe-card-js');
+  console.log(recipeCards);
   recipeCards.forEach(card => {
-    const button = card.childNodes[3].childNodes[1]
-    button.value = 'favorited';
-    button.classList.add('favorited-state');
+    card.addEventListener('click', removeFromPage);
   });
+}
+
+function removeFromPage() {
+  // if (currentUser.favorites.includes(e.target.closest('section').id.slice(2))) {
+  currentUser.removeFromFavorites();
+  displayFavorites();
+  //}
 }
 
 function toggleFavoriteButton(e) {
@@ -95,22 +102,45 @@ function deselectFavoriteButton(e) {
   e.target.classList.remove('favorited-state');
 }
 
+function favoriteFromSingleRecipeView() {
+  if (currentUser.favorites.includes(selectedRecipe)) {
+    singleViewFavoriteButton.value = 'unfavorited';
+    singleViewFavoriteButton.classList.remove('favorited-state');
+    currentUser.removeFromFavorites(selectedRecipe);
+  } else {
+    singleViewFavoriteButton.value = 'unfavorited';
+    singleViewFavoriteButton.classList.add('favorited-state');
+    currentUser.addToFavorites(selectedRecipe);
+  }
+};
+
 function displayCookbook() {
   hide([addToCookbookButton, selectedRecipeView]);
   show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
   displayRecipes(currentUser.recipesToCook);
-  recipeCards = document.querySelectorAll('.recipe-card-js');
-  currentUser.recipesToCook.forEach(recipe => {
-    let id = recipe.id
+  // recipeCards = document.querySelectorAll('.recipe-card-js');
+  // recipeCards.forEach(card => {
+  //   const cardId = Number(card.id.slice(2));
+  //   const currentRecipe = recipeRepository.recipeData.find(recipe => {
+  //     return recipe.id === cardId;
+  //   })
+  //   const button = card.childNodes[3].childNodes[1];
+  //   if (currentUser.favorites.includes(currentRecipe)) {
+  //     button.value = 'favorited';
+  //     button.classList.add('favorited-state');
+  //   };
+  // });
+  //currentUser.recipesToCook.forEach(recipe => {
+    //let id = recipe.id
     //we have the id but we need to get the card for this recipe
-    if (currentUser.favorites.includes(recipe)) {
+    //if (currentUser.favorites.includes(recipe)) {
       //we need to change value to 'favorited'
       //classList.add('favorited-state')
-    } else {
+    //} else {
       //value = 'unfavorited'
       //remove('favorited-state')
-    }
-  })
+    //}
+  //})
   // recipeCards.forEach(card => {
   //   currentUser.favorites.includes('recipe')
   //   const button = card.childNodes[3].childNodes[1];
@@ -178,16 +208,23 @@ function displayRecipes(recipes) {
           </div>
        </section>
      `;
-      // if (currentUser.favorites.includes(recipe)) {
-      //   // selectFavoriteButton();
-      //   // e.target.value = 'favorited';
-      //   // e.target.classList.add('favorited-state');
-      // } else {
-      //   deselectFavoriteButton();
-      // }
   });
+
   createCardEventListeners();
   createButtonEventListeners();
+
+  recipeCards = document.querySelectorAll('.recipe-card-js');
+  recipeCards.forEach(card => {
+    const cardId = Number(card.id.slice(2));
+    const currentRecipe = recipeRepository.recipeData.find(recipe => {
+      return recipe.id === cardId;
+    })
+    const button = card.childNodes[3].childNodes[1];
+    if (currentUser.favorites.includes(currentRecipe)) {
+      button.value = 'favorited';
+      button.classList.add('favorited-state');
+    };
+  });
 }
 
 function createCardEventListeners() {
@@ -236,15 +273,6 @@ function displaySelectedRecipe(e) {
 
     show([selectedRecipeView, homeButton, favoritePageButton]);
     hide([mainView, searchBar, searchButton]);
-    // if (currentUser.recipesToCook.includes(selectedRecipe)) {
-    //   addToCookbookButton.value = 'true';
-    //   addToCookbookButton.classList.add('in-cookbook-state');
-    //   addToCookbookButton.innerText = 'remove from cookbook';
-    // } else {
-    //   addToCookbookButton.value = 'false';
-    //   addToCookbookButton.classList.remove('in-cookbook-state');
-    //   addToCookbookButton.innerText = 'add to cookbook';
-    // }
 
     if (currentUser.recipesToCook.includes(selectedRecipe)) {
       selectAddToCookbookButton();
@@ -252,6 +280,14 @@ function displaySelectedRecipe(e) {
     } else {
       deselectAddToCookbookButton()
       addToCookbookButton.innerText = 'add to cookbook';
+    }
+
+    if (currentUser.favorites.includes(selectedRecipe)) {
+      singleViewFavoriteButton.value = 'favorited';
+      singleViewFavoriteButton.classList.add('favorited-state');
+    } else {
+      singleViewFavoriteButton.value = 'unfavorited';
+      singleViewFavoriteButton.classList.remove('favorited-state');
     }
 
     const ingredientListElement = getIngredientListElement(e, selectedRecipe);
