@@ -10,7 +10,7 @@ Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an 
 - cd into `whats-cookin`
 - run `npm install` 
 - run `npm start` 
-- [http://localhost:8080/](http://localhost:8080) to open application in browser
+- use [http://localhost:8080/](http://localhost:8080) to open application in browser
 
 ---------------------------------------
 
