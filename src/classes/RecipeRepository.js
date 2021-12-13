@@ -4,12 +4,6 @@ class RecipeRepository {
     this.recipesToShow = [];
   }
 
-  addAllRecipesToRecipesToShow() {
-    this.recipeData.forEach(recipe => {
-      this.recipesToShow.push(recipe);
-    });
-  }
-
   filterByTags(selectedTags, recipes) {
     this.recipesToShow = [];
     const recipesWithTags = recipes.reduce((acc, recipe) => {

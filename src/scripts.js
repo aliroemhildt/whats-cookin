@@ -62,8 +62,6 @@ cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 
 // FUNCTIONS
-
-
 function displayFavorites() {
   hide([favoritePageButton]);
   show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton]);
@@ -74,11 +72,7 @@ function displayFavorites() {
     searchAllRecipes(currentUser.favorites)
   });
   displayRecipes(currentUser.favorites);
-  // recipeCards.forEach(card => {
-  //   card.addEventListener('click', removeFromPage);
-  // });
-  //card event LISTENERS
-  //button event listeners
+   recipeCards.forEach(card => {
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', removeFromPage);
@@ -223,9 +217,6 @@ function displayRecipes(recipes) {
     })
   });
 
-  // createCardEventListeners();
-  // createButtonEventListeners();
-
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach(card => {
     const cardId = Number(card.id.slice(2));
@@ -240,33 +231,10 @@ function displayRecipes(recipes) {
   });
 }
 
-// function createCardEventListeners() {
-//   recipeCards = document.querySelectorAll('.recipe-card-js');
-//   recipeCards.forEach((card) => {
-//     card.addEventListener('click', function(e) {
-//       displaySelectedRecipe(e)
-//     });
-//   });
-// }
-//
-// function createButtonEventListeners() {
-//   favoriteButtons = document.querySelectorAll('.favorite-button-js');
-//   favoriteButtons.forEach((button) => {
-//     button.addEventListener('click', function(e) {
-//       toggleFavoriteButton(e)
-//     })
-//   });
-// }
-
 function searchAllRecipes(recipes) {
   const searchName = document.getElementById('searchInput').value;
   recipeRepository.filterByNameOrIng(searchName, ingredientsData, recipes);
   displayRecipes(recipeRepository.recipesToShow);
-}
-
-function displayAllRecipes() {
-  recipeRepository.addAllRecipesToRecipesToShow();
-  displayRecipes();
 }
 
 function displaySelectedRecipe(e) {

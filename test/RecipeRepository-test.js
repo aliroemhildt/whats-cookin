@@ -35,12 +35,6 @@ describe('RecipeRepository', () => {
     expect(repository.recipesToShow).to.deep.equal([]);
   });
 
-  it('should be able to add all recipes from recipeData to the recipesToShow property', () => {
-    repository.addAllRecipesToRecipesToShow();
-
-    expect(repository.recipesToShow).to.deep.equal(repository.recipeData);
-  });
-
   it('should return a list of recipes based on a single tag', () => {
     repository.filterByTags(['sauce'], recipeList);
 
@@ -66,17 +60,28 @@ describe('RecipeRepository', () => {
     expect(recipesByName).to.deep.equal(recipesTest);
   });
 
-  it('should return a list of recipes based on its ingredient', () => {
-    let recipesByIng = repository.filterByIng('brown sugar', ingredientsData, recipeList);
-
+  it('should return a list of recipes if their ingredient names include all or part of the searched word', () => {
+    let recipesByIng1 = repository.filterByIng('sugar', ingredientsData, recipeList);
+  
     let recipe1 = recipeList[0];
     let recipe2 = recipeList[2];
     let recipe3 = recipeList[6];
     let recipe4 = recipeList[8];
 
-    let recipesTest = [recipe1, recipe2, recipe3, recipe4];
+    let recipesTest1 = [recipe1, recipe2, recipe3, recipe4];
 
-    expect(recipesByIng).to.deep.equal(recipesTest);
+    expect(recipesByIng1).to.deep.equal(recipesTest1);
+
+    let recipesByIng2 = repository.filterByIng('brown sugar', ingredientsData, recipeList);
+  
+    let recipe5 = recipeList[0];
+    let recipe6 = recipeList[2];
+    let recipe7 = recipeList[6];
+    let recipe8 = recipeList[8];
+
+    let recipesTest2 = [recipe5, recipe6, recipe7, recipe8];
+
+    expect(recipesByIng2).to.deep.equal(recipesTest2);
   });
 
   it('should be able to filter by name or ingredient and store result', () => {
