@@ -2,8 +2,6 @@
 
 Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an easy-to-use web app for organizing all your favorite recipes in one place.
 
-Deployed site here: [What's Cookin'?](https://aliroemhildt.github.io/whats-cookin/)
-
 ---------------------------------------
 
 ### Installation Instructions
@@ -11,7 +9,8 @@ Deployed site here: [What's Cookin'?](https://aliroemhildt.github.io/whats-cooki
 - Clone the repository to your local machine.
 - cd into `whats-cookin`
 - run `npm install` 
-- `open src/index.html` to open application in browser
+- run `npm start` 
+- [http://localhost:8080/](http://localhost:8080) to open application in browser
 
 ---------------------------------------
 
