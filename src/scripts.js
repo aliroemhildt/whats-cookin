@@ -16,7 +16,6 @@ let recipeData
 
 Promise.all([userAPI, ingredientAPI, recipeAPI])
   .then(data => {
-    console.log(data[0])
     userData = data[0].usersData;
     ingredientsData = data[1].ingredientsData;
     recipeData = data[2].recipeData
@@ -45,40 +44,43 @@ const homeButton = document.querySelector('.home-button');
 const searchBar = document.getElementById('searchInput');
 const filterTags = document.querySelectorAll('.tag');
 const favoritePageButton = document.getElementById('favoritesPage');
-const addToCookbookButton = document.querySelector('.cookbook-button-js');
-const cookbookPageButton = document.querySelector('.cookbook-page-button.js');
+const addToCookbookButton = document.querySelector('.cookbook-button-js')
+const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
+
 
 // EVENT LISTENERS
-searchRecipesButton.addEventListener('click', searchAllRecipes)
+searchRecipesButton.addEventListener('click', searchAllRecipes);
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
-
+cookbookPageButton.addEventListener('click', displayCookbook);
 
 // FUNCTIONS
-// on click 'add to cookbook' button => 
-// toggle button between add and remove from cookbook
-  // if buttons value is not in cookbook -> 
-  //add to user cookbook array, 
-  //add css class to change button color,
-  //change inner text of button to remove
-//else 
-  //remove from cookbook array
-  // remove css class,
-  //reset button inner text
 function toggleCookbookButton() {
-  if(addToCookbookButton.value === 'false') {
-    addToCookbookButton.value === 'true';
+  if (addToCookbookButton.value === 'false') {
+    addToCookbookButton.value = 'true';
     addToCookbookButton.classList.add('in-cookbook-state');
     currentUser.addToFavorites(selectedRecipe);
     addToCookbookButton.innerText = 'remove from cookbook';
-  } else if(addToCookbookButton.value === 'true') {
-    addToCookbookButton.value ==='false';
+  } else if (addToCookbookButton.value === 'true') {
+    addToCookbookButton.value = 'false';
     addToCookbookButton.classList.remove('in-cookbook-state');
     currentUser.removeFromFavorites(selectedRecipe);
     addToCookbookButton.innerText = 'add to cookbook';
   }
+}
+
+function displayCookbook() {
+  hide([addToCookbookButton, selectedRecipeView]);
+  show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
+  displayRecipes(currentUser.recipesToCook);
+  recipeCards = document.querySelectorAll('.recipe-card-js');
+  recipeCards.forEach(card => {
+    const button = card.childNodes[3]
+    button.value = 'favorited';
+    button.classList.add('favorited-state');
+  });
 }
 
 
@@ -104,7 +106,6 @@ function displayFavorites() {
     button.value = 'favorited';
     button.classList.add('favorited-state');
   });
-  console.log(currentUser.favorites)
 }
 
 function filterAllRecipesByTag() {
@@ -146,7 +147,6 @@ function displayRecipes(recipes) {
 }
 
 function toggleFavoriteButton(e) {
-  console.log('e.target', e.target)
   if (e.target.classList.contains('favorite-button-js')) {
     const recipeID = Number(e.target.parentNode.id.slice(2));
     const recipe = recipeRepository.recipeData.find((element) => {
