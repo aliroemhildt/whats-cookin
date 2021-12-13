@@ -50,7 +50,9 @@ const singleViewFavoriteButton = document.querySelector('.single-view-favorite-b
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', searchAllRecipes);
-filterButton.addEventListener('click', filterRecipesByTag);
+filterButton.addEventListener('click', () => {
+  filterRecipesByTag(recipeRepository.recipeData)
+});
 homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
@@ -58,9 +60,13 @@ cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 
 // FUNCTIONS
+
+
 function displayFavorites() {
   hide([favoritePageButton]);
   show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton]);
+  filterButton.addEventListener('click', () => 
+  {filterRecipesByTag(currentUser.favorites)});
   displayRecipes(currentUser.favorites);
   recipeCards = document.querySelectorAll('.recipe-card-js');
   console.log(recipeCards);
@@ -115,36 +121,10 @@ function favoriteFromSingleRecipeView() {
 function displayCookbook() {
   hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
   show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
-  displayRecipes(currentUser.recipesToCook);
-  // recipeCards = document.querySelectorAll('.recipe-card-js');
-  // recipeCards.forEach(card => {
-  //   const cardId = Number(card.id.slice(2));
-  //   const currentRecipe = recipeRepository.recipeData.find(recipe => {
-  //     return recipe.id === cardId;
-  //   })
-  //   const button = card.childNodes[3].childNodes[1];
-  //   if (currentUser.favorites.includes(currentRecipe)) {
-  //     button.value = 'favorited';
-  //     button.classList.add('favorited-state');
-  //   };
-  // });
-  //currentUser.recipesToCook.forEach(recipe => {
-    //let id = recipe.id
-    //we have the id but we need to get the card for this recipe
-    //if (currentUser.favorites.includes(recipe)) {
-      //we need to change value to 'favorited'
-      //classList.add('favorited-state')
-    //} else {
-      //value = 'unfavorited'
-      //remove('favorited-state')
-    //}
-  //})
-  // recipeCards.forEach(card => {
-  //   currentUser.favorites.includes('recipe')
-  //   const button = card.childNodes[3].childNodes[1];
-  //   button.value = 'favorited';
-  //   button.classList.add('favorited-state');
-  //});
+  filterButton.addEventListener('click', () => {
+    filterRecipesByTag(currentUser.recipesToCook)
+  });
+  displayRecipes(currentUser.recipesToCook); 
 }
 
 function toggleCookbookButton() {
@@ -178,34 +158,28 @@ function displayHomePage() {
   searchBar.value = '';
   // filterTags.value = '';
   hide([selectedRecipeView, homeButton]);
-  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton]);
+  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton]);
+  filterButton.addEventListener('click', () => {
+    filterRecipesByTag(recipeRepository.recipeData)
+  });
 }
 
-function filterRecipesByTag() {
+function filterRecipesByTag(recipes) {
   const selectedTags = [];
   filterTags.forEach((tag) => {
     if (tag.checked) {
       selectedTags.push(tag.id)
     }
   })
-  if (selectedTags.length === 0) {
-    return;
+  
+  if (selectedTags.length !== 0) {
+    recipeRepository.filterByTags(selectedTags, recipes);
+    displayRecipes(recipeRepository.recipesToShow);
+  } else {
+    displayRecipes(recipes)
   }
-  recipeRepository.filterByTags(selectedTags);
-  displayRecipes(recipeRepository.recipesToShow);
 }
-// function filterFavRecipesByTag() {
-//   const selectedTags = [];
-//   filterTags.forEach((tag) => {
-//     if (tag.checked) {
-//       selectedTags.push(tag.id)
-//     }
-//   })
-//   if (selectedTags.length === 0) {
-//     return;
-//   }
-//   displayRecipes(recipeRepository.filterByTags(selectedTags));
-// }
+
 function displayRecipes(recipes) {
   recipeSection.innerHTML = '';
   recipes.forEach(recipe => {

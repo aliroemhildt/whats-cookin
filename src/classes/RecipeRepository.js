@@ -10,9 +10,9 @@ class RecipeRepository {
     });
   };
 
-  filterByTags(selectedTags) {
+  filterByTags(selectedTags, recipes) {
     this.recipesToShow = [];
-    const recipesWithTags = this.recipeData.reduce((acc, recipe) => {
+    const recipesWithTags = recipes.reduce((acc, recipe) => {
       recipe.tags.forEach(tag => {
         selectedTags.forEach(selectedTag => {
           if(tag === selectedTag && !acc.includes(recipe)) {
