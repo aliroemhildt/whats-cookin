@@ -26,7 +26,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
     })
     recipeRepository = new RecipeRepository(recipeList)
     displayRecipes(recipeRepository.recipeData)
-  }).catch(console.log('NO SOUP FOR YOU!'))
+  }).catch(error => console.log(error))
 
 // GLOBAL VARIABLES
 let recipeCards = [];
@@ -50,7 +50,7 @@ const singleViewFavoriteButton = document.querySelector('.single-view-favorite-b
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', searchAllRecipes);
-filterButton.addEventListener('click', filterAllRecipesByTag);
+filterButton.addEventListener('click', filterRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
@@ -183,7 +183,7 @@ function displayHomePage() {
   show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton]);
 }
 
-function filterAllRecipesByTag() {
+function filterRecipesByTag() {
   const selectedTags = [];
   filterTags.forEach((tag) => {
     if (tag.checked) {
@@ -248,7 +248,7 @@ function createButtonEventListeners() {
 function searchAllRecipes() {
   const searchName = document.getElementById('searchInput').value;
   recipeRepository.filterByNameOrIng(searchName, ingredientsData);
-  displayRecipes();
+  displayRecipes(recipeRepository.recipesToShow);
 }
 
 function displayAllRecipes() {
