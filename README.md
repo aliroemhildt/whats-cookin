@@ -38,7 +38,7 @@ When a user selects the "favorite" button on a recipe card, the selected recipe 
 
 #### Cookbook
 
-When a user selects the "Add to Cookbook" button on the single recipe page, the selected recipe will be added to the Cookbook Page which can be found on the nav bar. This page is used to store recipes a user plans to cook in the future.
+When a user selects the "Add to Cookbook" button on the single recipe page, the selected recipe will be added to the My Cookbook Page which can be found on the nav bar. This page is used to store recipes a user plans to cook in the future.
 
 ---------------------------------------
 
