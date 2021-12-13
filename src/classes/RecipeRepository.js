@@ -38,9 +38,9 @@ class RecipeRepository {
     return ingredientIDFromSearch;
   };
 
-  filterByIng(nameOrIng, ingredientsData) {
+  filterByIng(nameOrIng, ingredientsData, recipes) {
     const ingredientID = this.getIngredientID(nameOrIng, ingredientsData);
-    return this.recipeData.filter((recipe) => {
+    return recipes.filter((recipe) => {
       let ingIDs = recipe.ingredients.map((ingredient) => {
         return ingredient.id;
       });
@@ -48,16 +48,16 @@ class RecipeRepository {
     });
   };
 
-  filterByName(nameOrIng, ingredientsData) {
-    return this.recipeData.filter((recipe) => {
+  filterByName(nameOrIng, ingredientsData, recipes) {
+    return recipes.filter((recipe) => {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
     });
   };
 
-  filterByNameOrIng(nameOrIng, ingredientsData) {
+  filterByNameOrIng(nameOrIng, ingredientsData, recipes) {
     this.recipesToShow = [];
-    let recipesByIng = this.filterByIng(nameOrIng, ingredientsData);
-    let recipesByName = this.filterByName(nameOrIng, ingredientsData);
+    let recipesByIng = this.filterByIng(nameOrIng, ingredientsData, recipes);
+    let recipesByName = this.filterByName(nameOrIng, ingredientsData, recipes);
 
     recipesByIng.forEach(recipe => {
       this.recipesToShow.push(recipe);
