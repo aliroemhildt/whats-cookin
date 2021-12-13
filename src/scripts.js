@@ -1,20 +1,36 @@
 // IMPORTS
 import './styles.css';
-import apiCalls from './apiCalls';
-import ingredientsData from '../src/data/ingredients';
-import recipeData from '../src/data/recipes';
-import userData from '../src/data/users';
+import {userAPI, ingredientAPI, recipeAPI} from './apiCalls';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 import User from '../src/classes/User';
 
+//API
+let userIndex;
+let currentUser;
+let recipeList;
+let recipeRepository;
+let ingredientsData;
+let userData;
+let recipeData
+
+Promise.all([userAPI, ingredientAPI, recipeAPI])
+  .then(data => {
+    console.log(data[0])
+    userData = data[0].usersData;
+    ingredientsData = data[1].ingredientsData;
+    recipeData = data[2].recipeData
+    userIndex = getRandomIndex(data[0].usersData);
+    currentUser = new User(data[0].usersData[userIndex], data[1].ingredientsData);
+    recipeList = data[2].recipeData.map(recipe => {
+      return new Recipe(recipe);
+    })
+    recipeRepository = new RecipeRepository(recipeList)
+    displayRecipes(recipeRepository.recipeData)
+    console.log(recipeRepository)
+  }).catch(console.log('NO SOUP FOR YOU!'))
+
 // GLOBAL VARIABLES
-const recipeList = recipeData.map(recipe => {
-  return new Recipe(recipe);
-});
-const userIndex = getRandomIndex(userData);
-const currentUser = new User(userData[userIndex], ingredientsData);
-const recipeRepository = new RecipeRepository(recipeList);
 let recipeCards = [];
 let favoriteButtons = [];
 
@@ -30,18 +46,11 @@ const searchBar = document.getElementById('searchInput');
 const filterTags = document.querySelectorAll('.tag');
 const favoritePageButton = document.getElementById('favoritesPage');
 
-
-
-
 // EVENT LISTENERS
-window.addEventListener('load', () => {
-  displayRecipes(recipeRepository.recipeData)
-});
 searchRecipesButton.addEventListener('click', searchAllRecipes)
 filterButton.addEventListener('click', filterAllRecipesByTag);
 homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
-
 
 // FUNCTIONS
 function getRandomIndex(array) {
@@ -84,7 +93,6 @@ function filterAllRecipesByTag() {
 
 function displayRecipes(recipes) {
   recipeSection.innerHTML = '';
-  console.log(recipes)
   recipes.forEach(recipe => {
     recipeSection.innerHTML += `
       <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
@@ -147,7 +155,7 @@ function displaySelectedRecipe(e) {
     const ingredientListSection = document.querySelector('.ingredient-list-section-js');
     const searchButton = document.getElementById('searchRecipes');
 
-    show([selectedRecipeView, homeButton]);
+    show([selectedRecipeView, homeButton, favoritePageButton]);
     hide([mainView, searchBar, searchButton]);
 
     const recipeID = Number(e.target.parentNode.id.slice(2));
@@ -169,7 +177,7 @@ function displaySelectedRecipe(e) {
 }
 
 function getIngredientListElement(e, selectedRecipe) {
-  const ingredientListSection = document.querySelector('.ingredient-list-section-js')
+  const ingredientListSection = document.querySelector('.ingredient-list-section-js');
 
   ingredientListSection.innerHTML = '<h3>ingredients</h3>';
 
@@ -199,20 +207,13 @@ function getInstructionsElement(e, selectedRecipe) {
 }
 
 function show(elements) {
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].classList.remove('hidden');
-  }
+  elements.forEach(element => {
+    element.classList.remove('hidden')
+  });
 }
 
 function hide(elements) {
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].classList.add('hidden');
-  }
+  elements.forEach(element => {
+    element.classList.add('hidden')
+  });
 }
-
-// boilerplate html for each recipe card:
-// <section class='recipe-card'>
-//   <img src='' alt='' class='recipe-photo'>
-//   <img src='' alt='favorite-button' class='favorite-button'>
-//   <p>Recipe Name</p>
-// </section>

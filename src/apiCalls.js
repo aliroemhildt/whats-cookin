@@ -1,4 +1,14 @@
-// Your fetch requests will live here!
+let userAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
+  .then(response => response.json())
+  // .then(data => data.usersData)
+
+let ingredientAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
+  .then(response => response.json())
+  // .then(data => data.ingredientsData)
+
+let recipeAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+.then(response => response.json())
+// .then(data => data.recipeData)
 
 
-console.log('I will be a fetch request!')
+export {userAPI, ingredientAPI, recipeAPI}
