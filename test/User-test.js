@@ -156,8 +156,6 @@ describe('User', () => {
       }
     ]
     firstUser = new User(userData[0], ingredientsData)
-    // console.log(firstUser)
-    // console.log(userData[0])
   });
 
   it('should be a function', () => {
@@ -221,5 +219,4 @@ describe('User', () => {
 
     expect(firstUser.filterFavoritesByName('vanilla')).to.deep.equal([sampleData[0], sampleData[5]]);
   });
-
 })
