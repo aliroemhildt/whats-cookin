@@ -56,7 +56,6 @@ describe('RecipeRepository', () => {
   it('should return a list of recipes based on its name', () => {
     let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData, recipeList);
     let recipesTest = [recipeList[0]];
-
     expect(recipesByName).to.deep.equal(recipesTest);
   });
 
@@ -85,14 +84,8 @@ describe('RecipeRepository', () => {
   });
 
   it('should be able to filter by name or ingredient and store result', () => {
-    repository.filterByNameOrIng('coconut', ingredientsData, recipeList);
-    expect(repository.recipesToShow).to.deep.equal([recipeList[6]]);
-
-    repository.filterByNameOrIng('pineapple', ingredientsData, recipeList);
-    expect(repository.recipesToShow).to.deep.equal([recipeList[8]]);
-
-    repository.filterByNameOrIng('rapini', ingredientsData, recipeList);
-    expect(repository.recipesToShow).to.deep.equal([recipeList[9]]);
+    repository.filterByNameOrIng('chocolate', ingredientsData, recipeList)
+    
+    expect(repository.recipesToShow).to.deep.equal([recipeList[6], recipeList[0]]);
   });
-
 });

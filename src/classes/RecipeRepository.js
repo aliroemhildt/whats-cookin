@@ -17,20 +17,19 @@ class RecipeRepository {
       return acc;
     }, []);
     recipesWithTags.forEach(recipe => {
-      this.recipesToShow.push(recipe)
+      this.recipesToShow.push(recipe);
     })
   }
 
   getIngredientIDs(ingName, ingredientsData) {
     const ingNameLC = ingName.toLowerCase();
     const ingredientIDsFromSearch = ingredientsData.reduce((acc, ingredient) => {
-      const ingredientName = ingredient.name.toLowerCase()
+      const ingredientName = ingredient.name.toLowerCase();
       if (ingredientName.includes(ingNameLC)) {
-        acc.push(ingredient.id)
+        acc.push(ingredient.id);
       }
       return acc;
     }, []);
-    console.log(ingredientIDsFromSearch)
     return ingredientIDsFromSearch;
   }
 
@@ -46,13 +45,13 @@ class RecipeRepository {
       })
       return acc;
     }, []);
-    return recipesWithIngs
-  };
+    return recipesWithIngs;
+  }
 
   filterByName(nameOrIng, ingredientsData, recipes) {
     return recipes.filter((recipe) => {
       return recipe.name.toLowerCase().includes(nameOrIng.toLowerCase());
-    });
+    })
   }
 
   filterByNameOrIng(nameOrIng, ingredientsData, recipes) {
@@ -66,10 +65,10 @@ class RecipeRepository {
 
     recipesByName.forEach(recipe => {
       if (!this.recipesToShow.includes(recipe)) {
-        this.recipesToShow.push(recipe)
-      };
-    });
+        this.recipesToShow.push(recipe);
+      }
+    })
   }
-};
+}
 
 export default RecipeRepository;

@@ -11,14 +11,10 @@ let currentUser;
 let recipeList;
 let recipeRepository;
 let ingredientsData;
-let userData;
-let recipeData
 
 Promise.all([userAPI, ingredientAPI, recipeAPI])
   .then(data => {
-    userData = data[0].usersData;
     ingredientsData = data[1].ingredientsData;
-    recipeData = data[2].recipeData
     userIndex = getRandomIndex(data[0].usersData);
     currentUser = new User(data[0].usersData[userIndex], data[1].ingredientsData);
     recipeList = data[2].recipeData.map(recipe => {
@@ -26,7 +22,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
     })
     recipeRepository = new RecipeRepository(recipeList)
     displayRecipes(recipeRepository.recipeData)
-  }).catch(error => console.log(error))
+  }).catch(error => console.log(error));
 
 // GLOBAL VARIABLES
 let recipeCards = [];
@@ -50,10 +46,10 @@ const singleViewFavoriteButton = document.querySelector('.single-view-favorite-b
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
-  searchAllRecipes(recipeRepository.recipeData)
+  searchAllRecipes(recipeRepository.recipeData);
 });
 filterButton.addEventListener('click', () => {
-  filterRecipesByTag(recipeRepository.recipeData)
+  filterRecipesByTag(recipeRepository.recipeData);
 });
 homeButton.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
@@ -72,11 +68,10 @@ function displayFavorites() {
     searchAllRecipes(currentUser.favorites)
   });
   displayRecipes(currentUser.favorites);
-   recipeCards.forEach(card => {
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', removeFromPage);
-    })
+  })
 }
 
 function removeFromPage() {
@@ -91,10 +86,10 @@ function toggleFavoriteButton(e) {
       return element.id === recipeID;
     });
     if (e.target.value === 'unfavorited') {
-      selectFavoriteButton(e)
+      selectFavoriteButton(e);
       currentUser.addToFavorites(recipe);
     } else if (e.target.value === 'favorited') {
-      deselectFavoriteButton(e)
+      deselectFavoriteButton(e);
       currentUser.removeFromFavorites(recipe);
     }
   }
@@ -120,16 +115,16 @@ function favoriteFromSingleRecipeView() {
     singleViewFavoriteButton.classList.add('favorited-state');
     currentUser.addToFavorites(selectedRecipe);
   }
-};
+}
 
 function displayCookbook() {
   hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
   show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
   filterButton.addEventListener('click', () => {
-    filterRecipesByTag(currentUser.recipesToCook)
+    filterRecipesByTag(currentUser.recipesToCook);
   });
   searchRecipesButton.addEventListener('click', () => {
-    searchAllRecipes(currentUser.recipesToCook)
+    searchAllRecipes(currentUser.recipesToCook);
   });
   displayRecipes(currentUser.recipesToCook);
 }
@@ -161,23 +156,23 @@ function getRandomIndex(array) {
 }
 
 function displayHomePage() {
-  displayRecipes(recipeRepository.recipeData)
+  displayRecipes(recipeRepository.recipeData);
   searchBar.value = '';
   hide([selectedRecipeView, homeButton]);
   show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton]);
   filterButton.addEventListener('click', () => {
-    filterRecipesByTag(recipeRepository.recipeData)
-  });
+    filterRecipesByTag(recipeRepository.recipeData);
+  })
   searchRecipesButton.addEventListener('click', () => {
-    searchAllRecipes(recipeRepository.recipeData)
-  });
+    searchAllRecipes(recipeRepository.recipeData);
+  })
 }
 
 function filterRecipesByTag(recipes) {
   const selectedTags = [];
   filterTags.forEach((tag) => {
     if (tag.checked) {
-      selectedTags.push(tag.id)
+      selectedTags.push(tag.id);
     }
   })
 
@@ -185,7 +180,7 @@ function filterRecipesByTag(recipes) {
     recipeRepository.filterByTags(selectedTags, recipes);
     displayRecipes(recipeRepository.recipesToShow);
   } else {
-    displayRecipes(recipes)
+    displayRecipes(recipes);
   }
 }
 
@@ -201,21 +196,21 @@ function displayRecipes(recipes) {
           </div>
        </section>
      `;
-  });
+  })
 
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach((card, index) => {
     card.addEventListener('click', function(e) {
-      displaySelectedRecipe(e)
-    });
-  });
+      displaySelectedRecipe(e);
+    })
+  })
 
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
-      toggleFavoriteButton(e)
+      toggleFavoriteButton(e);
     })
-  });
+  })
 
   recipeCards = document.querySelectorAll('.recipe-card-js');
   recipeCards.forEach(card => {
@@ -227,8 +222,8 @@ function displayRecipes(recipes) {
     if (currentUser.favorites.includes(currentRecipe)) {
       button.value = 'favorited';
       button.classList.add('favorited-state');
-    };
-  });
+    }
+  })
 }
 
 function searchAllRecipes(recipes) {
@@ -250,7 +245,7 @@ function displaySelectedRecipe(e) {
     const recipeID = Number(e.target.closest('section').id.slice(2));
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
-    });
+    })
 
     show([selectedRecipeView, homeButton, favoritePageButton, cookbookPageButton]);
     hide([mainView, searchBar, searchButton]);
@@ -276,7 +271,7 @@ function displaySelectedRecipe(e) {
     const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
 
     ingredientListSection.innerHTML += ingredientListElement;
-    instructionsSection.innerHTML += instructionsElement
+    instructionsSection.innerHTML += instructionsElement;
     image.src = selectedRecipe.image;
     name.innerText = selectedRecipe.name;
     cost.innerText = `$${costNum}`;
@@ -301,7 +296,7 @@ function getIngredientListElement(e, selectedRecipe) {
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
 
-  instructionsSection.innerHTML = '<h3>instructions</h3>'
+  instructionsSection.innerHTML = '<h3>instructions</h3>';
 
   const instructionsStrings = selectedRecipe.returnInstructions();
 
@@ -315,23 +310,12 @@ function getInstructionsElement(e, selectedRecipe) {
 
 function show(elements) {
   elements.forEach(element => {
-    element.classList.remove('hidden')
-  });function filterRecipesByTag() {
-  const selectedTags = [];
-  filterTags.forEach((tag) => {
-    if (tag.checked) {
-      selectedTags.push(tag.id)
-    }
+    element.classList.remove('hidden');
   })
-  if (selectedTags.length === 0) {
-    return;
-  }
-  displayRecipes(recipeRepository.filterByTags(selectedTags));
-}
 }
 
 function hide(elements) {
   elements.forEach(element => {
-    element.classList.add('hidden')
-  });
+    element.classList.add('hidden');
+  })
 }
