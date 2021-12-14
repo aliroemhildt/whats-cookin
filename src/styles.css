@@ -1,4 +1,3 @@
-/* font-family: 'Lora', serif; */
 /* ~~~~~~~~~~ BASIC ELEMENTS ~~~~~~~~~~~~ */
 html {
   height: 100vh;
@@ -21,14 +20,6 @@ body {
 
 main {
   height: 90%;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  height: 10%;
-  background: #1B3231;
-  color: #DCDFDA;
 }
 
 button {
@@ -57,30 +48,33 @@ h2 {
   margin: 0px 0px 30px 30px;
 }
 
-.filters {
-  margin: 12px;
+.flex-row {
+  display: flex;
+}
+
+.main-view-container {
+  height: 100%;
+}
+
+/* ~~~~~~~~~~ NAV BAR ~~~~~~~~~~~~ */
+nav {
+  display: flex;
+  justify-content: space-between;
+  height: 10%;
+  background: #1B3231;
+  color: #DCDFDA;
+}
+
+.page-title-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color: #DCDFDA;
 }
 
 .nav-div {
  align-items: center;
-}
-
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 10%;
-  margin: 18px;
-  border: 1px solid #1B3231;
-}
-
-.recipes-section {
-  width: 90%;
-  min-height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  overflow: auto;
 }
 
 .input {
@@ -90,12 +84,18 @@ h2 {
   width: 200px;
 }
 
-.flex-row {
-  display: flex;
+/* ~~~~~~~~~~ FILTER SECTION ~~~~~~~~~~~~ */
+.filters {
+  margin: 12px;
 }
 
-.main-view-container {
-  height: 100%;
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10%;
+  margin: 18px;
+  border: 1px solid #1B3231;
 }
 
 .single-filter {
@@ -136,9 +136,31 @@ h2 {
   min-width: 100%;
 }
 
+.page-view-buttons {
+  width: 200px;
+}
+
+.favorited-state {
+  background: #B03F2C;
+  color: #F2F5F2;
+}
+
+.in-cookbook-state {
+  background: #1B3231;
+  color: #F2F5F2
+}
+
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
+.recipes-section {
+  width: 90%;
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
 .recipe-card {
-  /* border: 2px solid #1B3231; */
   border: 2px solid #F2F5F2;
   height: 300px;
   width: 273px;
@@ -180,17 +202,6 @@ h2 {
   padding: 0, 8px, 8px, 8px;
 }
 
-.favorited-state {
-  background: #B03F2C;
-  color: #F2F5F2;
-}
-.in-cookbook-state {
-  background: #1B3231;
-  color: #F2F5F2
-}
-.page-view-buttons {
-  width: 200px;
-}
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
 .hidden {
   display: none;
