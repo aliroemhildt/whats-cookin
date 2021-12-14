@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import Recipe from '../src/classes/Recipe';
-import recipeData from '../src/data/recipes';
-import ingredientsData from '../src/data/ingredients';
+import sampleData from '../src/data/sampleData';
+import sampleIngredients from '../src/data/sampleIngredients';
 
 describe('Recipe', () => {
   let recipe;
 
   beforeEach(() => {
-    recipe = new Recipe(recipeData[0]);
+    recipe = new Recipe(sampleData[0]);
   });
 
   it('should be a function', () => {
@@ -19,36 +19,36 @@ describe('Recipe', () => {
   });
 
   it('should have an id', () => {
-    expect(recipe.id).to.deep.equal(recipeData[0].id);
+    expect(recipe.id).to.deep.equal(sampleData[0].id);
   });
 
   it('should have an image', () => {
-    expect(recipe.image).to.equal(recipeData[0].image);
+    expect(recipe.image).to.equal(sampleData[0].image);
   });
 
   it('should have an ingredients property', () => {
-    expect(recipe.ingredients).to.deep.equal(recipeData[0].ingredients);
+    expect(recipe.ingredients).to.deep.equal(sampleData[0].ingredients);
   });
 
   it('should have an instructions property', () => {
-    expect(recipe.instructions).to.deep.equal(recipeData[0].instructions);
+    expect(recipe.instructions).to.deep.equal(sampleData[0].instructions);
   });
 
   it('should have a name property', () => {
-    expect(recipe.name).to.deep.equal(recipeData[0].name);
+    expect(recipe.name).to.deep.equal(sampleData[0].name);
   });
 
   it('should have a tags property', () => {
-    expect(recipe.id).to.deep.equal(recipeData[0].id);
+    expect(recipe.id).to.deep.equal(sampleData[0].id);
   });
 
   it('should have a method to determine the names of ingredients', () => {
-    let ingredients = recipe. determineRecipeIngredients(ingredientsData)
+    let ingredients = recipe. determineRecipeIngredients(sampleIngredients)
     expect(ingredients).to.deep.equal(['wheat flour', 'bicarbonate of soda', 'eggs', 'sucrose', 'instant vanilla pudding', 'brown sugar', 'salt', 'fine sea salt', 'semi sweet chips', 'unsalted butter', 'vanilla']);
   });
 
   it('should get the cost of its ingredients', () => {
-    expect(recipe.calculateRecipeCostInDollars(ingredientsData)).to.equal(177.76);
+    expect(recipe.calculateRecipeCostInDollars(sampleIngredients)).to.equal(177.76);
   });
 
   it('should return its instructions', () => {

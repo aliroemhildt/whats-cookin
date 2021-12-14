@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
-import ingredientsData from '../src/data/ingredients';
+import sampleIngredients from '../src/data/sampleIngredients'
 import sampleData from '../src/data/sampleData';
 
 describe('RecipeRepository', () => {
@@ -48,20 +48,20 @@ describe('RecipeRepository', () => {
   });
 
   it('should be able to take in an ingredient name and return the corresponding ID for that ingredient', () => {
-    const ingID = repository.getIngredientIDs('flour', ingredientsData);
+    const ingID = repository.getIngredientIDs('flour', sampleIngredients);
 
-    expect(ingID).to.deep.equal([20081, 20011, 20090, 11413, 93760, 93740, 10120129, 10020080, 10218364]);
+    expect(ingID).to.deep.equal([20081, 20011, 20090, 11413, 93760, 93740]);
   });
 
   it('should return a list of recipes based on its name', () => {
-    let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', ingredientsData, recipeList);
+    let recipesByName = repository.filterByName('Loaded Chocolate Chip Pudding Cookie Cups', sampleIngredients, recipeList);
     let recipesTest = [recipeList[0]];
     expect(recipesByName).to.deep.equal(recipesTest);
   });
 
   it('should return a list of recipes if their ingredient names include all or part of the searched word', () => {
-    let recipesByIng1 = repository.filterByIng('sugar', ingredientsData, recipeList);
-  
+    let recipesByIng1 = repository.filterByIng('sugar', sampleIngredients, recipeList);
+
     let recipe1 = recipeList[0];
     let recipe2 = recipeList[2];
     let recipe3 = recipeList[6];
@@ -71,8 +71,8 @@ describe('RecipeRepository', () => {
 
     expect(recipesByIng1).to.deep.equal(recipesTest1);
 
-    let recipesByIng2 = repository.filterByIng('brown sugar', ingredientsData, recipeList);
-  
+    let recipesByIng2 = repository.filterByIng('brown sugar', sampleIngredients, recipeList);
+
     let recipe5 = recipeList[0];
     let recipe6 = recipeList[2];
     let recipe7 = recipeList[6];
@@ -84,8 +84,8 @@ describe('RecipeRepository', () => {
   });
 
   it('should be able to filter by name or ingredient and store result', () => {
-    repository.filterByNameOrIng('chocolate', ingredientsData, recipeList)
-    
+    repository.filterByNameOrIng('chocolate', sampleIngredients, recipeList)
+
     expect(repository.recipesToShow).to.deep.equal([recipeList[6], recipeList[0]]);
   });
 });
