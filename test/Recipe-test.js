@@ -42,6 +42,11 @@ describe('Recipe', () => {
     expect(recipe.id).to.deep.equal(sampleData[0].id);
   });
 
+  it('should have a method that returns an array of the IDs of all its ingredients', () => {
+    let ingredientIDs = recipe.getIngredientIDs();
+    expect(ingredientIDs).to.deep.equal([20081, 18372, 1123, 19335, 19206, 19334, 2047, 1012047, 10019903, 1145, 2050]);
+  });
+
   it('should have a method to determine the names of ingredients', () => {
     let ingredients = recipe. determineRecipeIngredients(sampleIngredients)
     expect(ingredients).to.deep.equal(['wheat flour', 'bicarbonate of soda', 'eggs', 'sucrose', 'instant vanilla pudding', 'brown sugar', 'salt', 'fine sea salt', 'semi sweet chips', 'unsalted butter', 'vanilla']);
