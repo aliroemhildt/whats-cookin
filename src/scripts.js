@@ -36,7 +36,7 @@ const filterSection = document.querySelector('.filter-section-js');
 const mainView = document.querySelector('.main-view-container-js');
 const searchRecipesButton = document.getElementById('searchRecipes');
 const filterButton = document.getElementById('filterButton');
-const homeButton = document.querySelector('.home-button');
+const whatsCookin = document.querySelector('h1');
 const searchBar = document.getElementById('searchInput');
 const filterTags = document.querySelectorAll('.tag');
 const favoritePageButton = document.getElementById('favoritesPage');
@@ -57,7 +57,7 @@ searchBar.addEventListener('keyup', function(e) {
 filterButton.addEventListener('click', () => {
   filterRecipesByTag(recipeRepository.recipeData);
 });
-homeButton.addEventListener('click', displayHomePage);
+whatsCookin.addEventListener('click', displayHomePage);
 favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
@@ -65,8 +65,9 @@ singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView)
 
 // FUNCTIONS
 function displayFavorites() {
+  whatsCookin.classList.remove('home-page');
   hide([favoritePageButton]);
-  show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
+  show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
   pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.favorites)
@@ -125,8 +126,9 @@ function favoriteFromSingleRecipeView() {
 }
 
 function displayCookbook() {
+  whatsCookin.classList.remove('home-page');
   hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
-  show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
+  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
@@ -164,17 +166,20 @@ function getRandomIndex(array) {
 }
 
 function displayHomePage() {
-  displayRecipes(recipeRepository.recipeData);
-  searchBar.value = '';
-  hide([selectedRecipeView, homeButton]);
-  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
-  pageTitle.innerText = 'home';
-  filterButton.addEventListener('click', () => {
-    filterRecipesByTag(recipeRepository.recipeData);
-  })
-  searchRecipesButton.addEventListener('click', () => {
-    searchAllRecipes(recipeRepository.recipeData);
-  })
+  if (!whatsCookin.classList.contains('home-page')) {
+    whatsCookin.classList.add('home-page');
+    displayRecipes(recipeRepository.recipeData);
+    searchBar.value = '';
+    hide([selectedRecipeView]);
+    show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
+    pageTitle.innerText = 'home';
+    filterButton.addEventListener('click', () => {
+      filterRecipesByTag(recipeRepository.recipeData);
+    })
+    searchRecipesButton.addEventListener('click', () => {
+      searchAllRecipes(recipeRepository.recipeData);
+    })
+  }
 }
 
 function filterRecipesByTag(recipes) {
@@ -249,13 +254,13 @@ function searchAllRecipes(recipes) {
 function displaySelectedRecipe(e) {
   if (!e.target.classList.contains('favorite-button-js')) {
     const searchButton = document.getElementById('searchRecipes');
-
+    whatsCookin.classList.remove('home-page');
     const recipeID = Number(e.target.closest('section').id.slice(2));
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
     })
 
-    show([selectedRecipeView, homeButton, favoritePageButton, cookbookPageButton]);
+    show([selectedRecipeView, favoritePageButton, cookbookPageButton]);
     hide([mainView, searchBar, searchButton, pageTitle]);
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
