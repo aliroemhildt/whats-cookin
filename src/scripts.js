@@ -43,12 +43,17 @@ const favoritePageButton = document.getElementById('favoritesPage');
 const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
 const singleViewFavoriteButton = document.querySelector('.single-view-favorite-button-js');
-const pageTitleButton = document.querySelector('.page-title-js');
+const pageTitle = document.querySelector('.page-title-js');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
   searchAllRecipes(recipeRepository.recipeData);
 });
+searchBar.addEventListener('keyup', function(e) {
+  if (e.keyCode === 13) {
+    searchAllRecipes(recipeRepository.recipeData);
+  }
+})
 filterButton.addEventListener('click', () => {
   filterRecipesByTag(recipeRepository.recipeData);
 });
@@ -61,8 +66,8 @@ singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView)
 // FUNCTIONS
 function displayFavorites() {
   hide([favoritePageButton]);
-  show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton]);
-  pageTitleButton.innerText = 'my favorites';
+  show([homeButton, filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
+  pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.favorites)
   });
@@ -121,8 +126,8 @@ function favoriteFromSingleRecipeView() {
 
 function displayCookbook() {
   hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
-  show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton]);
-  pageTitleButton.innerText = 'my cookbook';
+  show([homeButton, filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
+  pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
   });
@@ -162,8 +167,8 @@ function displayHomePage() {
   displayRecipes(recipeRepository.recipeData);
   searchBar.value = '';
   hide([selectedRecipeView, homeButton]);
-  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton]);
-  pageTitleButton.innerText = 'home';
+  show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
+  pageTitle.innerText = 'home';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(recipeRepository.recipeData);
   })
@@ -203,30 +208,35 @@ function displayRecipes(recipes) {
   })
 
   recipeCards = document.querySelectorAll('.recipe-card-js');
-  recipeCards.forEach((card, index) => {
-    card.addEventListener('click', function(e) {
-      displaySelectedRecipe(e);
-    })
-  })
+  addCardInfo(recipeCards);
 
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
+  updateFavoriteButton(favoriteButtons);
+}
+
+function updateFavoriteButton(favoriteButtons) {
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
       toggleFavoriteButton(e);
     })
   })
+}
 
-  recipeCards = document.querySelectorAll('.recipe-card-js');
-  recipeCards.forEach(card => {
+function addCardInfo(recipeCards) {
+  recipeCards.forEach((card, index) => {
     const cardId = Number(card.id.slice(2));
     const currentRecipe = recipeRepository.recipeData.find(recipe => {
       return recipe.id === cardId;
     })
+
     const button = card.childNodes[3].childNodes[1];
     if (currentUser.favorites.includes(currentRecipe)) {
       button.value = 'favorited';
       button.classList.add('favorited-state');
     }
+    card.addEventListener('click', function(e) {
+      displaySelectedRecipe(e);
+    })
   })
 }
 
@@ -238,12 +248,6 @@ function searchAllRecipes(recipes) {
 
 function displaySelectedRecipe(e) {
   if (!e.target.classList.contains('favorite-button-js')) {
-
-    const image = document.querySelector('.selected-recipe-photo-js');
-    const name = document.querySelector('.selected-recipe-name-js');
-    const cost = document.querySelector('.cost-js');
-    const instructionsSection = document.querySelector('.instructions-section-js');
-    const ingredientListSection = document.querySelector('.ingredient-list-section-js');
     const searchButton = document.getElementById('searchRecipes');
 
     const recipeID = Number(e.target.closest('section').id.slice(2));
@@ -252,43 +256,55 @@ function displaySelectedRecipe(e) {
     })
 
     show([selectedRecipeView, homeButton, favoritePageButton, cookbookPageButton]);
-    hide([mainView, searchBar, searchButton]);
-
-    if (currentUser.recipesToCook.includes(selectedRecipe)) {
-      selectAddToCookbookButton();
-      addToCookbookButton.innerText = 'remove from cookbook';
-    } else {
-      deselectAddToCookbookButton()
-      addToCookbookButton.innerText = 'add to cookbook';
-    }
-
-    if (currentUser.favorites.includes(selectedRecipe)) {
-      singleViewFavoriteButton.value = 'favorited';
-      singleViewFavoriteButton.classList.add('favorited-state');
-    } else {
-      singleViewFavoriteButton.value = 'unfavorited';
-      singleViewFavoriteButton.classList.remove('favorited-state');
-    }
-
-    const ingredientListElement = getIngredientListElement(e, selectedRecipe);
-    const instructionsElement = getInstructionsElement(e, selectedRecipe);
-    const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
-
-    ingredientListSection.innerHTML += ingredientListElement;
-    instructionsSection.innerHTML += instructionsElement;
-    image.src = selectedRecipe.image;
-    name.innerText = selectedRecipe.name;
-    cost.innerText = `$${costNum}`;
+    hide([mainView, searchBar, searchButton, pageTitle]);
+    showCookbookStatus(selectedRecipe);
+    showFavoritesStatus(selectedRecipe);
+    updateRecipeText(e, selectedRecipe, ingredientsData);
   }
+}
+
+function showCookbookStatus(selectedRecipe) {
+  if (currentUser.recipesToCook.includes(selectedRecipe)) {
+    selectAddToCookbookButton();
+    addToCookbookButton.innerText = 'remove from cookbook';
+  } else {
+    deselectAddToCookbookButton()
+    addToCookbookButton.innerText = 'add to cookbook';
+  }
+}
+
+function showFavoritesStatus(selectedRecipe) {
+  if (currentUser.favorites.includes(selectedRecipe)) {
+    singleViewFavoriteButton.value = 'favorited';
+    singleViewFavoriteButton.classList.add('favorited-state');
+  } else {
+    singleViewFavoriteButton.value = 'unfavorited';
+    singleViewFavoriteButton.classList.remove('favorited-state');
+  }
+}
+
+function updateRecipeText(e, selectedRecipe, ingredientsData) {
+  const instructionsSection = document.querySelector('.instructions-section-js');
+  const ingredientListSection = document.querySelector('.ingredient-list-section-js');
+  const image = document.querySelector('.selected-recipe-photo-js');
+  const name = document.querySelector('.selected-recipe-name-js');
+  const cost = document.querySelector('.cost-js');
+
+  const ingredientListElement = getIngredientListElement(e, selectedRecipe);
+  const instructionsElement = getInstructionsElement(e, selectedRecipe);
+  const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
+
+  ingredientListSection.innerHTML += ingredientListElement;
+  instructionsSection.innerHTML += instructionsElement;
+  image.src = selectedRecipe.image;
+  name.innerText = selectedRecipe.name;
+  cost.innerText = `$${costNum}`;
 }
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js');
-
   ingredientListSection.innerHTML = '<h3>ingredients</h3>';
-
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
-
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
     acc += `${ingredientNames[index]}: ${ingredient.quantity.amount.toString()} ${ingredient.quantity.unit}<br><br>`;
     return acc;
@@ -299,11 +315,8 @@ function getIngredientListElement(e, selectedRecipe) {
 
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
-
   instructionsSection.innerHTML = '<h3>instructions</h3>';
-
   const instructionsStrings = selectedRecipe.returnInstructions();
-
   const instructionsText = instructionsStrings.reduce((acc, instruction) => {
     acc += `${instruction}<br><br>`;
     return acc;
