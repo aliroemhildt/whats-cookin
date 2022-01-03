@@ -43,6 +43,11 @@ h1 {
   margin: 12px;
 }
 
+h1:hover:not(.home-page) {
+  color: #FCE49E;
+  cursor: pointer;
+}
+
 h2 {
   padding: 12px 12px 12px 0px;
   margin: 0px 0px 30px 30px;
