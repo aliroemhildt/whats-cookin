@@ -121,7 +121,7 @@ const sampleUser = [
       },
       {
         "ingredient": 19206,
-        "amount": 2
+        "amount": 3
       },
       {
         "ingredient": 1145,

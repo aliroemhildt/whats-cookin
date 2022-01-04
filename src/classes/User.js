@@ -1,4 +1,5 @@
-import Pantry from '../src/classes/Pantry';
+import Pantry from './Pantry';
+
 class User {
   constructor(user, ingredientsData) {
     this.name = user.name;
