@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import Pantry from '../src/classes/Pantry';
 import User from '../src/classes/User';
 import sampleData from '../src/data/sampleData';
 import sampleIngredients from '../src/data/sampleIngredients';
@@ -10,11 +11,11 @@ describe('Pantry', () => {
   beforeEach(() => {
     user = new User(sampleUser[0], sampleIngredients)
   });
- 
+
   it('should be a function', () => {
-    expect(user.pantry).to.be.a('function');
+    expect(Pantry).to.be.a('function');
   });
- 
+
   it('should be an instance of User', () => {
     expect(user.pantry).to.be.an.instanceof(Pantry);
   });
@@ -26,8 +27,8 @@ describe('Pantry', () => {
   it('should check if user has enough ingredients to cook a given meal', () => {
     const recipe1 = sampleData[0];
     const recipe2 = sampleData[1];
-    expect(user.pantry.checkPantry(recipe1)).to.be(true)
-    expect(user.pantry.checkPantry(recipe2)).to.be(false)
+    expect(user.pantry.checkPantry(recipe1)).to.equal(true)
+    expect(user.pantry.checkPantry(recipe2)).to.equal(false)
   });
 
   it('should return missing ingredients and amount for a given recipe', () => {
