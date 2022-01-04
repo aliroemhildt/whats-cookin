@@ -44,6 +44,9 @@ const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
 const singleViewFavoriteButton = document.querySelector('.single-view-favorite-button-js');
 const pageTitle = document.querySelector('.page-title-js');
+const pantryView = document.querySelector('.pantry-view-container-js');
+const pantryPageButton = document.querySelector('.pantry-page-button-js');
+
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -62,11 +65,12 @@ favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
+pantryPageButton.addEventListener('click', displayPantryView);
 
 // FUNCTIONS
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
-  hide([favoritePageButton]);
+  hide([favoritePageButton, pantryView]);
   show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
   pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
@@ -127,7 +131,7 @@ function favoriteFromSingleRecipeView() {
 
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
-  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
+  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView]);
   show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
@@ -170,7 +174,7 @@ function displayHomePage() {
     whatsCookin.classList.add('home-page');
     displayRecipes(recipeRepository.recipeData);
     searchBar.value = '';
-    hide([selectedRecipeView]);
+    hide([selectedRecipeView, pantryView]);
     show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
     pageTitle.innerText = 'home';
     filterButton.addEventListener('click', () => {
@@ -261,11 +265,17 @@ function displaySelectedRecipe(e) {
     })
 
     show([selectedRecipeView, favoritePageButton, cookbookPageButton]);
-    hide([mainView, searchBar, searchButton, pageTitle]);
+    hide([mainView, searchBar, searchButton, pageTitle, pantryView]);
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
   }
+}
+
+function displayPantryView() {
+  pageTitle.innerText = "my pantry";
+  show([pantryView])
+  hide([mainView, searchBar, searchButton])
 }
 
 function showCookbookStatus(selectedRecipe) {
