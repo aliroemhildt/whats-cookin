@@ -7,22 +7,20 @@ class Pantry {
     let hasAllIngredients = true;
 
     recipe.ingredients.forEach(recipeIng => {
-      const ingInPantry = this.ingredients.find(pantryIng => {
+      const matchedId = this.ingredients.find(pantryIng => {
         return recipeIng.id === pantryIng.ingredient;
       })
 
-      if ((ingInPantry && (ingInPantry.amount < recipeIng.quantity.amount)) || !ingInPantry) {
+      if ((matchedId && (matchedId.amount < recipeIng.quantity.amount)) || !matchedId) {
         hasAllIngredients = false;
       }
     })
-
-
 
     return hasAllIngredients;
   }
 
   getMissingIngredients(recipe) {
-    const ingredientsNeeded = recipe.ingredients.reduce((acc, ingredient) => {
+    return recipe.ingredients.reduce((acc, ingredient) => {
       const matchedId = this.ingredients.find(item => item.ingredient === ingredient.id);
       if (matchedId && (ingredient.quantity.amount > matchedId.amount)) {
         const ingredientDetails = {
@@ -37,16 +35,10 @@ class Pantry {
         };
         acc.push(ingredientDetails);
       }
-      console.log(acc)
       return acc;
     }, [])
-    console.log(ingredientsNeeded);
-    return ingredientsNeeded;
   }
 
-  // go into recipes, iterate through recipe.ingredients
-  //this.pantry.find(item => item.ingredient === ingredient.id) - compare recipe ingredients to pantry ingredients
-  // 
 }
 
 export default Pantry;
