@@ -34,12 +34,11 @@ describe('Pantry', () => {
   it('should return missing ingredients and amount for a given recipe', () => {
     const recipe1 = sampleData[0];
     const recipe2 = sampleData[1];
-    expect(user.pantry.getMissingIngredients(recipe1).to.deep.equal([]))
-    expect(user.pantry.getMissingIngredients(recipe2).to.deep.equal([
+    expect(user.pantry.getMissingIngredients(recipe1)).to.deep.equal([]);
+    expect(user.pantry.getMissingIngredients(recipe2)).to.deep.equal([
       {'ingredient': 1009016, 'amount': 1.5},
       {'ingredient': 20027, 'amount': 1},
       {'ingredient': 1002046, 'amount': 1},
-      {'ingredient': 20027, 'amount': 1},
       {'ingredient': 1012046, 'amount': 1},
       {'ingredient': 19911, 'amount': 0.25},
       {'ingredient': 16112, 'amount': 1},
@@ -47,6 +46,6 @@ describe('Pantry', () => {
       {'ingredient': 1102047, 'amount': 2},
       {'ingredient': 16124, 'amount': 1},
       {'ingredient': 1016168, 'amount': 1}
-    ]))
+    ])
   });
 })
