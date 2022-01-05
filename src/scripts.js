@@ -137,6 +137,25 @@ function displayCookbook() {
     searchAllRecipes(currentUser.recipesToCook);
   });
   displayRecipes(currentUser.recipesToCook);
+  showRecipesUserCanCook();
+}
+
+function showRecipesUserCanCook() {
+  console.log(currentUser)
+  const recipeCards = document.querySelectorAll('.recipe-card-js');
+  const recipesUserCanCook = recipeCards.forEach(recipeCard => {
+    const recipeOnCard = currentUser.recipesToCook.find(recipe => {
+      return recipe.id === parseInt(recipeCard.id.slice(2))
+    })
+
+    const haveIngredients = currentUser.pantry.checkPantry(recipeOnCard);
+
+    if (haveIngredients) {
+      recipeCard.childNodes[3].classList.add('highlight-card');
+    }
+    })
+
+  return recipesUserCanCook;
 }
 
 function toggleCookbookButton() {
