@@ -71,8 +71,8 @@ pantryPageButton.addEventListener('click', displayPantryView);
 // FUNCTIONS
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
-  hide([favoritePageButton, pantryView, highlightKey]);
-  show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
+  hide([favoritePageButton, pantryView, highlightKey, selectedRecipeView]);
+  show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle, pantryPageButton]);
   pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.favorites)
@@ -132,8 +132,8 @@ function favoriteFromSingleRecipeView() {
 
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
-  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView, highlightKey]);
-  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
+  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView]);
+  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle, highlightKey, pantryPageButton]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
@@ -193,7 +193,7 @@ function displayHomePage() {
     displayRecipes(recipeRepository.recipeData);
     searchBar.value = '';
     hide([selectedRecipeView, pantryView, highlightKey]);
-    show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
+    show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle, pantryPageButton]);
     pageTitle.innerText = 'home';
     filterButton.addEventListener('click', () => {
       filterRecipesByTag(recipeRepository.recipeData);
@@ -281,24 +281,54 @@ function displaySelectedRecipe(e) {
       return currentRecipe.id === recipeID;
     })
 
-    show([selectedRecipeView, favoritePageButton, cookbookPageButton]);
+    show([selectedRecipeView, favoritePageButton, cookbookPageButton, pantryPageButton]);
     hide([mainView, searchBar, searchButton, pageTitle, pantryView, highlightKey]);
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
+
+    displayIngredientsNeeded(selectedRecipe);
   }
 }
 
+function displayIngredientsNeeded(recipe) {
+  const neededIngredients = currentUser.pantry.getMissingIngredients(recipe);
+  const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
+
+  if (neededIngredients.length === 0) {
+    neededIngredientsSection.innerText = 'you have all of the ingredients needed to cook this recipe!';
+  } else {
+    const elements = neededIngredients.reduce((acc, ingredient) => {
+      const matchedId = ingredientsData.find(item => {
+        return item.id === ingredient.ingredient
+      })
+      const ingWithUnits = selectedRecipe.ingredients.find(item => {
+        return item.id === ingredient.ingredient
+      })
+
+      acc += `
+        ${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}<br>
+      `
+      return acc;
+    }, '<h3>for this recipe you are missing: </h3>')
+    neededIngredientsSection.innerHTML = elements;
+  }
+}
+
+
 function displayPantryView() {
-  whatsCookin.classList.remove('home-page');
-  pageTitle.innerText = "my pantry";
-  show([pantryView]);
-  hide([mainView, searchBar, searchButton]);
-  populatePantry();
+  if (pantryView.classList.contains('hidden')) {
+    whatsCookin.classList.remove('home-page');
+    pageTitle.innerText = "my pantry";
+    show([pantryView, cookbookPageButton, favoritePageButton]);
+    hide([mainView, searchBar, searchButton, pantryPageButton, selectedRecipeView]);
+    populatePantry();
+  }
 }
 
 function populatePantry() {
   const tableBody = document.querySelector('tbody')
+  tableBody.innerHTML = '';
   currentUser.pantry.ingredients.forEach((item) => {
     const ingredientData = ingredientsData.find((ingredient) => {
       return ingredient.id === item.ingredient
@@ -308,7 +338,6 @@ function populatePantry() {
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
       </tr>`
-      //add <td> for units (once we find them). ERG!
   })
   console.log(currentUser.name)
 }

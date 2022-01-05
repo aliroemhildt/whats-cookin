@@ -154,10 +154,13 @@ nav {
 .ingredients-cost-section {
   display: flex;
   flex-direction: column;
-  width: 18%;
   margin: 0px 0px 30px 30px;
   border: 1px solid #1B3231;
   padding: 0px 15px 0px 15px;
+}
+
+.left-wrapper {
+  width: 18%;
 }
 
 .instructions-section {
@@ -246,7 +249,7 @@ nav {
   font-size: 20px;
   padding: 8px;
   background: #E7C423;
-  width: 100%;
+  width: 75%;
 }
 
 .highlight-card {
