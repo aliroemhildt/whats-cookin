@@ -46,6 +46,7 @@ const singleViewFavoriteButton = document.querySelector('.single-view-favorite-b
 const pageTitle = document.querySelector('.page-title-js');
 const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
+const searchButton = document.getElementById('searchRecipes');
 
 
 // EVENT LISTENERS
@@ -257,7 +258,6 @@ function searchAllRecipes(recipes) {
 
 function displaySelectedRecipe(e) {
   if (!e.target.classList.contains('favorite-button-js')) {
-    const searchButton = document.getElementById('searchRecipes');
     whatsCookin.classList.remove('home-page');
     const recipeID = Number(e.target.closest('section').id.slice(2));
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
@@ -273,9 +273,10 @@ function displaySelectedRecipe(e) {
 }
 
 function displayPantryView() {
+  whatsCookin.classList.remove('home-page');
   pageTitle.innerText = "my pantry";
-  show([pantryView])
-  hide([mainView, searchBar, searchButton])
+  show([pantryView]);
+  hide([mainView, searchBar, searchButton]);
 }
 
 function showCookbookStatus(selectedRecipe) {
