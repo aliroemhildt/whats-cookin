@@ -132,8 +132,8 @@ function favoriteFromSingleRecipeView() {
 
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
-  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView, highlightKey]);
-  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
+  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView]);
+  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle, highlightKey]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
@@ -293,8 +293,28 @@ function displaySelectedRecipe(e) {
 
 function displayIngredientsNeeded(recipe) {
   const neededIngredients = currentUser.pantry.getMissingIngredients(recipe);
-  console.log(neededIngredients);
+  const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
+
+  if (neededIngredients.length === 0) {
+    neededIngredientsSection.innerText = 'you have all of the ingredients needed to cook this recipe!';
+  } else {
+    const elements = neededIngredients.reduce((acc, ingredient) => {
+      const matchedId = ingredientsData.find(item => {
+        return item.id === ingredient.ingredient
+      })
+      const ingWithUnits = selectedRecipe.ingredients.find(item => {
+        return item.id === ingredient.ingredient
+      })
+
+      acc += `
+        ${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}<br>
+      `
+      return acc;
+    }, '<h3>for this recipe you are missing: </h3>')
+    neededIngredientsSection.innerHTML = elements;
+  }
 }
+
 
 function displayPantryView() {
   whatsCookin.classList.remove('home-page');
