@@ -286,7 +286,14 @@ function displaySelectedRecipe(e) {
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
+
+    displayIngredientsNeeded(selectedRecipe);
   }
+}
+
+function displayIngredientsNeeded(recipe) {
+  const neededIngredients = currentUser.pantry.getMissingIngredients(recipe);
+  console.log(neededIngredients);
 }
 
 function displayPantryView() {
