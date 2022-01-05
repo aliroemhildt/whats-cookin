@@ -277,6 +277,23 @@ function displayPantryView() {
   pageTitle.innerText = "my pantry";
   show([pantryView]);
   hide([mainView, searchBar, searchButton]);
+  populatePantry();
+}
+
+function populatePantry() {
+  const tableBody = document.querySelector('tbody')
+  currentUser.pantry.ingredients.forEach((item) => {
+    const ingredientData = ingredientsData.find((ingredient) => {
+      return ingredient.id === item.ingredient
+    })
+    tableBody.innerHTML += `
+      <tr>
+        <td>${ingredientData.name}</td>
+        <td>${item.amount}</td>
+      </tr>`
+      //add <td> for units (once we find them). ERG!
+  })
+  console.log(currentUser.name)
 }
 
 function showCookbookStatus(selectedRecipe) {
