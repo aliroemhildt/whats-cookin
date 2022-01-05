@@ -1,10 +1,10 @@
-let userAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
+let userAPI = fetch("http://localhost:3001/api/v1/users")
   .then(response => response.json())
 
-let ingredientAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
+let ingredientAPI = fetch("http://localhost:3001/api/v1/ingredients")
   .then(response => response.json())
 
-let recipeAPI = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+let recipeAPI = fetch("http://localhost:3001/api/v1/recipes")
   .then(response => response.json())
 
 export {userAPI, ingredientAPI, recipeAPI}

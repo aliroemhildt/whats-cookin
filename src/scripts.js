@@ -1,6 +1,10 @@
 // IMPORTS
 import './styles.css';
-import {userAPI, ingredientAPI, recipeAPI} from './apiCalls';
+import {
+  userAPI,
+  ingredientAPI,
+  recipeAPI
+} from './apiCalls';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 import User from '../src/classes/User';
@@ -10,19 +14,22 @@ let userIndex;
 let currentUser;
 let recipeList;
 let recipeRepository;
+let usersData;
 let ingredientsData;
+let recipeData;
 
 Promise.all([userAPI, ingredientAPI, recipeAPI])
   .then(data => {
-    ingredientsData = data[1].ingredientsData;
-    userIndex = getRandomIndex(data[0].usersData);
-    currentUser = new User(data[0].usersData[userIndex], data[1].ingredientsData);
-    recipeList = data[2].recipeData.map(recipe => {
+    [usersData, ingredientsData, recipeData] = [data[0], data[1], data[2]];
+    userIndex = getRandomIndex(usersData);
+    currentUser = new User(usersData[userIndex], ingredientsData);
+    recipeList = recipeData.map(recipe => {
       return new Recipe(recipe);
     })
-    recipeRepository = new RecipeRepository(recipeList)
-    displayRecipes(recipeRepository.recipeData)
-  }).catch(error => console.log(error));
+    recipeRepository = new RecipeRepository(recipeList);
+    displayRecipes(recipeRepository.recipeData);
+  })
+  .catch(error => console.log(error));
 
 // GLOBAL VARIABLES
 let recipeCards = [];
@@ -53,7 +60,7 @@ const highlightKey = document.querySelector('.key');
 searchRecipesButton.addEventListener('click', () => {
   searchAllRecipes(recipeRepository.recipeData);
 });
-searchBar.addEventListener('keyup', function(e) {
+searchBar.addEventListener('keyup', function (e) {
   if (e.keyCode === 13) {
     searchAllRecipes(recipeRepository.recipeData);
   }
@@ -243,7 +250,7 @@ function displayRecipes(recipes) {
 
 function updateFavoriteButton(favoriteButtons) {
   favoriteButtons.forEach((button) => {
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function (e) {
       toggleFavoriteButton(e);
     })
   })
@@ -261,7 +268,7 @@ function addCardInfo(recipeCards) {
       button.value = 'favorited';
       button.classList.add('favorited-state');
     }
-    card.addEventListener('click', function(e) {
+    card.addEventListener('click', function (e) {
       displaySelectedRecipe(e);
     })
   })
