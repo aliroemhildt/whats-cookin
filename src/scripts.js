@@ -44,6 +44,9 @@ const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
 const singleViewFavoriteButton = document.querySelector('.single-view-favorite-button-js');
 const pageTitle = document.querySelector('.page-title-js');
+const pantryView = document.querySelector('.pantry-view-container-js');
+const pantryPageButton = document.querySelector('.pantry-page-button-js');
+const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
 
 // EVENT LISTENERS
@@ -63,11 +66,12 @@ favoritePageButton.addEventListener('click', displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
+pantryPageButton.addEventListener('click', displayPantryView);
 
 // FUNCTIONS
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
-  hide([favoritePageButton, highlightKey]);
+  hide([favoritePageButton, pantryView, highlightKey]);
   show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
   pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
@@ -128,8 +132,8 @@ function favoriteFromSingleRecipeView() {
 
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
-  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
-  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle, highlightKey]);
+  hide([addToCookbookButton, selectedRecipeView, cookbookPageButton, pantryView, highlightKey]);
+  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
@@ -188,7 +192,7 @@ function displayHomePage() {
     whatsCookin.classList.add('home-page');
     displayRecipes(recipeRepository.recipeData);
     searchBar.value = '';
-    hide([selectedRecipeView, highlightKey]);
+    hide([selectedRecipeView, pantryView, highlightKey]);
     show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
     pageTitle.innerText = 'home';
     filterButton.addEventListener('click', () => {
@@ -271,7 +275,6 @@ function searchAllRecipes(recipes) {
 
 function displaySelectedRecipe(e) {
   if (!e.target.classList.contains('favorite-button-js')) {
-    const searchButton = document.getElementById('searchRecipes');
     whatsCookin.classList.remove('home-page');
     const recipeID = Number(e.target.closest('section').id.slice(2));
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
@@ -279,11 +282,35 @@ function displaySelectedRecipe(e) {
     })
 
     show([selectedRecipeView, favoritePageButton, cookbookPageButton]);
-    hide([mainView, searchBar, searchButton, pageTitle, highlightKey]);
+    hide([mainView, searchBar, searchButton, pageTitle, pantryView, highlightKey]);
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
   }
+}
+
+function displayPantryView() {
+  whatsCookin.classList.remove('home-page');
+  pageTitle.innerText = "my pantry";
+  show([pantryView]);
+  hide([mainView, searchBar, searchButton]);
+  populatePantry();
+}
+
+function populatePantry() {
+  const tableBody = document.querySelector('tbody')
+  currentUser.pantry.ingredients.forEach((item) => {
+    const ingredientData = ingredientsData.find((ingredient) => {
+      return ingredient.id === item.ingredient
+    })
+    tableBody.innerHTML += `
+      <tr>
+        <td>${ingredientData.name}</td>
+        <td>${item.amount}</td>
+      </tr>`
+      //add <td> for units (once we find them). ERG!
+  })
+  console.log(currentUser.name)
 }
 
 function showCookbookStatus(selectedRecipe) {
