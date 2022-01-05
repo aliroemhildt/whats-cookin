@@ -44,6 +44,7 @@ const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
 const singleViewFavoriteButton = document.querySelector('.single-view-favorite-button-js');
 const pageTitle = document.querySelector('.page-title-js');
+const highlightKey = document.querySelector('.key');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -66,7 +67,7 @@ singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView)
 // FUNCTIONS
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
-  hide([favoritePageButton]);
+  hide([favoritePageButton, highlightKey]);
   show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle]);
   pageTitle.innerText = 'my favorites';
   filterButton.addEventListener('click', () => {
@@ -128,7 +129,7 @@ function favoriteFromSingleRecipeView() {
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
   hide([addToCookbookButton, selectedRecipeView, cookbookPageButton]);
-  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle]);
+  show([filterSection, mainView, recipeSection, favoritePageButton, addToCookbookButton, pageTitle, highlightKey]);
   pageTitle.innerText = 'my cookbook';
   filterButton.addEventListener('click', () => {
     filterRecipesByTag(currentUser.recipesToCook);
@@ -141,7 +142,6 @@ function displayCookbook() {
 }
 
 function showRecipesUserCanCook() {
-  console.log(currentUser)
   const recipeCards = document.querySelectorAll('.recipe-card-js');
   const recipesUserCanCook = recipeCards.forEach(recipeCard => {
     const recipeOnCard = currentUser.recipesToCook.find(recipe => {
@@ -149,11 +149,10 @@ function showRecipesUserCanCook() {
     })
 
     const haveIngredients = currentUser.pantry.checkPantry(recipeOnCard);
-
     if (haveIngredients) {
       recipeCard.childNodes[3].classList.add('highlight-card');
     }
-    })
+  })
 
   return recipesUserCanCook;
 }
@@ -189,7 +188,7 @@ function displayHomePage() {
     whatsCookin.classList.add('home-page');
     displayRecipes(recipeRepository.recipeData);
     searchBar.value = '';
-    hide([selectedRecipeView]);
+    hide([selectedRecipeView, highlightKey]);
     show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle]);
     pageTitle.innerText = 'home';
     filterButton.addEventListener('click', () => {
@@ -280,7 +279,7 @@ function displaySelectedRecipe(e) {
     })
 
     show([selectedRecipeView, favoritePageButton, cookbookPageButton]);
-    hide([mainView, searchBar, searchButton, pageTitle]);
+    hide([mainView, searchBar, searchButton, pageTitle, highlightKey]);
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
