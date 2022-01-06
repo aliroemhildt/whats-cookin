@@ -344,6 +344,10 @@ function populatePantry() {
       <tr>
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
+        <td class="button-column">
+          <button class="round-buttons">+</button>
+          <button class="round-buttons">-</button>
+        </td>
       </tr>`
   })
   console.log(currentUser.name)

@@ -89,6 +89,25 @@ td {
   background: #F2F5F2;
 }
 
+.button-column {
+  background: none;
+  border: none;
+  width: 298px;
+  padding: 0px;
+}
+
+.round-buttons {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background: #1B3231;
+  color: #F2F5F2;
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  line-height: 1em;
+}
+
 /* ~~~~~~~~~~ NAV BAR ~~~~~~~~~~~~ */
 nav {
   display: flex;
