@@ -28,6 +28,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
     })
     recipeRepository = new RecipeRepository(recipeList);
     displayRecipes(recipeRepository.recipeData);
+    populateDropdown();
   })
   .catch(error => console.log(error));
 
@@ -55,6 +56,7 @@ const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
+const dropdownElement = document.getElementById('ingredient-options');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -74,6 +76,8 @@ addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 pantryPageButton.addEventListener('click', displayPantryView);
+
+
 
 // FUNCTIONS
 function displayFavorites() {
@@ -349,8 +353,17 @@ function populatePantry() {
           <button class="round-buttons">-</button>
         </td>
       </tr>`
+  })git 
+}
+
+function populateDropdown() {
+  // on page load interate through the ingredients data,
+  // forEach ingredient, interpolate the ingredient.name into the option element.
+  // append the option element to the ingredients selection
+  return ingredientsData.forEach(ingredient => {
+    const optionElement = `<option value="${ingredient.id}">${ingredient.name}</option>`;
+    dropdownElement.append(optionElement)
   })
-  console.log(currentUser.name)
 }
 
 function showCookbookStatus(selectedRecipe) {
