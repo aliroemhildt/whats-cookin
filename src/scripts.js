@@ -353,17 +353,33 @@ function populatePantry() {
           <button class="round-buttons">-</button>
         </td>
       </tr>`
-  })git 
+  })
 }
 
 function populateDropdown() {
-  // on page load interate through the ingredients data,
-  // forEach ingredient, interpolate the ingredient.name into the option element.
-  // append the option element to the ingredients selection
-  return ingredientsData.forEach(ingredient => {
-    const optionElement = `<option value="${ingredient.id}">${ingredient.name}</option>`;
-    dropdownElement.append(optionElement)
+  const ingData = ingredientsData.filter(ingredient => {
+    return typeof ingredient.name === 'string'
   })
+  const sortedIngredients = ingData.sort((a, b) => {
+    if(((typeof a.name) === 'string') && ((typeof b.name) === 'string')) {
+      let nA = a.name.toLowerCase();
+      let nB = b.name.toLowerCase();
+       if(nA < nB) {
+        return -1
+      } else if(nA > nB) {
+        return 1
+      }else {
+        return 0
+      }
+    }
+  });
+
+  console.log(sortedIngredients)
+  const dropdownData = sortedIngredients.forEach(ingredient => {
+    const optionElement = `<option value="${ingredient.id}">${ingredient.name}</option>`;
+    dropdownElement.innerHTML += optionElement; 
+  })
+  return dropdownData
 }
 
 function showCookbookStatus(selectedRecipe) {
