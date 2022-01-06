@@ -28,6 +28,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
     })
     recipeRepository = new RecipeRepository(recipeList);
     displayRecipes(recipeRepository.recipeData);
+    populateDropdown();
   })
   .catch(error => console.log(error));
 
@@ -55,6 +56,7 @@ const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
+const dropdownElement = document.getElementById('ingredient-options');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -74,6 +76,8 @@ addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 pantryPageButton.addEventListener('click', displayPantryView);
+
+
 
 // FUNCTIONS
 function displayFavorites() {
@@ -344,9 +348,38 @@ function populatePantry() {
       <tr>
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
+        <td class="button-column">
+          <button class="round-buttons">+</button>
+          <button class="round-buttons">-</button>
+        </td>
       </tr>`
   })
-  console.log(currentUser.name)
+}
+
+function populateDropdown() {
+  const ingData = ingredientsData.filter(ingredient => {
+    return typeof ingredient.name === 'string'
+  })
+  const sortedIngredients = ingData.sort((a, b) => {
+    if(((typeof a.name) === 'string') && ((typeof b.name) === 'string')) {
+      let nA = a.name.toLowerCase();
+      let nB = b.name.toLowerCase();
+       if(nA < nB) {
+        return -1
+      } else if(nA > nB) {
+        return 1
+      }else {
+        return 0
+      }
+    }
+  });
+
+  console.log(sortedIngredients)
+  const dropdownData = sortedIngredients.forEach(ingredient => {
+    const optionElement = `<option value="${ingredient.id}">${ingredient.name}</option>`;
+    dropdownElement.innerHTML += optionElement; 
+  })
+  return dropdownData
 }
 
 function showCookbookStatus(selectedRecipe) {

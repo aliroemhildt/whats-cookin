@@ -163,22 +163,27 @@
         </section>
       </div>
     </section>
-    <section class="pantry-view-container-js table hidden">
-      <table>
-            <thead>
-              <tr>
-                <th>Ingredient</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody class='table-body'>
-            <!-- <tr>
-              <td>Ingredient Here!</td>
-              <td>Amount Here!</td>
-              <td>Units Here!</td>
-            </tr> -->
-            </tbody>
-          </table>
+    <section class="pantry-view-container-js hidden">
+      <section class="ingredient-input-container">
+        <form>
+          <label for="ingredient-options">choose ingredient</label>
+          <select name="ingredient-options" id="ingredient-options">
+          </select>
+        </form>
+      </section>
+      <section class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class='table-body'>
+          </tbody>
+        </table>
+      </section>
     </section>
   </main>
 </body>
