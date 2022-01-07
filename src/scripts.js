@@ -57,6 +57,9 @@ const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
 const dropdownElement = document.querySelector('.dropdown');
+const quantityInput = document.querySelector('.quantity-input');
+const addToPantryButton = document.querySelector('.form-button');
+
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -76,10 +79,41 @@ addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 pantryPageButton.addEventListener('click', displayPantryView);
-
-
+addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
+
+async function postToPantry(id, amount) {
+  return fetch("http://localhost:3001/api/v1/users", {
+    method: 'POST',
+    body: JSON.stringify({
+      userID: currentUser.id,
+      ingredientID: id,
+      ingredientModification: amount
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(getPantry())
+}
+
+function addIngredientToPantry() {
+  const selectedIngID = parseInt(dropdownElement.value);
+  const selectedQuantity = parseInt(quantityInput.value);
+  console.log(currentUser.name);
+  postToPantry(selectedIngID, selectedQuantity);
+}
+
+function getPantry() {
+  return fetch("http://localhost:3001/api/v1/users")
+  .then(response => response.json())
+  .then(data => {
+    currentUser.pantry = data;
+  })
+  .then(populatePantry())
+}
+
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
   hide([favoritePageButton, pantryView, highlightKey, selectedRecipeView]);
