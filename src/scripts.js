@@ -56,7 +56,7 @@ const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
-const dropdownElement = document.getElementById('ingredient-options');
+const dropdownElement = document.querySelector('.dropdown');
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -349,8 +349,8 @@ function populatePantry() {
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
         <td class="button-column">
-          <button class="round-buttons">+</button>
           <button class="round-buttons">-</button>
+          <button class="round-buttons">+</button>
         </td>
       </tr>`
   })
