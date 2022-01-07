@@ -359,7 +359,7 @@ function populatePantry() {
 
 function populateDropdown() {
   ingredientsData.sort((a, b) => {
-    return a.name.localeCompare(b.name);
+    return a.name.localeCompare(b.name, 'en', {ignorePunctuation: true});
   }).forEach((ingredient) => {
     if (ingredient.name) {
       dropdownElement.innerHTML += `<option value="${ingredient.id}">${ingredient.name}</option>"`
