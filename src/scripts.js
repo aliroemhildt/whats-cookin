@@ -356,30 +356,15 @@ function populatePantry() {
   })
 }
 
+
 function populateDropdown() {
-  const ingData = ingredientsData.filter(ingredient => {
-    return typeof ingredient.name === 'string'
-  })
-  const sortedIngredients = ingData.sort((a, b) => {
-    if(((typeof a.name) === 'string') && ((typeof b.name) === 'string')) {
-      let nA = a.name.toLowerCase();
-      let nB = b.name.toLowerCase();
-       if(nA < nB) {
-        return -1
-      } else if(nA > nB) {
-        return 1
-      }else {
-        return 0
-      }
+  ingredientsData.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  }).forEach((ingredient) => {
+    if (ingredient.name) {
+      dropdownElement.innerHTML += `<option value="${ingredient.id}">${ingredient.name}</option>"`
     }
   });
-
-  console.log(sortedIngredients)
-  const dropdownData = sortedIngredients.forEach(ingredient => {
-    const optionElement = `<option value="${ingredient.id}">${ingredient.name}</option>`;
-    dropdownElement.innerHTML += optionElement; 
-  })
-  return dropdownData
 }
 
 function showCookbookStatus(selectedRecipe) {
