@@ -57,20 +57,50 @@ h2 {
   display: flex;
 }
 
+.center {
+  justify-content: center;
+}
+
 .main-view-container {
   height: 100%;
 }
 
-.table {
-  display: flex;
-  justify-content: center;
-  margin-top: 75px;
+/* ~~~~~~~~~~ FORM ~~~~~~~~~~~~ */
+
+.form-margin {
+  margin: 30px 8px 15px 8px;
+}
+
+.dropdown {
+  font-size: 25px;
+  color: #1B3231;
+}
+
+.dropdown-label {
+  font-size: 25px;
+}
+
+.quantity-input {
+  font-size: 25px;
+  width: 135px;
+  color: #1B3231;
+}
+
+.form-button {
+  background-color: #1B3231;
+  color: #F2F5F2
 }
 
 /* ~~~~~~~~~~ INGREDIENT TABLE ~~~~~~~~~~~~ */
 
 table {
   width: 75%;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 th {
@@ -84,7 +114,7 @@ th {
 td {
   color: #1B3231;
   text-align: left;
-  padding: 5px 100px 5px 5px;
+  padding: 5px 80px 5px 5px;
   font-size: 20px;
   background: #F2F5F2;
 }

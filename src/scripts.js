@@ -8,6 +8,7 @@ import {
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 import User from '../src/classes/User';
+import Pantry from '../src/classes/Pantry';
 
 //API
 let userIndex;
@@ -56,7 +57,10 @@ const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
 const highlightKey = document.querySelector('.key');
-const dropdownElement = document.getElementById('ingredient-options');
+const dropdownElement = document.querySelector('.dropdown');
+const quantityInput = document.querySelector('.quantity-input');
+const addToPantryButton = document.querySelector('.form-button');
+
 
 // EVENT LISTENERS
 searchRecipesButton.addEventListener('click', () => {
@@ -76,10 +80,55 @@ addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
 pantryPageButton.addEventListener('click', displayPantryView);
-
-
+addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
+
+async function postToPantry(id, amount) {
+  try {
+    let response = await fetch("http://localhost:3001/api/v1/users", {
+      method: 'POST',
+      body: JSON.stringify({
+        userID: currentUser.id,
+        ingredientID: id,
+        ingredientModification: amount
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    // throw "error"
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function addIngredientToPantry() {
+  const selectedIngID = parseInt(dropdownElement.value);
+  const selectedQuantity = parseInt(quantityInput.value);
+  await postToPantry(selectedIngID, selectedQuantity);
+  await getPantry()
+}
+
+async function getPantry() {
+  try {
+    let response = await fetch("http://localhost:3001/api/v1/users")
+    let data = await response.json()
+    reassignUserPantry(data)
+    populatePantry()
+    // throw "error"
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function reassignUserPantry(data) {
+  const updatedUser = data.find((user) => {
+    return user.id === currentUser.id
+  });
+  currentUser.pantry = new Pantry(updatedUser.pantry)
+}
+
 function displayFavorites() {
   whatsCookin.classList.remove('home-page');
   hide([favoritePageButton, pantryView, highlightKey, selectedRecipeView]);
@@ -349,8 +398,8 @@ function populatePantry() {
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
         <td class="button-column">
-          <button class="round-buttons">+</button>
           <button class="round-buttons">-</button>
+          <button class="round-buttons">+</button>
         </td>
       </tr>`
   })
