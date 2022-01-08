@@ -85,6 +85,7 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 // FUNCTIONS
 
 async function postToPantry(id, amount) {
+  console.log("post: ", id)
   try {
     let response = await fetch("http://localhost:3001/api/v1/users", {
       method: 'POST',
@@ -340,20 +341,20 @@ function searchAllRecipes(recipes) {
 }
 
 function displaySelectedRecipe(e) {
-  if (!e.target.classList.contains('favorite-button-js')) {
+  if (e && !e.target.classList.contains('favorite-button-js')) {
     whatsCookin.classList.remove('home-page');
     const recipeID = Number(e.target.closest('section').id.slice(2));
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
     })
-
     show([selectedRecipeView, favoritePageButton, cookbookPageButton, pantryPageButton]);
     hide([mainView, searchBar, searchButton, pageTitle, pantryView, highlightKey]);
-    showCookbookStatus(selectedRecipe);
-    showFavoritesStatus(selectedRecipe);
-    updateRecipeText(e, selectedRecipe, ingredientsData);
-    displayIngredientsNeeded(selectedRecipe);
   }
+  console.log('displaySelectedRecipe invoked')
+  showCookbookStatus(selectedRecipe);
+  showFavoritesStatus(selectedRecipe);
+  updateRecipeText(e, selectedRecipe, ingredientsData);
+  displayIngredientsNeeded(selectedRecipe);
 }
 
 function displayIngredientsNeeded(recipe) {
@@ -361,9 +362,12 @@ function displayIngredientsNeeded(recipe) {
   const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
 
   if (neededIngredients.length === 0) {
-    neededIngredientsSection.innerHTML = `
-      <p>you have all of the ingredients needed to cook this recipe!</p>
-      <button>cook recipe</button>`;
+    neededIngredientsSection.innerHTML =
+      `<p>you have all of the ingredients needed to cook this recipe!</p>
+      <button class="cook-recipe-js">cook recipe</button>`;
+
+      const cookRecipeButton = document.querySelector('.cook-recipe-js');
+      cookRecipeButton.addEventListener('click', removeIngredients)
   } else {
     const elements = neededIngredients.reduce((acc, ingredient) => {
       const matchedId = ingredientsData.find(item => {
@@ -382,6 +386,19 @@ function displayIngredientsNeeded(recipe) {
   }
 }
 
+function postRecipeIngredients() {
+  selectedRecipe.ingredients.forEach((ingredient) => {
+    const amount = -(parseFloat(ingredient.quantity.amount));
+    console.log(ingredient.id);
+    postToPantry(ingredient.id, amount);
+  });
+}
+
+async function removeIngredients() {
+  await postRecipeIngredients();
+  await getPantry();
+  displaySelectedRecipe();
+}
 
 function displayPantryView() {
   if (pantryView.classList.contains('hidden')) {
