@@ -398,12 +398,41 @@ function populatePantry() {
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
         <td class="button-column">
-          <button class="round-buttons">-</button>
-          <button class="round-buttons">+</button>
+          <button class="round-buttons minus" id="${ingredientData.id}">-</button>
+          <button class="round-buttons plus" id="${ingredientData.id}">+</button>
         </td>
       </tr>`
   })
+  const plusButtons = document.querySelectorAll('.plus');
+  const minusButtons = document.querySelectorAll('.minus');
+  plusButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      changeAmount(e)
+    });
+  })
+  minusButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      changeAmount(e)
+    });
+  })
 }
+
+async function changeAmount(e) {
+  const currentAmount = currentUser.pantry.ingredients.find(item => {
+   return item.ingredient === parseInt(e.target.id)
+  }).amount
+  let amount;
+  if(currentAmount >= 0 && e.target.classList.contains('plus')) {
+    amount = 1
+  }else if(currentAmount >= 1 && e.target.classList.contains('minus')) {
+    amount = -1
+  }else {
+    return
+  }
+  const id = parseInt(e.target.id)
+  await postToPantry(id, amount)
+  await getPantry()
+} 
 
 
 function populateDropdown() {
