@@ -8,6 +8,7 @@ import {
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 import User from '../src/classes/User';
+import Pantry from '../src/classes/Pantry';
 
 //API
 let userIndex;
@@ -83,8 +84,8 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
 
-async function postToPantry(id, amount) {
-  return fetch("http://localhost:3001/api/v1/users", {
+function postToPantry(id, amount) {
+  let response = fetch("http://localhost:3001/api/v1/users", {
     method: 'POST',
     body: JSON.stringify({
       userID: currentUser.id,
@@ -95,23 +96,46 @@ async function postToPantry(id, amount) {
       'Content-Type': 'application/json'
     }
   })
-  .then(getPantry())
+  .catch(err => console.log(err))
 }
 
-function addIngredientToPantry() {
+async function addIngredientToPantry() {
   const selectedIngID = parseInt(dropdownElement.value);
   const selectedQuantity = parseInt(quantityInput.value);
   console.log(currentUser.name);
-  postToPantry(selectedIngID, selectedQuantity);
+  console.log(selectedIngID);
+  console.log("before the post", currentUser.pantry)
+  await postToPantry(selectedIngID, selectedQuantity);
+  await getPantry()
 }
 
-function getPantry() {
-  return fetch("http://localhost:3001/api/v1/users")
-  .then(response => response.json())
-  .then(data => {
-    currentUser.pantry = data;
-  })
-  .then(populatePantry())
+async function getPantry() {
+  let response = await fetch("http://localhost:3001/api/v1/users")
+  let data = await response.json()
+  reassignUserPantry(data)
+  populatePantry()
+  // .catch(err => console.log(err))
+}
+
+// function getPantry() {
+//   return fetch("http://localhost:3001/api/v1/users")
+//   .then(response => response.json())
+//   .then(data => {
+//     console.log(data)
+//     reassignUserPantry(data)
+//   })
+//   .then(populatePantry())
+//   .catch(err => console.log(err))
+// }
+
+function reassignUserPantry(data) {
+  // console.log("old", currentUser.pantry)
+  const updatedUser = data.find((user) => {
+    return user.id === currentUser.id
+  });
+  currentUser.pantry = new Pantry(updatedUser.pantry)
+  // console.log(updatedUser.pantry)
+  // console.log("new", currentUser.pantry)
 }
 
 function displayFavorites() {
