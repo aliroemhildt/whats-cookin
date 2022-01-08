@@ -352,7 +352,6 @@ function displaySelectedRecipe(e) {
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
-
     displayIngredientsNeeded(selectedRecipe);
   }
 }
@@ -440,7 +439,7 @@ async function changeAmount(e) {
   const id = parseInt(e.target.id)
   await postToPantry(id, amount)
   await getPantry()
-} 
+}
 
 
 function populateDropdown() {
@@ -496,7 +495,11 @@ function getIngredientListElement(e, selectedRecipe) {
   ingredientListSection.innerHTML = '<h3>ingredients</h3>';
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
-    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount.toString()} ${ingredient.quantity.unit}<br><br>`;
+    let amount = ingredient.quantity.amount
+    if (!(ingredient.quantity.amount % 1) === 0) {
+      amount = ingredient.quantity.amount.toFixed(2)
+    }
+    acc += `${ingredientNames[index]}: ${amount} ${ingredient.quantity.unit}<br><br>`;
     return acc;
   }, '');
 
