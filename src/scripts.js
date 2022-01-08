@@ -114,8 +114,8 @@ async function addIngredientToPantry() {
 function clearInputs() {
   dropdownElement.value = 'choose ingredient';
   quantityInput.value = '';
+}
 
- }
 async function getPantry() {
   try {
     let response = await fetch("http://localhost:3001/api/v1/users")
@@ -362,7 +362,9 @@ function displayIngredientsNeeded(recipe) {
   const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
 
   if (neededIngredients.length === 0) {
-    neededIngredientsSection.innerText = 'you have all of the ingredients needed to cook this recipe!';
+    neededIngredientsSection.innerHTML = `
+      <p>you have all of the ingredients needed to cook this recipe!</p>
+      <button>cook recipe</button>`;
   } else {
     const elements = neededIngredients.reduce((acc, ingredient) => {
       const matchedId = ingredientsData.find(item => {
