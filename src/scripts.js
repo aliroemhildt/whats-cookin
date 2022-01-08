@@ -108,8 +108,14 @@ async function addIngredientToPantry() {
   const selectedQuantity = parseInt(quantityInput.value);
   await postToPantry(selectedIngID, selectedQuantity);
   await getPantry()
+  clearInputs()
 }
 
+function clearInputs() {
+  dropdownElement.value = 'choose ingredient';
+  quantityInput.value = '';
+
+ }
 async function getPantry() {
   try {
     let response = await fetch("http://localhost:3001/api/v1/users")
