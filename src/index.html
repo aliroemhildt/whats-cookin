@@ -143,8 +143,7 @@
       </div>
       <div class="recipe-details flex-row">
         <section class="left-wrapper">
-          <section class="ingredients-cost-section">
-            <p class="ingredients-needed-js">Placeholder</p>
+          <section class="ingredients-cost-section ingredients-needed-js">
           </section>
           <div class="ingredients-cost-section">
             <section>
@@ -165,8 +164,10 @@
     </section>
     <section class="pantry-view-container-js hidden">
       <form class="flex-row center">
-        <label class="form-margin dropdown-label" for="ingredient-options">add new ingredient to pantry:</label>
-        <select class="dropdown form-margin" name="ingredient-options" id="ingredient-options"></select>
+        <label class="form-margin dropdown-label" for="ingredient-options">add ingredient to pantry:</label>
+        <select class="dropdown form-margin" name="ingredient-options" id="ingredient-options">
+          <option>choose ingredient</option>
+        </select>
         <input class="quantity-input form-margin" type="number" min="0" placeholder="quantity"/>
         <button type="button" class="form-margin form-button">add to pantry</button>
       </form>

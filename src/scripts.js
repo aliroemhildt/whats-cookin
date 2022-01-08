@@ -108,6 +108,12 @@ async function addIngredientToPantry() {
   const selectedQuantity = parseInt(quantityInput.value);
   await postToPantry(selectedIngID, selectedQuantity);
   await getPantry()
+  clearInputs()
+}
+
+function clearInputs() {
+  dropdownElement.value = 'choose ingredient';
+  quantityInput.value = '';
 }
 
 async function getPantry() {
@@ -356,7 +362,9 @@ function displayIngredientsNeeded(recipe) {
   const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
 
   if (neededIngredients.length === 0) {
-    neededIngredientsSection.innerText = 'you have all of the ingredients needed to cook this recipe!';
+    neededIngredientsSection.innerHTML = `
+      <p>you have all of the ingredients needed to cook this recipe!</p>
+      <button>cook recipe</button>`;
   } else {
     const elements = neededIngredients.reduce((acc, ingredient) => {
       const matchedId = ingredientsData.find(item => {
@@ -398,12 +406,41 @@ function populatePantry() {
         <td>${ingredientData.name}</td>
         <td>${item.amount}</td>
         <td class="button-column">
-          <button class="round-buttons">-</button>
-          <button class="round-buttons">+</button>
+          <button class="round-buttons minus" id="${ingredientData.id}">-</button>
+          <button class="round-buttons plus" id="${ingredientData.id}">+</button>
         </td>
       </tr>`
   })
+  const plusButtons = document.querySelectorAll('.plus');
+  const minusButtons = document.querySelectorAll('.minus');
+  plusButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      changeAmount(e)
+    });
+  })
+  minusButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      changeAmount(e)
+    });
+  })
 }
+
+async function changeAmount(e) {
+  const currentAmount = currentUser.pantry.ingredients.find(item => {
+   return item.ingredient === parseInt(e.target.id)
+  }).amount
+  let amount;
+  if(currentAmount >= 0 && e.target.classList.contains('plus')) {
+    amount = 1
+  }else if(currentAmount >= 1 && e.target.classList.contains('minus')) {
+    amount = -1
+  }else {
+    return
+  }
+  const id = parseInt(e.target.id)
+  await postToPantry(id, amount)
+  await getPantry()
+} 
 
 
 function populateDropdown() {
