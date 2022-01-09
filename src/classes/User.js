@@ -63,6 +63,14 @@ class User {
       return acc;
     }, [])
   }
+
+  modifyIngredient(id, amount) {
+    return {
+      userID: this.id,
+      ingredientID: id,
+      ingredientModification: amount
+    }
+  }
 }
 
 export default User;

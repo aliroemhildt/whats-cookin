@@ -7,4 +7,14 @@ let ingredientAPI = fetch("http://localhost:3001/api/v1/ingredients")
 let recipeAPI = fetch("http://localhost:3001/api/v1/recipes")
   .then(response => response.json())
 
-export {userAPI, ingredientAPI, recipeAPI}
+let post = async (info) => {
+  await fetch("http://localhost:3001/api/v1/users", {
+    method: 'POST',
+    body: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export {userAPI, ingredientAPI, recipeAPI, post}
