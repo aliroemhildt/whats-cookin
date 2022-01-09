@@ -57,6 +57,11 @@ h2 {
   display: flex;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .center {
   justify-content: center;
 }
@@ -91,10 +96,24 @@ h2 {
   color: #F2F5F2
 }
 
+.dropdown-message {
+  text-align: center;
+}
+
+.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}
+
+.button-message {
+  font-size: 12px;
+}
+
 /* ~~~~~~~~~~ INGREDIENT TABLE ~~~~~~~~~~~~ */
 
 table {
-  width: 75%;
+  width: 85%;
 }
 
 .table-container {
@@ -137,6 +156,7 @@ td {
   text-align: center;
   line-height: 1em;
 }
+
 
 /* ~~~~~~~~~~ NAV BAR ~~~~~~~~~~~~ */
 nav {
