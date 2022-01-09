@@ -104,7 +104,7 @@ async function postToPantry(info) {
    }
 }
 
-function displayMessageDropdown(postMessage) {
+function displayMessageDropdown() {
   const dropdownMessage = document.querySelector('.dropdown-message');
   dropdownMessage.innerText = `${postMessage}`;
   setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
@@ -114,8 +114,10 @@ function displayMessageDropdown(postMessage) {
   }, 4000)
 }
 
-function displayMessageButtons(postMessage) {
-  
+function displayMessageButtons(e) {
+  const buttonMessage = document.getElementById(`m${e.target.id}`);
+  buttonMessage.innerText = postMessage;
+  setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
 }
 
 async function getPantry() {
@@ -459,7 +461,7 @@ function createTable() {
     <td class="button-column flex-row">
     <button class="round-buttons minus" id="${ingredientData.id}">-</button>
     <button class="round-buttons plus" id="${ingredientData.id}">+</button>
-    <p></p>
+    <p id='m${ingredientData.id}' class ='button-message'></p>
     </td>
     </tr>`
   });
@@ -482,6 +484,7 @@ async function changeAmount(e) {
   await postToPantry(info);
   await getPantry();
   populatePantry();
+  displayMessageButtons(e);
 }
 
 function populateDropdown() {
