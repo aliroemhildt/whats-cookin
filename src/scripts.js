@@ -3,7 +3,8 @@ import './styles.css';
 import {
   userAPI,
   ingredientAPI,
-  recipeAPI
+  recipeAPI,
+  post
 } from './apiCalls';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
@@ -84,30 +85,41 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
 
-async function postToPantry(id, amount) {
+// async function postToPantry(id, amount) {
+//   try {
+//     let response = await fetch("http://localhost:3001/api/v1/users", {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         userID: currentUser.id,
+//         ingredientID: id,
+//         ingredientModification: amount
+//       }),
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     })
+//     // throw "error"
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+async function postToPantry(info) {
   try {
-    let response = await fetch("http://localhost:3001/api/v1/users", {
-      method: 'POST',
-      body: JSON.stringify({
-        userID: currentUser.id,
-        ingredientID: id,
-        ingredientModification: amount
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    let response = await post(info);
     // throw "error"
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
 async function addIngredientToPantry() {
-  const selectedIngID = parseInt(dropdownElement.value);
-  const selectedQuantity = parseInt(quantityInput.value);
-  await postToPantry(selectedIngID, selectedQuantity);
+  const selectedIngID = parseFloat(dropdownElement.value);
+  const selectedQuantity = parseFloat(quantityInput.value);
+  const info = currentUser.modifyIngredient(selectedIngID, selectedQuantity);
+  await postToPantry(info);
   await getPantry()
+  populatePantry()
   clearInputs()
 }
 
@@ -117,11 +129,11 @@ function clearInputs() {
 }
 
 async function getPantry() {
+  console.log('get')
   try {
     let response = await fetch("http://localhost:3001/api/v1/users")
     let data = await response.json()
     reassignUserPantry(data)
-    populatePantry()
     // throw "error"
   } catch (error) {
     console.log(error)
@@ -313,6 +325,8 @@ function updateFavoriteButton(favoriteButtons) {
       toggleFavoriteButton(e);
     })
   })
+
+
 }
 
 function addCardInfo(recipeCards) {
@@ -346,13 +360,12 @@ function displaySelectedRecipe(e) {
     selectedRecipe = recipeRepository.recipeData.find((currentRecipe) => {
       return currentRecipe.id === recipeID;
     })
-
     show([selectedRecipeView, favoritePageButton, cookbookPageButton, pantryPageButton]);
     hide([mainView, searchBar, searchButton, pageTitle, pantryView, highlightKey]);
+
     showCookbookStatus(selectedRecipe);
     showFavoritesStatus(selectedRecipe);
     updateRecipeText(e, selectedRecipe, ingredientsData);
-
     displayIngredientsNeeded(selectedRecipe);
   }
 }
@@ -362,9 +375,12 @@ function displayIngredientsNeeded(recipe) {
   const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
 
   if (neededIngredients.length === 0) {
-    neededIngredientsSection.innerHTML = `
-      <p>you have all of the ingredients needed to cook this recipe!</p>
-      <button>cook recipe</button>`;
+    neededIngredientsSection.innerHTML =
+      `<p>you have all of the ingredients needed to cook this recipe!</p>
+      <button class="cook-recipe-js">cook recipe</button>`;
+
+      const cookRecipeButton = document.querySelector('.cook-recipe-js');
+      cookRecipeButton.addEventListener('click', removeIngredients)
   } else {
     const elements = neededIngredients.reduce((acc, ingredient) => {
       const matchedId = ingredientsData.find(item => {
@@ -383,6 +399,20 @@ function displayIngredientsNeeded(recipe) {
   }
 }
 
+async function removeRecipeIngredients() {
+  for (const ingredient of selectedRecipe.ingredients) {
+    const amount = -(parseFloat(ingredient.quantity.amount));
+    // await postToPantry(ingredient.id, amount);
+    const info = currentUser.modifyIngredient(ingredient.id, amount);
+    await postToPantry(info);
+  }
+}
+
+async function removeIngredients() {
+  await removeRecipeIngredients();
+  await getPantry();
+  displayIngredientsNeeded(selectedRecipe);
+}
 
 function displayPantryView() {
   if (pantryView.classList.contains('hidden')) {
@@ -437,11 +467,12 @@ async function changeAmount(e) {
   }else {
     return
   }
-  const id = parseInt(e.target.id)
-  await postToPantry(id, amount)
-  await getPantry()
-} 
-
+  const id = parseInt(e.target.id);
+  const info = currentUser.modifyIngredient(id, amount);
+  await postToPantry(info);
+  await getPantry();
+  populatePantry();
+}
 
 function populateDropdown() {
   ingredientsData.sort((a, b) => {
@@ -496,7 +527,11 @@ function getIngredientListElement(e, selectedRecipe) {
   ingredientListSection.innerHTML = '<h3>ingredients</h3>';
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
-    acc += `${ingredientNames[index]}: ${ingredient.quantity.amount.toString()} ${ingredient.quantity.unit}<br><br>`;
+    let amount = ingredient.quantity.amount
+    if (!(ingredient.quantity.amount % 1) === 0) {
+      amount = ingredient.quantity.amount.toFixed(2)
+    }
+    acc += `${ingredientNames[index]}: ${amount} ${ingredient.quantity.unit}<br><br>`;
     return acc;
   }, '');
 

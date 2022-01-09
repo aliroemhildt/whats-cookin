@@ -72,4 +72,16 @@ describe('User', () => {
 
     expect(firstUser.filterFavoritesByName('vanilla')).to.deep.equal([sampleData[0], sampleData[5]]);
   });
+
+  it('should return ingredient information as an object, given an ingredient id and amount', () => {
+    const ingId = 1123;
+    const ingAmount = 4;
+    const ingredientInfo = firstUser.modifyIngredient(ingId, ingAmount);
+
+    expect(ingredientInfo).to.deep.equal({
+      userID: 1,
+      ingredientID: 1123,
+      ingredientModification: 4
+    });
+  });
 })
