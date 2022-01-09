@@ -8,173 +8,173 @@
   <title>what's cookin'?</title>
 </head>
 <body>
-  <nav>
-    <div class="nav-div flex-row">
+  <nav class="flex">
+    <div class="flex align-center">
       <h1 class="home-page">what's cookin'?</h1>
       <input class="input" type="text" id ="searchInput" placeholder="Search recipes...">
       <button id ="searchRecipes">search</button>
     </div>
-    <div class="page-title-wrapper">
-      <h4 class="page-title-js">home</h4>
+    <div class="flex justify-center align-center page-title-wrapper">
+      <h2 class="page-title-js">home</h2>
     </div>
-    <div class="nav-div flex-row">
+    <div class="flex align-center">
       <button class="cookbook-page-button-js">my cookbook</button>
       <button id="favoritesPage">my favorites</button>
       <button class="pantry-page-button-js">my pantry</button>
     </div>
   </nav>
   <main>
-    <div class="flex-row main-view-container main-view-container-js">
-      <section class="filter-section filter-section-js">
+    <div class="flex main-view-container main-view-container-js">
+      <section class="flex column align-center filter-section filter-section-js">
         <h3>imma lookin'</h3>
-        <div class="filters">
+        <section class="filters">
           <div class="single-filter">
             <label for="antipasti">
-              <input class="filter-checkbox tag" type="checkbox" id="antipasti" value="yes">antipasti
+              <input class="filter-checkbox tag-js" type="checkbox" id="antipasti" value="yes">antipasti
             </label>
           </div>
           <div class="single-filter">
             <label for="antipasto">
-              <input class="filter-checkbox tag" type="checkbox" id="antipasto" value="yes">antipasto
+              <input class="filter-checkbox tag-js" type="checkbox" id="antipasto" value="yes">antipasto
             </label>
           </div>
           <div class="single-filter">
             <label for="appetizer">
-              <input class="filter-checkbox tag" type="checkbox" id="appetizer" value="yes">appetizer
+              <input class="filter-checkbox tag-js" type="checkbox" id="appetizer" value="yes">appetizer
             </label>
           </div>
           <div class="single-filter">
             <label for="breakfast">
-            <input class="filter-checkbox tag" type="checkbox" id="breakfast" value="yes">breakfast
+            <input class="filter-checkbox tag-js" type="checkbox" id="breakfast" value="yes">breakfast
           </label>
           </div>
           <div class="single-filter">
             <label for="brunch">
-            <input class="filter-checkbox tag" type="checkbox" id="brunch" value="yes">brunch
+            <input class="filter-checkbox tag-js" type="checkbox" id="brunch" value="yes">brunch
           </label>
           </div>
           <div class="single-filter">
             <label for="condiment">
-            <input class="filter-checkbox tag" type="checkbox" id="condiment" value="yes">condiment
+            <input class="filter-checkbox tag-js" type="checkbox" id="condiment" value="yes">condiment
           </label>
           </div>
           <div class="single-filter">
             <label for="dinner">
-            <input class="filter-checkbox tag" type="checkbox" id="dinner" value="yes">dinner
+            <input class="filter-checkbox tag-js" type="checkbox" id="dinner" value="yes">dinner
           </label>
           </div>
           <div class="single-filter">
             <label for="dip">
-            <input class="filter-checkbox tag" type="checkbox" id="dip" value="yes">dip
+            <input class="filter-checkbox tag-js" type="checkbox" id="dip" value="yes">dip
           </label>
           </div>
           <div class="single-filter">
             <label for="hor d'oeuvre">
-            <input class="filter-checkbox tag" type="checkbox" id="hor d'oeuvre" value="yes">hor d'oeuvre
+            <input class="filter-checkbox tag-js" type="checkbox" id="hor d'oeuvre" value="yes">hor d'oeuvre
           </label>
           </div>
           <div class="single-filter">
             <label for="main course">
-            <input class="filter-checkbox tag" type="checkbox" id="main course" value="yes">main course
+            <input class="filter-checkbox tag-js" type="checkbox" id="main course" value="yes">main course
           </label>
           </div>
           <div class="single-filter">
             <label for="lunch">
-            <input class="filter-checkbox tag" type="checkbox" id="lunch" value="yes">lunch
+            <input class="filter-checkbox tag-js" type="checkbox" id="lunch" value="yes">lunch
           </label>
           </div>
           <div class="single-filter">
             <label for="main dish">
-            <input class="filter-checkbox tag" type="checkbox" id="main dish" value="yes">main dish
+            <input class="filter-checkbox tag-js" type="checkbox" id="main dish" value="yes">main dish
           </label>
           </div>
           <div class="single-filter">
             <label for="morning meal">
-            <input class="filter-checkbox tag" type="checkbox" id="morning meal" name="tag" value="yes">morning meal
+            <input class="filter-checkbox tag-js" type="checkbox" id="morning meal" value="yes">morning meal
           </label>
           </div>
           <div class="single-filter">
             <label for="salad">
-            <input class="filter-checkbox tag" type="checkbox" id="salad" value="yes">salad
+            <input class="filter-checkbox tag-js" type="checkbox" id="salad" value="yes">salad
           </label>
           </div>
           <div class="single-filter">
             <label for="sauce">
-            <input class="filter-checkbox tag" type="checkbox" id="sauce" value="yes">sauce
+            <input class="filter-checkbox tag-js" type="checkbox" id="sauce" value="yes">sauce
           </label>
           </div>
           <div class="single-filter">
             <label for="side dish">
-            <input class="filter-checkbox tag" type="checkbox" id="side dish" value="yes">side dish
+            <input class="filter-checkbox tag-js" type="checkbox" id="side dish" value="yes">side dish
           </label>
           </div>
           <div class="single-filter">
             <label for="snack">
-            <input class="filter-checkbox tag" type="checkbox" id="snack" value="yes">snack
+            <input class="filter-checkbox tag-js" type="checkbox" id="snack" value="yes">snack
           </label>
           </div>
           <div class="single-filter">
             <label for="spread">
-            <input class="filter-checkbox tag" type="checkbox" id="spread" value="yes">spread
+            <input class="filter-checkbox tag-js" type="checkbox" id="spread" value="yes">spread
           </label>
           </div>
           <div class="single-filter">
             <label for="starter">
-            <input class="filter-checkbox tag" type="checkbox" id="starter" value="yes">starter
+            <input class="filter-checkbox tag-js" type="checkbox" id="starter" value="yes">starter
           </label>
           </div>
-        </div>
+        </section>
         <button id="filterButton">apply filter</button>
       </section>
-      <section class="recipes-wrapper">
-        <p class="key hidden">Yellow Highlight: You have enough ingredients to cook this recipe!</p>
-        <section class="recipes-section recipes-section-js">
+      <section class="flex column recipes-wrapper">
+        <p class="key key-js hidden">Yellow Highlight: You have enough ingredients to cook this recipe!</p>
+        <section class="flex recipes-section recipes-section-js">
         </section>
       </section>
      </div>
     <section class="individual-recipe-container individual-recipe-container-js hidden">
       <img src="" alt="selected-recipe" class="selected-recipe-photo selected-recipe-photo-js" />
-      <div class="recipe-header flex-row">
-        <h2 class="selected-recipe-name-js">Placeholder: Recipe Name</h2>
+      <div class="recipe-header flex">
+        <h3 class="selected-recipe-name-js">Placeholder: Recipe Name</h3>
         <div>
           <button class="cookbook-button-js page-view-buttons" value=false>add to cookbook</button>
           <button class="page-view-buttons single-view-favorite-button-js" value="unfavorited">favorite</button>
         </div>
       </div>
-      <div class="recipe-details flex-row">
+      <div class="recipe-details flex">
         <section class="left-wrapper">
-          <section class="ingredients-cost-section ingredients-needed-js">
+          <section class="flex column ingredients-cost-section ingredients-needed-js">
           </section>
-          <div class="ingredients-cost-section">
+          <div class="flex column ingredients-cost-section">
             <section>
-              <h3>recipe cost</h3>
+              <h4>recipe cost</h4>
               <p class="cost-js">Placeholder: this element will be removed and replaced</p>
             </section>
             <section class="ingredient-list-section-js">
-              <h3>ingredients</h3>
+              <h4>ingredients</h4>
               <p>Placeholder: this element will be removed and replaced</p>
             </section>
           </div>
         </section>
         <section class="instructions-section instructions-section-js">
-          <h3>instructions</h3>
+          <h4>instructions</h4>
           <p>Placeholder: Detailed Instructions</p>
         </section>
       </div>
     </section>
     <section class="pantry-view-container-js hidden">
-      <section class="flex-column center">
-        <form class="flex-row center">
-          <label class="form-margin dropdown-label" for="ingredient-options">add ingredient to pantry:</label>
-          <select class="dropdown form-margin" name="ingredient-options" id="ingredient-options">
+      <section class="flex column justify-center">
+        <form class="flex justify-center">
+          <label class="form-margin font-25" for="ingredient-options">add ingredient to pantry:</label>
+          <select class="font-25 dropdown form-margin dropdown-js" name="ingredient-options" id="ingredient-options">
             <option>choose ingredient</option>
           </select>
-          <input class="quantity-input form-margin" type="number" min="0" placeholder="quantity"/>
-          <button type="button" class="form-margin form-button">add to pantry</button>
+          <input class="font-25 quantity-input form-margin quantity-input-js" type="number" min="0" placeholder="quantity"/>
+          <button type="button" class="form-margin form-button form-button-js">add to pantry</button>
         </form>
-        <p class="dropdown-message"></p>
+        <p class="hidden-visibility text-center dropdown-message-js">placeholder</p>
      </section>
-      <section class="table-container">
+      <section class="flex justify-center table-container">
         <table>
           <thead>
             <tr>

@@ -1,7 +1,9 @@
 @import './_variables.scss';
 @import './_mix-ins.scss';
+@import './reset.scss';
 
 // * ~~~~~~~~~~ BASIC ELEMENTS ~~~~~~~~~~~~ *
+
 html {
   height: 100%;
   width: 100%;
@@ -48,6 +50,7 @@ button:hover {
 
 h1 {
   margin: 12px;
+  font-size: 20px;
 }
 
 h1:hover:not(.home-page) {
@@ -56,8 +59,11 @@ h1:hover:not(.home-page) {
 }
 
 h2 {
-  padding: 12px 12px 12px 0px;
-  margin: 0px 0px 30px 30px;
+  font-size: 35px;
+}
+
+h3 {
+  padding: 12px;
 }
 
 .flex {
@@ -133,16 +139,16 @@ th {
 td {
   color: $dark-green;
   text-align: left;
-  padding: 5px 80px 5px 5px;
+  padding: 10px;
   font-size: 20px;
   background: $white;
+
 }
 
 .button-column {
   background: none;
   border: none;
-  width: 298px;
-  padding: 0px;
+  width: 380px;
 }
 
 .round-buttons {
@@ -157,8 +163,8 @@ td {
   line-height: 1em;
 }
 
-
 /* ~~~~~~~~~~ NAV BAR ~~~~~~~~~~~~ */
+
 nav {
   justify-content: space-between;
   height: 10%;
@@ -179,6 +185,7 @@ nav {
 }
 
 /* ~~~~~~~~~~ FILTER SECTION ~~~~~~~~~~~~ */
+
 .filters {
   margin: 12px;
 }
@@ -194,6 +201,7 @@ nav {
 }
 
 /* ~~~~~~~~~~ INDIVIDUAL RECIPE VIEW ~~~~~~~~~~ */
+
 .individual-recipe-container {
   height:100%;
   min-width: 100%;
@@ -243,6 +251,7 @@ nav {
 }
 
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
+
 .recipes-wrapper {
   width: 90%;
   min-height: 100%;
@@ -260,9 +269,12 @@ nav {
   height: 300px;
   width: 273px;
   margin: 18px;
+  transition: transform 0.3s ease;
 }
 
 .recipe-card:hover {
+  transform: translate(-10px, -10px);
+  background-color: $green-hover;
   cursor: pointer;
 }
 
@@ -288,7 +300,7 @@ nav {
 
 .recipe-card-name {
   text-align: center;
-  padding: 0, 8px, 8px, 8px;
+  padding: 15px 8px 8px 8px;
 }
 
 .key {
@@ -304,6 +316,11 @@ nav {
 }
 
 /* ~~~~~~~~~~ HIDDEN ~~~~~~~~~~~~ */
+
 .hidden {
   display: none;
+}
+
+.hidden-visibility {
+  visibility: hidden;
 }

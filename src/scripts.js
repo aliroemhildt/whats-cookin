@@ -1,5 +1,5 @@
 // IMPORTS
-import './styles.css';
+import './styles/index.scss';
 import {
   userAPI,
   ingredientAPI,
@@ -49,7 +49,7 @@ const searchRecipesButton = document.getElementById('searchRecipes');
 const filterButton = document.getElementById('filterButton');
 const whatsCookin = document.querySelector('h1');
 const searchBar = document.getElementById('searchInput');
-const filterTags = document.querySelectorAll('.tag');
+const filterTags = document.querySelectorAll('.tag-js');
 const favoritePageButton = document.getElementById('favoritesPage');
 const addToCookbookButton = document.querySelector('.cookbook-button-js')
 const cookbookPageButton = document.querySelector('.cookbook-page-button-js');
@@ -58,10 +58,10 @@ const pageTitle = document.querySelector('.page-title-js');
 const pantryView = document.querySelector('.pantry-view-container-js');
 const pantryPageButton = document.querySelector('.pantry-page-button-js');
 const searchButton = document.getElementById('searchRecipes');
-const highlightKey = document.querySelector('.key');
-const dropdownElement = document.querySelector('.dropdown');
-const quantityInput = document.querySelector('.quantity-input');
-const addToPantryButton = document.querySelector('.form-button');
+const highlightKey = document.querySelector('.key-js');
+const dropdownElement = document.querySelector('.dropdown-js');
+const quantityInput = document.querySelector('.quantity-input-js');
+const addToPantryButton = document.querySelector('.form-button-js');
 
 
 // EVENT LISTENERS
@@ -86,7 +86,6 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
 
-
 async function postToPantry(info) {
   try {
     let response = await post(info)
@@ -105,12 +104,13 @@ async function postToPantry(info) {
 }
 
 function displayMessageDropdown() {
-  const dropdownMessage = document.querySelector('.dropdown-message');
+  const dropdownMessage = document.querySelector('.dropdown-message-js');
   dropdownMessage.innerText = `${postMessage}`;
+  dropdownMessage.classList.remove('hidden-visibility')
   setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
   setTimeout(() => {
+    dropdownMessage.classList.add('hidden-visibility');
     dropdownMessage.classList.remove('fade-out');
-    dropdownMessage.innerText = '';
   }, 4000)
 }
 
@@ -305,9 +305,9 @@ function displayRecipes(recipes) {
   recipeSection.innerHTML = '';
   recipes.forEach(recipe => {
     recipeSection.innerHTML += `
-      <section class='recipe-card recipe-card-js' id='id${recipe.id}'>
+      <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <div class='recipe-card-text'>
+         <div class='flex column align-center recipe-card-text'>
            <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
            <p class='recipe-card-name'>${recipe.name}</p>
           </div>
@@ -433,8 +433,8 @@ function populatePantry() {
 }
 
 function selectTableButtons() {
-  const plusButtons = document.querySelectorAll('.plus');
-  const minusButtons = document.querySelectorAll('.minus');
+  const plusButtons = document.querySelectorAll('.plus-js');
+  const minusButtons = document.querySelectorAll('.minus-js');
   plusButtons.forEach(button => {
     button.addEventListener('click', function (e) {
       changeAmount(e)
@@ -458,9 +458,9 @@ function createTable() {
     <tr>
     <td>${ingredientData.name}</td>
     <td>${item.amount}</td>
-    <td class="button-column flex-row">
-    <button class="round-buttons minus" id="${ingredientData.id}">-</button>
-    <button class="round-buttons plus" id="${ingredientData.id}">+</button>
+    <td class="button-column flex">
+    <button class="round-buttons minus-js" id="${ingredientData.id}">-</button>
+    <button class="round-buttons plus-js" id="${ingredientData.id}">+</button>
     <p id='m${ingredientData.id}' class ='button-message'></p>
     </td>
     </tr>`
@@ -472,9 +472,9 @@ async function changeAmount(e) {
     return item.ingredient === parseInt(e.target.id)
   }).amount
   let amount;
-  if (currentAmount >= 0 && e.target.classList.contains('plus')) {
+  if (currentAmount >= 0 && e.target.classList.contains('plus-js')) {
     amount = 1
-  } else if (currentAmount >= 1 && e.target.classList.contains('minus')) {
+  } else if (currentAmount >= 1 && e.target.classList.contains('minus-js')) {
     amount = -1
   } else {
     return
