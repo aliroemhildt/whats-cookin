@@ -85,32 +85,25 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
 
-// async function postToPantry(id, amount) {
+// async function postToPantry(info) {
 //   try {
-//     let response = await fetch("http://localhost:3001/api/v1/users", {
-//       method: 'POST',
-//       body: JSON.stringify({
-//         userID: currentUser.id,
-//         ingredientID: id,
-//         ingredientModification: amount
-//       }),
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     })
+//     let response = await post(info);
 //     // throw "error"
 //   } catch (error) {
-//     console.log(error)
+//     console.log(error);
 //   }
 // }
 
 async function postToPantry(info) {
-  try {
-    let response = await post(info);
-    // throw "error"
-  } catch (error) {
-    console.log(error);
-  }
+    let response = await post(info)
+    .catch(error => console.log(error))
+}
+
+async function getPantry() {
+  let response = await fetch("http://localhost:3001/api/v1/users")
+  .then(response => response.json())
+  .then(data => reassignUserPantry(data))
+  .catch(err0r => console.log(error))
 }
 
 async function addIngredientToPantry() {
@@ -126,18 +119,6 @@ async function addIngredientToPantry() {
 function clearInputs() {
   dropdownElement.value = 'choose ingredient';
   quantityInput.value = '';
-}
-
-async function getPantry() {
-  console.log('get')
-  try {
-    let response = await fetch("http://localhost:3001/api/v1/users")
-    let data = await response.json()
-    reassignUserPantry(data)
-    // throw "error"
-  } catch (error) {
-    console.log(error)
-  }
 }
 
 function reassignUserPantry(data) {
@@ -425,22 +406,11 @@ function displayPantryView() {
 }
 
 function populatePantry() {
-  const tableBody = document.querySelector('tbody')
-  tableBody.innerHTML = '';
-  currentUser.pantry.ingredients.forEach((item) => {
-    const ingredientData = ingredientsData.find((ingredient) => {
-      return ingredient.id === item.ingredient
-    })
-    tableBody.innerHTML += `
-      <tr>
-        <td>${ingredientData.name}</td>
-        <td>${item.amount}</td>
-        <td class="button-column">
-          <button class="round-buttons minus" id="${ingredientData.id}">-</button>
-          <button class="round-buttons plus" id="${ingredientData.id}">+</button>
-        </td>
-      </tr>`
-  })
+  createTable();
+  selectTableButtons();
+}
+
+function selectTableButtons() {
   const plusButtons = document.querySelectorAll('.plus');
   const minusButtons = document.querySelectorAll('.minus');
   plusButtons.forEach(button => {
@@ -453,6 +423,25 @@ function populatePantry() {
       changeAmount(e)
     });
   })
+}
+
+function createTable() {
+  const tableBody = document.querySelector('tbody')
+  tableBody.innerHTML = '';
+  currentUser.pantry.ingredients.forEach((item) => {
+    const ingredientData = ingredientsData.find((ingredient) => {
+      return ingredient.id === item.ingredient
+    })
+    tableBody.innerHTML += `
+    <tr>
+    <td>${ingredientData.name}</td>
+    <td>${item.amount}</td>
+    <td class="button-column">
+    <button class="round-buttons minus" id="${ingredientData.id}">-</button>
+    <button class="round-buttons plus" id="${ingredientData.id}">+</button>
+    </td>
+    </tr>`
+  });
 }
 
 async function changeAmount(e) {
