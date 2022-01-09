@@ -57,6 +57,11 @@ h2 {
   display: flex;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .center {
   justify-content: center;
 }
@@ -89,6 +94,16 @@ h2 {
 .form-button {
   background-color: #1B3231;
   color: #F2F5F2
+}
+
+.dropdown-message {
+  text-align: center;
+}
+
+.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
 }
 
 /* ~~~~~~~~~~ INGREDIENT TABLE ~~~~~~~~~~~~ */

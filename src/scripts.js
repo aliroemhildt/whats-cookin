@@ -38,6 +38,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
 let recipeCards = [];
 let favoriteButtons = [];
 let selectedRecipe;
+let postMessage;
 
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
@@ -85,25 +86,43 @@ addToPantryButton.addEventListener('click', addIngredientToPantry);
 
 // FUNCTIONS
 
-// async function postToPantry(info) {
-//   try {
-//     let response = await post(info);
-//     // throw "error"
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 async function postToPantry(info) {
+  try {
     let response = await post(info)
-    .catch(error => console.log(error))
+    let message = await response.json()
+    postMessage = message.message
+    console.log(postMessage)
+    // .then(response => {
+    //   console.log(response)
+    //   response.json()})
+    // .then(message => {
+    //   postMesssage = message.json()})
+  }
+   catch(error) {
+    console.log(error)
+   }
+}
+
+function displayMessageDropdown(postMessage) {
+  const dropdownMessage = document.querySelector('.dropdown-message');
+  dropdownMessage.innerText = `${postMessage}`;
+  setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
+  setTimeout(() => {
+    dropdownMessage.classList.remove('fade-out');
+    dropdownMessage.innerText = '';
+  }, 4000)
+}
+
+function displayMessageButtons(postMessage) {
+  
 }
 
 async function getPantry() {
   let response = await fetch("http://localhost:3001/api/v1/users")
-  .then(response => response.json())
-  .then(data => reassignUserPantry(data))
-  .catch(err0r => console.log(error))
+    .then(response => response.json())
+    .then(data => reassignUserPantry(data))
+    .catch(error => console.log(error))
 }
 
 async function addIngredientToPantry() {
@@ -111,6 +130,7 @@ async function addIngredientToPantry() {
   const selectedQuantity = parseFloat(quantityInput.value);
   const info = currentUser.modifyIngredient(selectedIngID, selectedQuantity);
   await postToPantry(info);
+  displayMessageDropdown(postMessage);
   await getPantry()
   populatePantry()
   clearInputs()
@@ -360,8 +380,8 @@ function displayIngredientsNeeded(recipe) {
       `<p>you have all of the ingredients needed to cook this recipe!</p>
       <button class="cook-recipe-js">cook recipe</button>`;
 
-      const cookRecipeButton = document.querySelector('.cook-recipe-js');
-      cookRecipeButton.addEventListener('click', removeIngredients)
+    const cookRecipeButton = document.querySelector('.cook-recipe-js');
+    cookRecipeButton.addEventListener('click', removeIngredients)
   } else {
     const elements = neededIngredients.reduce((acc, ingredient) => {
       const matchedId = ingredientsData.find(item => {
@@ -436,9 +456,10 @@ function createTable() {
     <tr>
     <td>${ingredientData.name}</td>
     <td>${item.amount}</td>
-    <td class="button-column">
+    <td class="button-column flex-row">
     <button class="round-buttons minus" id="${ingredientData.id}">-</button>
     <button class="round-buttons plus" id="${ingredientData.id}">+</button>
+    <p></p>
     </td>
     </tr>`
   });
@@ -446,14 +467,14 @@ function createTable() {
 
 async function changeAmount(e) {
   const currentAmount = currentUser.pantry.ingredients.find(item => {
-   return item.ingredient === parseInt(e.target.id)
+    return item.ingredient === parseInt(e.target.id)
   }).amount
   let amount;
-  if(currentAmount >= 0 && e.target.classList.contains('plus')) {
+  if (currentAmount >= 0 && e.target.classList.contains('plus')) {
     amount = 1
-  }else if(currentAmount >= 1 && e.target.classList.contains('minus')) {
+  } else if (currentAmount >= 1 && e.target.classList.contains('minus')) {
     amount = -1
-  }else {
+  } else {
     return
   }
   const id = parseInt(e.target.id);
@@ -465,7 +486,9 @@ async function changeAmount(e) {
 
 function populateDropdown() {
   ingredientsData.sort((a, b) => {
-    return a.name.localeCompare(b.name, 'en', {ignorePunctuation: true});
+    return a.name.localeCompare(b.name, 'en', {
+      ignorePunctuation: true
+    });
   }).forEach((ingredient) => {
     if (ingredient.name) {
       dropdownElement.innerHTML += `<option value="${ingredient.id}">${ingredient.name}</option>"`
