@@ -2,10 +2,9 @@
 
 Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an easy-to-use web app for organizing all your favorite recipes in one place.
 
-<!-- --------------------------------------- -->
+---------------------------------------
 
 # Table of Contents
-
 
 1. [Overview](#overview)
 2. [Installation Instructions](#installationInstructions)
@@ -29,9 +28,9 @@ Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an 
 
 ## Overview <a name="overview"></a>
 
-On the landing page, a randomized user will see all available recipes displayed. From here, the user can search a keyword or add a filter to narrow down the recipes that are displayed. When a keyword is entered in the search bar and the "search" button is clicked, any recipe with the keyword included in its name or ingredient list will appear. The user can also select one or multiple filters, which will update the displayed recipes when the "apply filter" button is clicked. If a user clicks the "favorite" button on a recipe card, that recipe will be added to the "my favorites" page. When the user goes to the "my favorites" page, they can search and filter their favorite recipes, and remove a recipe from favorites by deselecting the "favorite" button.
+On the landing page, a randomized user will see all available recipes displayed. The user may click on any single recipe for more details such as instructions, ingredients and cost of ingredients.  From here, the user can search a keyword or add a filter to narrow down the recipes that are displayed. When a keyword is entered in the search bar and the "search" button is clicked, any recipe with the keyword included in its name or ingredient list will appear. The user can also select one or multiple filters, which will update the displayed recipes when the "apply filter" button is clicked. If a user clicks the "favorite" button on a recipe card, that recipe will be added to the "my favorites" page. When the user goes to the "my favorites" page, they can search and filter their favorite recipes, and remove a recipe from favorites by deselecting the "favorite" button.
 
-The user has access to their own personal pantry when the "my pantry" button is clicked where they are able to modify pantry contents by either adding a new ingredient via the dropdown menu or by adding or subtracting the quantity of an ingredient that currently exists in their pantry. The user may click on any single recipe for more details such as instructions, ingredients and cost of ingredients. If the user needs additional ingrdients to cook a recipe, the missing ingredients list and quantities will be listed in the missing ingredients box to the left. They can choose to cook that recipe if they have enough ingredients (and their respective quantities) in their pantry by clicking the "cook recipe" button. 
+The user has access to their own personal pantry by clicking the "my pantry" button and they are able to modify pantry contents by either adding a new ingredient via the dropdown menu or by adding or subtracting the quantity of an ingredient that currently exists in their pantry. When a user clicks on a single recipe for more details, they can see if they need additional ingrdients to cook the recipe; the missing ingredients list and quantities will be listed in the missing ingredients box to the left. They can choose to cook that recipe if they have enough ingredients (and their respective quantities) in their pantry by clicking the "cook recipe" button. 
 
 ---------------------------------------
 
@@ -99,13 +98,15 @@ When a user is viewing a recipe's detailes, they have the option to select the "
 
 ### Adding and Removing From Pantry <a name="addOrRemove"></a>
 
-A user can view their own personal pantry contents by clicking the "my pantry" page. If they want to add a new ingredient, they may add an ingredient from the list and input the needed quantity into the dropdown menu and input field above the ingredients table. They can also add or remove ingredients from their existing ingredients table by using the plus and minus buttons to the right of the listed ingredient. add
+A user can view their own personal pantry contents by clicking the "my pantry" button. If they want to add a new ingredient to their pantry, they may select it  from the dropdown menu and enter their needed quantity in the input field above the ingredients table. They may also add or remove ingredients from their existing ingredients table by using the plus and minus buttons to the right of the listed ingredient. 
 
 ![addToPantry](https://user-images.githubusercontent.com/78453792/148842099-07b765f9-5d34-4ed8-989b-0c7f149b7712.gif)
 
 ### Cooking Recipe <a name="cookingRecipe"></a>
 
-If a user has enough ingredients and their needed quantities for a recipe, they are able to cook that recipe by clicking the "cook recipe" button. 
+If a user has enough ingredients and their needed quantities for a recipe, they are able to cook that recipe by clicking the "cook recipe" button. Once the recipe is cooked, ingredients needed will be displayed if user wants to cook the recipe again and does not have enough ingredients in their pantry. 
+
+![cook-recipe](https://user-images.githubusercontent.com/78453792/148850290-5a98115e-68ea-493d-8ff2-15767eca8d1b.gif)
 
 ---------------------------------------
 
@@ -125,8 +126,8 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
 - This was our team's first time working with the following technology and concepts, which naturally came with a learning curve as we implemented them into our project:
 
     - Using local server to access data 
-    - Implementing SASS variables and mix-ins to DRY up our CSS
-    - Organizing our DOM manipulation into its own file-- was harder than we anticipated because we had many helper functions that needed to be in the file in order for the code to execute properly in the main scripts file
+    - Implementing SCSS variables and mixins to DRY up our CSS
+    - Organizing our DOM manipulation into its own file - harder than we anticipated because we had many helper functions that needed to be in the file in order for the code to execute properly in the main scripts file
 
 
 ---------------------------------------
@@ -148,17 +149,19 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
 - Completed a thorough project plan and utlized GH project board for organization
 - Considered and tested all accessibility areas using Lighthouse Accessibility Audit
 
+---------------------------------------
+
 ## Technologies Used <a name="techUsed"></a>
 
 - JavaScript
 - CSS3
-- SASS
+- SCSS
 - HTML5
 - NPM
 - ESLint
 - webpack
 - Fetch API
-- Lighthouse 
+- Lighthouse Accessibility Audit 
 
 ---------------------------------------
 
