@@ -63,7 +63,9 @@ h2 {
 }
 
 h3 {
-  padding: 12px;
+  font-size: 20px;
+  padding: 20px 12px 12px 12px;
+  flex-grow: 1;
 }
 
 .flex {
@@ -122,10 +124,13 @@ h3 {
 
 table {
   width: 85%;
+  border-collapse: separate;
+  border-spacing: 5px 5px;
 }
 
 .table-container {
   margin-top: 20px;
+  justify-content: flex-end;
 }
 
 th {
@@ -142,13 +147,13 @@ td {
   padding: 10px;
   font-size: 20px;
   background: $white;
+  border-spacing: 0 5px;
 
 }
 
 .button-column {
   background: none;
   border: none;
-  width: 380px;
 }
 
 .round-buttons {
@@ -188,10 +193,11 @@ nav {
 
 .filters {
   margin: 12px;
+  flex-grow: 8;
 }
 
 .filter-section {
-  width: 10%;
+  width: 12%;
   margin: 18px;
   border: 1px solid $dark-green;
 }
@@ -253,7 +259,7 @@ nav {
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
 
 .recipes-wrapper {
-  width: 90%;
+  width: 88%;
   min-height: 100%;
 }
 
@@ -266,9 +272,9 @@ nav {
 
 .recipe-card {
   border: 2px solid $white;
-  height: 300px;
-  width: 273px;
-  margin: 18px;
+  height: 285px;
+  width: 258px;
+  margin: 19px;
   transition: transform 0.3s ease;
 }
 
@@ -279,7 +285,7 @@ nav {
 }
 
 .recipe-card-image {
-  width: 275px;
+  width: 258px;
 }
 
 .recipe-card-text {
