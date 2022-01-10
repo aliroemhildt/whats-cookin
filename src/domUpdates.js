@@ -96,7 +96,7 @@ function showFavoritesStatus(selectedRecipe) {
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js');
-  ingredientListSection.innerHTML = '<h3>ingredients</h3>';
+  ingredientListSection.innerHTML = '<h4>ingredients</h4>';
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
     let amount = ingredient.quantity.amount
@@ -112,7 +112,7 @@ function getIngredientListElement(e, selectedRecipe) {
 
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
-  instructionsSection.innerHTML = '<h3>instructions</h3>';
+  instructionsSection.innerHTML = '<h4>instructions</h4>';
   const instructionsStrings = selectedRecipe.returnInstructions();
   const instructionsText = instructionsStrings.reduce((acc, instruction) => {
     acc += `${instruction}<br><br>`;
@@ -161,10 +161,10 @@ function displayIngredientsNeeded(recipe) {
       })
 
       acc += `
-        ${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}<br>
+        <p>${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}</p><br>
       `
       return acc;
-    }, '<h3>for this recipe you are missing: </h3>')
+    }, '')
     neededIngredientsSection.innerHTML = elements;
   }
 }
@@ -218,21 +218,30 @@ function favoriteFromSingleRecipeView() {
 function createTable() {
   const tableBody = document.querySelector('tbody')
   tableBody.innerHTML = '';
-  currentUser.pantry.ingredients.forEach((item) => {
-    const ingredientData = ingredientsData.find((ingredient) => {
-      return ingredient.id === item.ingredient
-    })
+  if (currentUser.pantry.ingredients.length > 0) {
+    currentUser.pantry.ingredients.forEach((item) => {
+      const ingredientData = ingredientsData.find((ingredient) => {
+        return ingredient.id === item.ingredient
+      })
+      tableBody.innerHTML += `
+      <tr>
+      <td class="ingredient-column">${ingredientData.name}</td>
+      <td class="amount-column">${item.amount}</td>
+      <td class="button-column flex align-center">
+      <button class="round-buttons minus-js" id="${ingredientData.id}">-</button>
+      <button class="round-buttons plus-js" id="${ingredientData.id}">+</button>
+      <p id="m${ingredientData.id}" class ="button-message"></p>
+      </td>
+      </tr>`
+    });
+  } else {
     tableBody.innerHTML += `
     <tr>
-    <td>${ingredientData.name}</td>
-    <td>${item.amount}</td>
-    <td class="button-column flex">
-    <button class="round-buttons minus-js" id="${ingredientData.id}">-</button>
-    <button class="round-buttons plus-js" id="${ingredientData.id}">+</button>
-    <p id='m${ingredientData.id}' class ='button-message'></p>
-    </td>
+      <td class="ingredient-column hidden-row"></td>
+      <td class="amount-column hidden-row"></td>
+      <td class="button-column hidden-row"></td>
     </tr>`
-  });
+  }
 }
 
 function selectTableButtons() {
