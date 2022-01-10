@@ -1,7 +1,24 @@
-import currentUser from './scripts'
+// IMPORTS
+import {
+  recipeRepository,
+  ingredientsData,
+  currentUser,
+  selectedRecipe,
+  postMessage,
+  filterRecipesByTag,
+  addIngredientToPantry,
+  addCardInfo,
+  changeAmount,
+  removeIngredients,
+  updateSelectedRecipe
+}
+from './scripts'
 
+// GLOBAL VARIABLES
+let favoriteButtons = [];
+let recipeCards = [];
 
-//QUERY SELECTORS
+// QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
 const selectedRecipeView = document.querySelector('.individual-recipe-container-js');
 const filterSection = document.querySelector('.filter-section-js');
@@ -24,8 +41,14 @@ const dropdownElement = document.querySelector('.dropdown-js');
 const quantityInput = document.querySelector('.quantity-input-js');
 const addToPantryButton = document.querySelector('.form-button-js');
 
-
 // EVENT LISTENERS
+whatsCookin.addEventListener('click', displayHomePage);
+favoritePageButton.addEventListener('click', displayFavorites);
+addToCookbookButton.addEventListener('click', toggleCookbookButton);
+cookbookPageButton.addEventListener('click', displayCookbook);
+singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
+pantryPageButton.addEventListener('click', displayPantryView);
+addToPantryButton.addEventListener('click', addIngredientToPantry);
 searchRecipesButton.addEventListener('click', () => {
   searchAllRecipes(recipeRepository.recipeData);
 });
@@ -37,15 +60,8 @@ searchBar.addEventListener('keyup', function (e) {
 filterButton.addEventListener('click', () => {
   filterRecipesByTag(recipeRepository.recipeData);
 });
-whatsCookin.addEventListener('click', displayHomePage);
-favoritePageButton.addEventListener('click', displayFavorites);
-addToCookbookButton.addEventListener('click', toggleCookbookButton);
-cookbookPageButton.addEventListener('click', displayCookbook);
-singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
-pantryPageButton.addEventListener('click', displayPantryView);
-addToPantryButton.addEventListener('click', addIngredientToPantry);
 
-//FUNCTIONS
+// FUNCTIONS
 function show(elements) {
   elements.forEach(element => {
     element.classList.remove('hidden');
@@ -58,22 +74,99 @@ function hide(elements) {
   })
 }
 
-function addCardInfo(recipeCards) {
-  recipeCards.forEach((card, index) => {
-    const cardId = Number(card.id.slice(2));
-    const currentRecipe = recipeRepository.recipeData.find(recipe => {
-      return recipe.id === cardId;
-    })
+function showCookbookStatus(selectedRecipe) {
+  if (currentUser.recipesToCook.includes(selectedRecipe)) {
+    selectAddToCookbookButton();
+    addToCookbookButton.innerText = 'remove from cookbook';
+  } else {
+    deselectAddToCookbookButton()
+    addToCookbookButton.innerText = 'add to cookbook';
+  }
+}
 
-    const button = card.childNodes[3].childNodes[1];
-    if (currentUser.favorites.includes(currentRecipe)) {
-      button.value = 'favorited';
-      button.classList.add('favorited-state');
+function showFavoritesStatus(selectedRecipe) {
+  if (currentUser.favorites.includes(selectedRecipe)) {
+    singleViewFavoriteButton.value = 'favorited';
+    singleViewFavoriteButton.classList.add('favorited-state');
+  } else {
+    singleViewFavoriteButton.value = 'unfavorited';
+    singleViewFavoriteButton.classList.remove('favorited-state');
+  }
+}
+
+function getIngredientListElement(e, selectedRecipe) {
+  const ingredientListSection = document.querySelector('.ingredient-list-section-js');
+  ingredientListSection.innerHTML = '<h3>ingredients</h3>';
+  const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
+  const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
+    let amount = ingredient.quantity.amount
+    if (!(ingredient.quantity.amount % 1) === 0) {
+      amount = ingredient.quantity.amount.toFixed(2)
     }
-    card.addEventListener('click', function (e) {
-      displaySelectedRecipe(e);
-    })
-  })
+    acc += `${ingredientNames[index]}: ${amount} ${ingredient.quantity.unit}<br><br>`;
+    return acc;
+  }, '');
+
+  return '<p class="selected-recipe-ingredients-list">' + ingredientListText + '</p>';
+}
+
+function getInstructionsElement(e, selectedRecipe) {
+  const instructionsSection = document.querySelector('.instructions-section-js');
+  instructionsSection.innerHTML = '<h3>instructions</h3>';
+  const instructionsStrings = selectedRecipe.returnInstructions();
+  const instructionsText = instructionsStrings.reduce((acc, instruction) => {
+    acc += `${instruction}<br><br>`;
+    return acc;
+  }, '');
+
+  return '<p class="selected-recipe-instructions">' + instructionsText + '</p>'
+}
+
+function updateRecipeText(e, selectedRecipe, ingredientsData) {
+  const instructionsSection = document.querySelector('.instructions-section-js');
+  const ingredientListSection = document.querySelector('.ingredient-list-section-js');
+  const image = document.querySelector('.selected-recipe-photo-js');
+  const name = document.querySelector('.selected-recipe-name-js');
+  const cost = document.querySelector('.cost-js');
+
+  const ingredientListElement = getIngredientListElement(e, selectedRecipe);
+  const instructionsElement = getInstructionsElement(e, selectedRecipe);
+  const costNum = selectedRecipe.calculateRecipeCostInDollars(ingredientsData);
+
+  ingredientListSection.innerHTML += ingredientListElement;
+  instructionsSection.innerHTML += instructionsElement;
+  image.src = selectedRecipe.image;
+  name.innerText = selectedRecipe.name;
+  cost.innerText = `$${costNum}`;
+}
+
+function displayIngredientsNeeded(recipe) {
+  const neededIngredients = currentUser.pantry.getMissingIngredients(recipe);
+  const neededIngredientsSection = document.querySelector('.ingredients-needed-js');
+
+  if (neededIngredients.length === 0) {
+    neededIngredientsSection.innerHTML =
+      `<p>you have all of the ingredients needed to cook this recipe!</p>
+      <button class="cook-recipe-js">cook recipe</button>`;
+
+    const cookRecipeButton = document.querySelector('.cook-recipe-js');
+    cookRecipeButton.addEventListener('click', removeIngredients)
+  } else {
+    const elements = neededIngredients.reduce((acc, ingredient) => {
+      const matchedId = ingredientsData.find(item => {
+        return item.id === ingredient.ingredient
+      })
+      const ingWithUnits = selectedRecipe.ingredients.find(item => {
+        return item.id === ingredient.ingredient
+      })
+
+      acc += `
+        ${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}<br>
+      `
+      return acc;
+    }, '<h3>for this recipe you are missing: </h3>')
+    neededIngredientsSection.innerHTML = elements;
+  }
 }
 
 function updateFavoriteButton(favoriteButtons) {
@@ -122,27 +215,6 @@ function favoriteFromSingleRecipeView() {
   }
 }
 
-function displayRecipes(recipes) {
-  recipeSection.innerHTML = '';
-  recipes.forEach(recipe => {
-    recipeSection.innerHTML += `
-      <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
-         <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <div class='flex column align-center recipe-card-text'>
-           <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
-           <p class='recipe-card-name'>${recipe.name}</p>
-          </div>
-       </section>
-     `;
-  })
-
-  recipeCards = document.querySelectorAll('.recipe-card-js');
-  addCardInfo(recipeCards);
-
-  favoriteButtons = document.querySelectorAll('.favorite-button-js');
-  updateFavoriteButton(favoriteButtons);
-}
-
 function createTable() {
   const tableBody = document.querySelector('tbody')
   tableBody.innerHTML = '';
@@ -181,7 +253,7 @@ function selectTableButtons() {
 function searchAllRecipes(recipes) {
   const searchName = document.getElementById('searchInput').value;
   recipeRepository.filterByNameOrIng(searchName, ingredientsData, recipes);
-  displayRecipes(recipeRepository.recipesToShow);
+  domUpdates.displayRecipes(recipeRepository.recipesToShow);
 }
 
 function displayFavorites() {
@@ -195,17 +267,34 @@ function displayFavorites() {
   searchRecipesButton.addEventListener('click', () => {
     searchAllRecipes(currentUser.favorites)
   });
-  displayRecipes(currentUser.favorites);
+  domUpdates.displayRecipes(currentUser.favorites);
   favoriteButtons = document.querySelectorAll('.favorite-button-js');
   favoriteButtons.forEach((button) => {
     button.addEventListener('click', removeFromPage);
   })
 }
 
-removeFromPage() {
+function removeFromPage() {
   currentUser.removeFromFavorites();
   displayFavorites();
-},
+}
+
+function displayHomePage() {
+  if (!whatsCookin.classList.contains('home-page')) {
+    whatsCookin.classList.add('home-page');
+    domUpdates.displayRecipes(recipeRepository.recipeData);
+    searchBar.value = '';
+    hide([selectedRecipeView, pantryView, highlightKey]);
+    show([mainView, recipeSection, searchBar, searchRecipesButton, favoritePageButton, cookbookPageButton, pageTitle, pantryPageButton]);
+    pageTitle.innerText = 'home';
+    filterButton.addEventListener('click', () => {
+      filterRecipesByTag(recipeRepository.recipeData);
+    })
+    searchRecipesButton.addEventListener('click', () => {
+      searchAllRecipes(recipeRepository.recipeData);
+    })
+  }
+}
 
 function displayCookbook() {
   whatsCookin.classList.remove('home-page');
@@ -218,8 +307,18 @@ function displayCookbook() {
   searchRecipesButton.addEventListener('click', () => {
     searchAllRecipes(currentUser.recipesToCook);
   });
-  displayRecipes(currentUser.recipesToCook);
+  domUpdates.displayRecipes(currentUser.recipesToCook);
   showRecipesUserCanCook();
+}
+
+function displayPantryView() {
+  if (pantryView.classList.contains('hidden')) {
+    whatsCookin.classList.remove('home-page');
+    pageTitle.innerText = "my pantry";
+    show([pantryView, cookbookPageButton, favoritePageButton]);
+    hide([mainView, searchBar, searchButton, pantryPageButton, selectedRecipeView]);
+    domUpdates.populatePantry();
+  }
 }
 
 function showRecipesUserCanCook() {
@@ -251,20 +350,35 @@ function deselectAddToCookbookButton() {
 function toggleCookbookButton() {
   if (addToCookbookButton.value === 'false') {
     selectAddToCookbookButton();
-    currentUser.addToRecipesToCook(selectedRecipe);
+    currentUser.addToRecipesToCook(selectedRecipeDOM);
     addToCookbookButton.innerText = 'remove from cookbook';
   } else if (addToCookbookButton.value === 'true') {
     deselectAddToCookbookButton();
-    currentUser.removeFromRecipesToCook(selectedRecipe);
+    currentUser.removeFromRecipesToCook(selectedRecipeDOM);
     addToCookbookButton.innerText = 'add to cookbook';
   }
 }
 
 let domUpdates = {
+  displayRecipes(recipes) {
+    recipeSection.innerHTML = '';
+    recipes.forEach(recipe => {
+      recipeSection.innerHTML += `
+      <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
+      <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
+      <div class='flex column align-center recipe-card-text'>
+      <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
+      <p class='recipe-card-name'>${recipe.name}</p>
+      </div>
+      </section>
+      `;
+    })
 
-  populatePantry() {
-    createTable();
-    selectTableButtons();
+    recipeCards = document.querySelectorAll('.recipe-card-js');
+    addCardInfo(recipeCards);
+
+    const favoriteButtons = document.querySelectorAll('.favorite-button-js');
+    updateFavoriteButton(favoriteButtons);
   },
 
   populateDropdown() {
@@ -279,31 +393,50 @@ let domUpdates = {
     });
   },
 
-  clearInputs() {
-    dropdownElement.value = 'choose ingredient';
-    quantityInput.value = '';
-  },
-
-  displayMessageButtons(e, message) {
-    const buttonMessage = document.getElementById(`m${e.target.id}`);
-    buttonMessage.innerText = message;
-    setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
-  },
-
-  displayMessageDropdown(message) {
+  displayMessageDropdown() {
     const dropdownMessage = document.querySelector('.dropdown-message-js');
-    dropdownMessage.innerText = `${message}`;
+    dropdownMessage.innerText = `${postMessage}`;
     dropdownMessage.classList.remove('hidden-visibility')
     setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
     setTimeout(() => {
       dropdownMessage.classList.add('hidden-visibility');
       dropdownMessage.classList.remove('fade-out');
     }, 4000)
+  },
+
+  populatePantry() {
+    createTable();
+    selectTableButtons();
+  },
+
+  clearInputs() {
+    dropdownElement.value = 'choose ingredient';
+    quantityInput.value = '';
+  },
+
+  displayMessageButtons(e) {
+    const buttonMessage = document.getElementById(`m${e.target.id}`);
+    buttonMessage.innerText = postMessage;
+    setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
+  },
+
+  displaySelectedRecipe(e) {
+    if (!e.target.classList.contains('favorite-button-js')) {
+      whatsCookin.classList.remove('home-page');
+      updateSelectedRecipe(e);
+      show([selectedRecipeView, favoritePageButton, cookbookPageButton, pantryPageButton]);
+      hide([mainView, searchBar, searchButton, pageTitle, pantryView, highlightKey]);
+
+      showCookbookStatus(selectedRecipe);
+      showFavoritesStatus(selectedRecipe);
+      updateRecipeText(e, selectedRecipe, ingredientsData);
+      displayIngredientsNeeded(selectedRecipe);
+    }
   }
-
-
-
 }
 
-
-export {domUpdates, displayRecipes, show, hide}
+export {
+  domUpdates,
+  dropdownElement,
+  quantityInput
+}
