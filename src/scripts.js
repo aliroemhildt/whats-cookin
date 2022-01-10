@@ -6,10 +6,12 @@ import {
   recipeAPI,
   post
 } from './apiCalls';
+import domUpdates from './domUpdates';
 import RecipeRepository from '../src/classes/RecipeRepository';
 import Recipe from '../src/classes/Recipe';
 import User from '../src/classes/User';
 import Pantry from '../src/classes/Pantry';
+
 
 //API
 let userIndex;
@@ -29,7 +31,7 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
       return new Recipe(recipe);
     })
     recipeRepository = new RecipeRepository(recipeList);
-    displayRecipes(recipeRepository.recipeData);
+    domUpdates.displayRecipes(recipeRepository.recipeData);
     populateDropdown();
   })
   .catch(error => console.log(error));
@@ -39,6 +41,7 @@ let recipeCards = [];
 let favoriteButtons = [];
 let selectedRecipe;
 let postMessage;
+
 
 // QUERY SELECTORS
 const recipeSection = document.querySelector('.recipes-section-js');
@@ -77,7 +80,7 @@ filterButton.addEventListener('click', () => {
   filterRecipesByTag(recipeRepository.recipeData);
 });
 whatsCookin.addEventListener('click', displayHomePage);
-favoritePageButton.addEventListener('click', displayFavorites);
+favoritePageButton.addEventListener('click', domUpdates.displayFavorites);
 addToCookbookButton.addEventListener('click', toggleCookbookButton);
 cookbookPageButton.addEventListener('click', displayCookbook);
 singleViewFavoriteButton.addEventListener('click', favoriteFromSingleRecipeView);
@@ -91,34 +94,28 @@ async function postToPantry(info) {
     let response = await post(info)
     let message = await response.json()
     postMessage = message.message
-    console.log(postMessage)
-    // .then(response => {
-    //   console.log(response)
-    //   response.json()})
-    // .then(message => {
-    //   postMesssage = message.json()})
   }
    catch(error) {
     console.log(error)
    }
 }
 
-function displayMessageDropdown() {
-  const dropdownMessage = document.querySelector('.dropdown-message-js');
-  dropdownMessage.innerText = `${postMessage}`;
-  dropdownMessage.classList.remove('hidden-visibility')
-  setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
-  setTimeout(() => {
-    dropdownMessage.classList.add('hidden-visibility');
-    dropdownMessage.classList.remove('fade-out');
-  }, 4000)
-}
+// function displayMessageDropdown() {
+//   const dropdownMessage = document.querySelector('.dropdown-message-js');
+//   dropdownMessage.innerText = `${postMessage}`;
+//   dropdownMessage.classList.remove('hidden-visibility')
+//   setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
+//   setTimeout(() => {
+//     dropdownMessage.classList.add('hidden-visibility');
+//     dropdownMessage.classList.remove('fade-out');
+//   }, 4000)
+// }
 
-function displayMessageButtons(e) {
-  const buttonMessage = document.getElementById(`m${e.target.id}`);
-  buttonMessage.innerText = postMessage;
-  setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
-}
+// function displayMessageButtons(e) {
+// const buttonMessage = document.getElementById(`m${e.target.id}`);
+// buttonMessage.innerText = postMessage;
+// setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
+//  }
 
 async function getPantry() {
   let response = await fetch("http://localhost:3001/api/v1/users")
@@ -132,16 +129,16 @@ async function addIngredientToPantry() {
   const selectedQuantity = parseFloat(quantityInput.value);
   const info = currentUser.modifyIngredient(selectedIngID, selectedQuantity);
   await postToPantry(info);
-  displayMessageDropdown(postMessage);
+  domUpdates.displayMessageDropdown(postMessage);
   await getPantry()
   populatePantry()
-  clearInputs()
+  domUpdates.clearInputs()
 }
 
-function clearInputs() {
-  dropdownElement.value = 'choose ingredient';
-  quantityInput.value = '';
-}
+// function clearInputs() {
+//   dropdownElement.value = 'choose ingredient';
+//   quantityInput.value = '';
+// }
 
 function reassignUserPantry(data) {
   const updatedUser = data.find((user) => {
@@ -150,28 +147,28 @@ function reassignUserPantry(data) {
   currentUser.pantry = new Pantry(updatedUser.pantry)
 }
 
-function displayFavorites() {
-  whatsCookin.classList.remove('home-page');
-  hide([favoritePageButton, pantryView, highlightKey, selectedRecipeView]);
-  show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle, pantryPageButton]);
-  pageTitle.innerText = 'my favorites';
-  filterButton.addEventListener('click', () => {
-    filterRecipesByTag(currentUser.favorites)
-  });
-  searchRecipesButton.addEventListener('click', () => {
-    searchAllRecipes(currentUser.favorites)
-  });
-  displayRecipes(currentUser.favorites);
-  favoriteButtons = document.querySelectorAll('.favorite-button-js');
-  favoriteButtons.forEach((button) => {
-    button.addEventListener('click', removeFromPage);
-  })
-}
+// function displayFavorites() {
+//   whatsCookin.classList.remove('home-page');
+//   hide([favoritePageButton, pantryView, highlightKey, selectedRecipeView]);
+//   show([filterSection, recipeSection, mainView, cookbookPageButton, pageTitle, pantryPageButton]);
+//   pageTitle.innerText = 'my favorites';
+//   filterButton.addEventListener('click', () => {
+//     filterRecipesByTag(currentUser.favorites)
+//   });
+//   searchRecipesButton.addEventListener('click', () => {
+//     searchAllRecipes(currentUser.favorites)
+//   });
+//   displayRecipes(currentUser.favorites);
+//   favoriteButtons = document.querySelectorAll('.favorite-button-js');
+//   favoriteButtons.forEach((button) => {
+//     button.addEventListener('click', domUpdates.removeFromPage);
+//   })
+// }
 
-function removeFromPage() {
-  currentUser.removeFromFavorites();
-  displayFavorites();
-}
+// function removeFromPage() {
+//   currentUser.removeFromFavorites();
+//   displayFavorites();
+// }
 
 function toggleFavoriteButton(e) {
   if (e.target.classList.contains('favorite-button-js')) {
@@ -301,26 +298,26 @@ function filterRecipesByTag(recipes) {
   }
 }
 
-function displayRecipes(recipes) {
-  recipeSection.innerHTML = '';
-  recipes.forEach(recipe => {
-    recipeSection.innerHTML += `
-      <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
-         <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
-         <div class='flex column align-center recipe-card-text'>
-           <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
-           <p class='recipe-card-name'>${recipe.name}</p>
-          </div>
-       </section>
-     `;
-  })
+// function displayRecipes(recipes) {
+//   recipeSection.innerHTML = '';
+//   recipes.forEach(recipe => {
+//     recipeSection.innerHTML += `
+//       <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
+//          <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
+//          <div class='flex column align-center recipe-card-text'>
+//            <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
+//            <p class='recipe-card-name'>${recipe.name}</p>
+//           </div>
+//        </section>
+//      `;
+//   })
 
-  recipeCards = document.querySelectorAll('.recipe-card-js');
-  addCardInfo(recipeCards);
+//   recipeCards = document.querySelectorAll('.recipe-card-js');
+//   addCardInfo(recipeCards);
 
-  favoriteButtons = document.querySelectorAll('.favorite-button-js');
-  updateFavoriteButton(favoriteButtons);
-}
+//   favoriteButtons = document.querySelectorAll('.favorite-button-js');
+//   updateFavoriteButton(favoriteButtons);
+// }
 
 function updateFavoriteButton(favoriteButtons) {
   favoriteButtons.forEach((button) => {
@@ -328,8 +325,6 @@ function updateFavoriteButton(favoriteButtons) {
       toggleFavoriteButton(e);
     })
   })
-
-
 }
 
 function addCardInfo(recipeCards) {
@@ -484,7 +479,7 @@ async function changeAmount(e) {
   await postToPantry(info);
   await getPantry();
   populatePantry();
-  displayMessageButtons(e);
+  domUpdates.displayMessageButtons(e, postMessage);
 }
 
 function populateDropdown() {
@@ -565,14 +560,47 @@ function getInstructionsElement(e, selectedRecipe) {
   return '<p class="selected-recipe-instructions">' + instructionsText + '</p>'
 }
 
-function show(elements) {
-  elements.forEach(element => {
-    element.classList.remove('hidden');
-  })
+// function show(elements) {
+//   elements.forEach(element => {
+//     element.classList.remove('hidden');
+//   })
+// }
+
+// function hide(elements) {
+//   elements.forEach(element => {
+//     element.classList.add('hidden');
+//   })
+// }
+
+const querySelectors = {
+  recipeSection,
+  selectedRecipeView,
+  filterSection,
+  mainView,
+  searchRecipesButton,
+  filterButton,
+  whatsCookin,
+  searchBar,
+  filterTags,
+  favoritePageButton,
+  addToCookbookButton,
+  cookbookPageButton,
+  singleViewFavoriteButton,
+  pageTitle,
+  pantryView,
+  pantryPageButton,
+  searchButton,
+  highlightKey,
+  dropdownElement,
+  quantityInput,
+  addToPantryButton
 }
 
-function hide(elements) {
-  elements.forEach(element => {
-    element.classList.add('hidden');
-  })
+//EXPORTS
+
+export {
+  currentUser,
+  querySelectors,
+  addCardInfo,
+  updateFavoriteButton
 }
