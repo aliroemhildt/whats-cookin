@@ -120,14 +120,12 @@ h4 {
 }
 
 .fade-out {
-  @include fade-out()
+  @include fade-out();
 }
-
 
 /* ~~~~~~~~~~ INGREDIENT TABLE ~~~~~~~~~~~~ */
 
 table {
-  // width: 85%;
   border-collapse: separate;
   border-spacing: 5px 5px;
 }
@@ -152,7 +150,6 @@ td {
   font-size: 20px;
   background: $white;
   border-spacing: 0 5px;
-
 }
 
 .button-message {
@@ -283,7 +280,7 @@ nav {
 
 .in-cookbook-state {
   background: $dark-green;
-  color: $white
+  color: $white;
 }
 
 /* ~~~~~~~~~~ RECIPE CARD SECTION ~~~~~~~~~~~~ */
@@ -331,7 +328,7 @@ nav {
 
 .favorite-button:hover {
   cursor: pointer;
-  background: $hover-red
+  background: $hover-red;
 }
 
 .recipe-card-name {
