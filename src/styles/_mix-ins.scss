@@ -3,3 +3,14 @@
   opacity: 0;
   transition: visibility 0s 1s, opacity 1s linear;
 }
+
+@mixin wrap-rows() {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
+@mixin size($height, $width) {
+  height: $height;
+  width: $width;
+}

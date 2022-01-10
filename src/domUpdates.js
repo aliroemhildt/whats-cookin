@@ -143,7 +143,7 @@ function displayIngredientsNeeded(recipe) {
 
   if (neededIngredients.length === 0) {
     neededIngredientsSection.innerHTML =
-      `<p>you have all of the ingredients needed to cook this recipe!</p>
+      `<p class="margin-12">you have all of the ingredients needed to cook this recipe!</p>
       <button class="cook-recipe-js">cook recipe</button>`;
 
     const cookRecipeButton = document.querySelector('.cook-recipe-js');
@@ -161,7 +161,7 @@ function displayIngredientsNeeded(recipe) {
         <p>${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}</p><br>
       `
       return acc;
-    }, '');
+    }, '<h4>missing ingredients</h4>');
     neededIngredientsSection.innerHTML = elements;
   }
 }
@@ -239,6 +239,16 @@ function createTable() {
       <td class="button-column hidden-row"></td>
     </tr>`
   }
+  const minusButtons = document.querySelectorAll('.minus-js');
+  minusButtons.forEach(button => {
+    const amount = currentUser.pantry.ingredients.find(ingredient => {
+      return ingredient.id === button.id
+    });
+    if(amount === 0) {
+      button.classList.add('.disable-button')
+    }
+  })
+
 }
 
 function selectTableButtons() {
@@ -396,9 +406,9 @@ let domUpdates = {
     });
   },
 
-  displayMessageDropdown() {
+  displayMessageDropdown(message) {
     const dropdownMessage = document.querySelector('.dropdown-message-js');
-    dropdownMessage.innerText = `${postMessage}`;
+    dropdownMessage.innerText = `${message}`;
     dropdownMessage.classList.remove('hidden-visibility');
     setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
     setTimeout(() => {
@@ -442,5 +452,6 @@ export {
   domUpdates,
   dropdownElement,
   quantityInput,
-  filterTags
+  filterTags,
+  displayIngredientsNeeded
 }
