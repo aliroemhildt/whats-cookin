@@ -433,6 +433,18 @@ let domUpdates = {
     setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
   },
 
+  disableButtons() {
+    const minusButtons = document.querySelectorAll('.minus-js');
+    minusButtons.forEach(button => {
+      const ingredient = currentUser.pantry.ingredients.find(item => {
+        return item.ingredient === parseInt(button.id)
+      })
+      if (ingredient.amount === 0) {
+        button.classList.add('disable-button');
+      }
+    })
+  },
+
   displaySelectedRecipe(e) {
     if (!e.target.classList.contains('favorite-button-js')) {
       whatsCookin.classList.remove('home-page');
