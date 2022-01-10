@@ -109,7 +109,6 @@ async function changeAmount(e) {
   await postToPantry(info);
   await getPantry();
   domUpdates.populatePantry();
-  domUpdates.disableButtons();
   domUpdates.displayMessageButtons(e, postMessage);
 }
 

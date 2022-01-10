@@ -1,5 +1,5 @@
-{
-  const sampleIngredients = [
+const sampleIngredients = [
+  {
     "id": 20081,
     "name": "wheat flour",
     "estimatedCostInCents": 142
