@@ -14,7 +14,8 @@ import {
   domUpdates,
   dropdownElement,
   quantityInput,
-  filterTags
+  filterTags,
+  displayIngredientsNeeded
 } from './domUpdates';
 
 // GLOBAL VARIABLES
@@ -65,11 +66,16 @@ async function addIngredientToPantry() {
   const selectedIngID = parseFloat(dropdownElement.value);
   const selectedQuantity = parseFloat(quantityInput.value);
   const info = currentUser.modifyIngredient(selectedIngID, selectedQuantity);
-  await postToPantry(info);
-  domUpdates.displayMessageDropdown(postMessage);
-  await getPantry();
-  domUpdates.populatePantry();
-  domUpdates.clearInputs();
+  if (selectedIngID && selectedQuantity) {
+    await postToPantry(info);
+    domUpdates.displayMessageDropdown(postMessage);
+    await getPantry();
+    domUpdates.populatePantry();
+    domUpdates.clearInputs();
+  } else {
+    const message = 'please choose an ingredient and quantity';
+    domUpdates.displayMessageDropdown(message)
+  }
 }
 
 async function removeRecipeIngredients() {
@@ -95,6 +101,10 @@ async function changeAmount(e) {
     amount = 1
   } else if (currentAmount >= 1 && e.target.classList.contains('minus-js')) {
     amount = -1
+  
+  // } else if (currentAmount === 0 && e.target.classList.contains('minus-js')) {
+  //   const button = 
+  //   return button
   } else {
     return
   }
@@ -104,6 +114,7 @@ async function changeAmount(e) {
   await getPantry();
   domUpdates.populatePantry();
   domUpdates.displayMessageButtons(e, postMessage);
+
 }
 
 function reassignUserPantry(data) {

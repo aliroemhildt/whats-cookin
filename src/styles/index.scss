@@ -5,20 +5,18 @@
 // * ~~~~~~~~~~ BASIC ELEMENTS ~~~~~~~~~~~~ *
 
 html {
-  height: 100%;
-  width: 100%;
+  @include size(100%, 100%);
   margin: 0;
   padding: 0;
 }
 
 body {
+  @include size(100%, 100%);
   color: $dark-green;
   background-color: $off-white;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   font-size: 16px;
-  height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -31,10 +29,13 @@ main {
   font-size: 25px;
 }
 
+.margin-12 {
+  margin: 12px;
+}
+
 button {
+  @include size(31px, 120px);
   margin: 13px;
-  height: 31px;
-  width: 120px;
   border-radius: 50px;
   border: none;
   background: $white;
@@ -178,15 +179,19 @@ td {
 }
 
 .round-buttons {
+  @include size(40px, 40px);
   border-radius: 50%;
-  height: 40px;
-  width: 40px;
   background: $dark-green;
   color: $white;
   font-weight: 500;
   font-size: 24px;
   text-align: center;
   line-height: 1em;
+}
+
+.disable-button {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* ~~~~~~~~~~ NAV BAR ~~~~~~~~~~~~ */
@@ -204,10 +209,9 @@ nav {
 }
 
 .input {
+  @include size(30px, 200px);
   border: none;
   margin: 13px;
-  height: 30px;
-  width: 200px;
 }
 
 /* ~~~~~~~~~~ FILTER SECTION ~~~~~~~~~~~~ */
@@ -241,8 +245,7 @@ nav {
 }
 
 .selected-recipe-photo {
-  width: 100%;
-  height: 40%;
+  @include size(40%, 100%);
   object-fit: cover;
 }
 
@@ -291,16 +294,13 @@ nav {
 }
 
 .recipes-section {
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  overflow: auto;
+  @include wrap-rows;
   width: 100%;
 }
 
 .recipe-card {
+  @include size(285px, 258px);
   border: 2px solid $white;
-  height: 285px;
-  width: 258px;
   margin: 19px;
   transition: transform 0.3s ease;
 }
@@ -316,8 +316,7 @@ nav {
 }
 
 .recipe-card-text {
-  width: 100%;
-  height: 100%;
+  @include size(100%, 100%);
 }
 
 .favorite-button {
