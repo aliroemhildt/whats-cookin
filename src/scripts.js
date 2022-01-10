@@ -45,12 +45,12 @@ Promise.all([userAPI, ingredientAPI, recipeAPI])
 
 async function postToPantry(info) {
   try {
-    let response = await post(info)
-    let message = await response.json()
-    postMessage = message.message
+    let response = await post(info);
+    let message = await response.json();
+    postMessage = message.message;
   }
    catch(error) {
-    console.log(error)
+    console.log(error);
    }
 }
 
@@ -67,9 +67,9 @@ async function addIngredientToPantry() {
   const info = currentUser.modifyIngredient(selectedIngID, selectedQuantity);
   await postToPantry(info);
   domUpdates.displayMessageDropdown(postMessage);
-  await getPantry()
-  domUpdates.populatePantry()
-  domUpdates.clearInputs()
+  await getPantry();
+  domUpdates.populatePantry();
+  domUpdates.clearInputs();
 }
 
 async function removeRecipeIngredients() {
@@ -110,7 +110,7 @@ function reassignUserPantry(data) {
   const updatedUser = data.find((user) => {
     return user.id === currentUser.id
   });
-  currentUser.pantry = new Pantry(updatedUser.pantry)
+  currentUser.pantry = new Pantry(updatedUser.pantry);
 }
 
 function filterRecipesByTag(recipes) {
