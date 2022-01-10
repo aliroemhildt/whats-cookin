@@ -447,5 +447,6 @@ let domUpdates = {
 export {
   domUpdates,
   dropdownElement,
-  quantityInput
+  quantityInput,
+  filterTags
 }

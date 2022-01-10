@@ -13,7 +13,8 @@ import {
 import {
   domUpdates,
   dropdownElement,
-  quantityInput
+  quantityInput,
+  filterTags
 } from './domUpdates';
 
 // GLOBAL VARIABLES
@@ -122,9 +123,9 @@ function filterRecipesByTag(recipes) {
 
   if (selectedTags.length !== 0) {
     recipeRepository.filterByTags(selectedTags, recipes);
-    displayRecipes(recipeRepository.recipesToShow);
+    domUpdates.displayRecipes(recipeRepository.recipesToShow);
   } else {
-    displayRecipes(recipes);
+    domUpdates.displayRecipes(recipes);
   }
 }
 
