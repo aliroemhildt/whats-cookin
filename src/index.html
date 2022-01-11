@@ -11,7 +11,7 @@
   <nav class="flex align-center">
     <div class="flex align-center">
       <h1 class="home-page">what's cookin'?</h1>
-      <input class="input" type="text" id ="searchInput" placeholder="Search recipes...">
+      <input aria-label="search bar" class="input" type="text" id ="searchInput" placeholder="Search recipes...">
       <button id ="searchRecipes">search</button>
     </div>
     <div class="flex justify-center align-center page-title-wrapper">
@@ -170,7 +170,7 @@
           <select class="font-25 dropdown form-margin dropdown-js" name="ingredient-options" id="ingredient-options">
             <option>choose ingredient</option>
           </select>
-          <input class="font-25 quantity-input form-margin quantity-input-js" type="number" min="0" placeholder="quantity"/>
+          <input aria-label="quantity input"class="font-25 quantity-input form-margin quantity-input-js" type="number" min="0" placeholder="quantity"/>
           <button type="button" class="form-margin form-button form-button-js">add to pantry</button>
         </form>
         <p class="hidden-visibility text-center dropdown-message-js">placeholder</p>
@@ -181,10 +181,9 @@
             <tr>
               <th>Ingredient</th>
               <th>Amount</th>
-              <th></th>
             </tr>
           </thead>
-          <tbody class='table-body'>
+          <tbody class="table-body">
           </tbody>
         </table>
       </section>
