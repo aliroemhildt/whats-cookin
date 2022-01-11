@@ -133,6 +133,7 @@ function updateRecipeText(e, selectedRecipe, ingredientsData) {
   ingredientListSection.innerHTML += ingredientListElement;
   instructionsSection.innerHTML += instructionsElement;
   image.src = selectedRecipe.image;
+  image.alt = `image of ${selectedRecipe.name}`;
   name.innerText = selectedRecipe.name;
   cost.innerText = `$${costNum}`;
 }
@@ -247,8 +248,7 @@ function createTable() {
     if (amount === 0) {
       button.classList.add('.disable-button')
     }
-  })
-
+  });
 }
 
 function selectTableButtons() {
@@ -380,7 +380,7 @@ let domUpdates = {
     recipes.forEach(recipe => {
       recipeSection.innerHTML += `
       <section class='flex column align-center recipe-card recipe-card-js' id='id${recipe.id}'>
-      <img class='recipe-card-image' src=${recipe.image} alt='recipe image' class='recipe-photo'>
+      <img class='recipe-card-image' src=${recipe.image} alt='small image of ${recipe.name}' class='recipe-photo'>
       <div class='flex column align-center recipe-card-text'>
       <button class='favorite-button favorite-button-js' value='unfavorited'>favorite</button>
       <p class='recipe-card-name'>${recipe.name}</p>
