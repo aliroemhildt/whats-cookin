@@ -174,3 +174,5 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
 
 
 - Code review by: [Kristen Bair](https://github.com/kristenmb)
+
+- Project Manager: [Hannah Hudson](https://github.com/hannahhch)
