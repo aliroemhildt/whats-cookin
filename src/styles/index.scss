@@ -63,17 +63,18 @@ h2 {
   font-size: 35px;
 }
 
+
 h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 15px 0 15px 0;
+}
+
+h4 {
   font-size: 24px;
   margin: 20px;
   flex-grow: 1;
   font-weight: 500;
-}
-
-h4 {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 15px 0 15px 0;
 }
 
 .flex {
@@ -340,7 +341,7 @@ nav {
   font-size: 20px;
   padding: 8px;
   background: $yellow;
-  width: 75%;
+  width: 95%;
 }
 
 .highlight-card {

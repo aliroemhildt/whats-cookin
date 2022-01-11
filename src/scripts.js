@@ -101,10 +101,6 @@ async function changeAmount(e) {
     amount = 1
   } else if (currentAmount >= 1 && e.target.classList.contains('minus-js')) {
     amount = -1
-  
-  // } else if (currentAmount === 0 && e.target.classList.contains('minus-js')) {
-  //   const button = 
-  //   return button
   } else {
     return
   }
@@ -114,7 +110,6 @@ async function changeAmount(e) {
   await getPantry();
   domUpdates.populatePantry();
   domUpdates.displayMessageButtons(e, postMessage);
-
 }
 
 function reassignUserPantry(data) {

@@ -12,7 +12,7 @@ import {
   removeIngredients,
   updateSelectedRecipe
 }
-from './scripts'
+  from './scripts'
 
 // GLOBAL VARIABLES
 let favoriteButtons = [];
@@ -96,7 +96,7 @@ function showFavoritesStatus(selectedRecipe) {
 
 function getIngredientListElement(e, selectedRecipe) {
   const ingredientListSection = document.querySelector('.ingredient-list-section-js');
-  ingredientListSection.innerHTML = '<h4>ingredients</h4>';
+  ingredientListSection.innerHTML = '<h3>ingredients</h3>';
   const ingredientNames = selectedRecipe.determineRecipeIngredients(ingredientsData);
   const ingredientListText = selectedRecipe.ingredients.reduce((acc, ingredient, index) => {
     let amount = ingredient.quantity.amount;
@@ -111,7 +111,7 @@ function getIngredientListElement(e, selectedRecipe) {
 
 function getInstructionsElement(e, selectedRecipe) {
   const instructionsSection = document.querySelector('.instructions-section-js');
-  instructionsSection.innerHTML = '<h4>instructions</h4>';
+  instructionsSection.innerHTML = '<h3>instructions</h3>';
   const instructionsStrings = selectedRecipe.returnInstructions();
   const instructionsText = instructionsStrings.reduce((acc, instruction) => {
     acc += `${instruction}<br><br>`;
@@ -161,7 +161,7 @@ function displayIngredientsNeeded(recipe) {
         <p>${matchedId.name}: ${ingredient.amount} ${ingWithUnits.quantity.unit}</p><br>
       `
       return acc;
-    }, '<h4>missing ingredients</h4>');
+    }, '<h3>missing ingredients</h3>');
     neededIngredientsSection.innerHTML = elements;
   }
 }
@@ -244,7 +244,7 @@ function createTable() {
     const amount = currentUser.pantry.ingredients.find(ingredient => {
       return ingredient.id === button.id
     });
-    if(amount === 0) {
+    if (amount === 0) {
       button.classList.add('.disable-button')
     }
   })
@@ -410,7 +410,9 @@ let domUpdates = {
     const dropdownMessage = document.querySelector('.dropdown-message-js');
     dropdownMessage.innerText = `${message}`;
     dropdownMessage.classList.remove('hidden-visibility');
-    setTimeout(() => {dropdownMessage.classList.add('fade-out')}, 2000);
+    setTimeout(() => {
+      dropdownMessage.classList.add('fade-out')
+    }, 2000);
     setTimeout(() => {
       dropdownMessage.classList.add('hidden-visibility');
       dropdownMessage.classList.remove('fade-out');
@@ -420,6 +422,7 @@ let domUpdates = {
   populatePantry() {
     createTable();
     selectTableButtons();
+    domUpdates.disableButtons();
   },
 
   clearInputs() {
@@ -430,7 +433,21 @@ let domUpdates = {
   displayMessageButtons(e) {
     const buttonMessage = document.getElementById(`m${e.target.id}`);
     buttonMessage.innerText = postMessage;
-    setTimeout(() => {buttonMessage.classList.add('fade-out')}, 2000);
+    setTimeout(() => {
+      buttonMessage.classList.add('fade-out')
+    }, 2000);
+  },
+
+  disableButtons() {
+    const minusButtons = document.querySelectorAll('.minus-js');
+    minusButtons.forEach(button => {
+      const ingredient = currentUser.pantry.ingredients.find(item => {
+        return item.ingredient === parseInt(button.id)
+      })
+      if (ingredient.amount === 0) {
+        button.classList.add('disable-button');
+      }
+    })
   },
 
   displaySelectedRecipe(e) {
