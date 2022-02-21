@@ -28,6 +28,12 @@ Hungry and not sure what to cook tonight? You're in luck! 'What's Cookin' is an 
 
 ## Overview <a name="overview"></a>
 
+This project was completed in two week-long sprints.
+
+[Project spec for sprint 1](https://frontend.turing.edu/projects/whats-cookin-part-one.html)
+
+[Project spec for sprint 2](https://frontend.turing.edu/projects/whats-cookin-part-two.html)
+
 On the landing page, a randomized user will see all available recipes displayed. The user may click on any single recipe for more details such as instructions, ingredients and cost of ingredients.  From here, the user can search a keyword or add a filter to narrow down the recipes that are displayed. When a keyword is entered in the search bar and the "search" button is clicked, any recipe with the keyword included in its name or ingredient list will appear. The user can also select one or multiple filters, which will update the displayed recipes when the "apply filter" button is clicked. If a user clicks the "favorite" button on a recipe card, that recipe will be added to the "my favorites" page. When the user goes to the "my favorites" page, they can search and filter their favorite recipes, and remove a recipe from favorites by deselecting the "favorite" button.
 
 The user has access to their own personal pantry by clicking the "my pantry" button and they are able to modify pantry contents by either adding a new ingredient via the dropdown menu or by adding or subtracting the quantity of an ingredient that currently exists in their pantry. When a user clicks on a single recipe for more details, they can see if they need additional ingrdients to cook the recipe; the missing ingredients list and quantities will be listed in the missing ingredients box to the left. They can choose to cook that recipe if they have enough ingredients (and their respective quantities) in their pantry by clicking the "cook recipe" button. 
@@ -112,7 +118,7 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
 
 ## Project Challenges <a name="projectChallanges"></a>
 
-### Part 1
+### Sprint 1
 
 - This was our team's first time working with the following technology and concepts, which naturally came with a learning curve as we implemented them into our project:
 
@@ -121,7 +127,7 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
     - Writing our own tests in order to follow TDD - we have previously followed pre-existing tests when building projects
     - This is the first iteration of our project and was completed in one week and the time constraint was limiting
 
-### Part 2
+### Sprint 2
 
 - This was our team's first time working with the following technology and concepts, which naturally came with a learning curve as we implemented them into our project:
 
@@ -134,14 +140,14 @@ If a user has enough ingredients and their needed quantities for a recipe, they 
 
 ## Project Wins <a name="projectWins"></a>
 
-### Part 1
+### Sprint 1
 
 - Created a fully funtional MVP even with a limiting time scope of one week
 - Successfully implemented API fetch calls
 - Completed a thorough project plan and wireframe, which kept our team on track 
 - Utilized a GitHub project board for the first time
 
-### Part 2
+### Sprint 2
 
 - Created a fully funtional MVP even with a limiting time scope of one week
 - Successfully implemented the fetch API to access data from a local server for the first time 
